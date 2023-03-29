@@ -32,7 +32,11 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 - [TestNG](https://testng.org/doc/) Testing Framework
 - [Application](https://github.com/saucelabs/my-demo-app-rn) v1.3.0
 
-
+## Framework Features
+- Designed with POM(Page Object Model)
+- Support parallel exec using TestNG
+- Support logging using Log4J2
+- Support plugin(Cucumber HTML Reporter) for detailed report
 
 
 ## License
