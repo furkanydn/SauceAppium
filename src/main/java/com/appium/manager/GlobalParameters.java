@@ -5,27 +5,27 @@ public class GlobalParameters {
     private static String udid = String.valueOf(new ThreadLocal<String>());
     private static String deviceName = String.valueOf(new ThreadLocal<String>());
 
-    public static String getPlatformName() {
+    public String getPlatformName() {
         return platformName;
     }
 
-    public static void setPlatformName(String platformName) {
+    public void setPlatformName(String platformName) {
         GlobalParameters.platformName = platformName;
     }
 
-    public static String getUdid() {
+    public String getUdid() {
         return udid;
     }
 
-    public static void setUdid(String udid) {
+    public void setUdid(String udid) {
         GlobalParameters.udid = udid;
     }
 
-    public static String getDeviceName() {
+    public String getDeviceName() {
         return deviceName;
     }
 
-    public static void setDeviceName(String deviceName) {
+    public void setDeviceName(String deviceName) {
         GlobalParameters.deviceName = deviceName;
     }
 
@@ -54,19 +54,19 @@ public class GlobalParameters {
     private static String systemPort = String.valueOf(new ThreadLocal<String>());
     private static String driverPort = String.valueOf(new ThreadLocal<String>());
 
-    public static String getSystemPort() {
+    public String getSystemPort() {
         return systemPort;
     }
 
-    public static void setSystemPort(String systemPort) {
+    public void setSystemPort(String systemPort) {
         GlobalParameters.systemPort = systemPort;
     }
 
-    public static String getDriverPort() {
+    public String getDriverPort() {
         return driverPort;
     }
 
-    public static void setDriverPort(String driverPort) {
+    public void setDriverPort(String driverPort) {
         GlobalParameters.driverPort = driverPort;
     }
     //endregion
