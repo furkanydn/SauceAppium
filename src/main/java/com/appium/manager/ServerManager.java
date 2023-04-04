@@ -42,4 +42,15 @@ public class ServerManager {
                         .withLogFile(
                                 new File(globalParameters.getPlatformName() + "_" + globalParameters.getDeviceName() + File.separator + "Service.log")));
     }
+
+    public AppiumDriverLocalService getAppiumServiceWindows() {
+        GlobalParameters parameters = new GlobalParameters();
+        /* Since I don't have a Windows device here, I couldn't advance it, it will work if you give the correct file path of the arguments as in macOS. */
+        return AppiumDriverLocalService.buildService(
+                new AppiumServiceBuilder()
+                        .usingAnyFreePort()
+                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                        .withLogFile(
+                                new File(parameters.getPlatformName() + "_" + parameters.getDeviceName() + File.separator + "Service.log")));
+    }
 }
