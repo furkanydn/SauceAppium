@@ -41,8 +41,10 @@ public class VideoManager {
                 globalParameters.getPlatformName() + "-" + globalParameters.getDeviceName() + LocalDate.now();
         File videoDirectory = new File(path);
 
+        //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (videoDirectory){
-            if (!videoDirectory.exists()) videoDirectory.mkdirs();
+            if (!videoDirectory.exists()) //noinspection ResultOfMethodCallIgnored
+                videoDirectory.mkdirs();
         }
 
         FileOutputStream outputStream = null;
