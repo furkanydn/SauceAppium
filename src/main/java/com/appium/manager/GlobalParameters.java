@@ -33,20 +33,20 @@ public class GlobalParameters {
     private static String wdaLocalPort = String.valueOf(new ThreadLocal<String>());
     private static String webKitProxyPort = String.valueOf(new ThreadLocal<String>());
 
-    public static String getWdaLocalPort() {
+    public String getWdaLocalPort() {
         return wdaLocalPort;
     }
 
-    public static void setWdaLocalPort(String wdaLocalPort) {
-        GlobalParameters.wdaLocalPort = wdaLocalPort;
+    public void setWdaLocalPort(String wdaPort) {
+        wdaLocalPort = wdaPort;
     }
 
-    public static String getWebKitProxyPort() {
+    public String getWebKitProxyPort() {
         return webKitProxyPort;
     }
 
-    public static void setWebKitProxyPort(String webKitProxyPort) {
-        GlobalParameters.webKitProxyPort = webKitProxyPort;
+    public void setWebKitProxyPort(String webKitPort) {
+        webKitProxyPort = webKitPort;
     }
     //endregion
 
