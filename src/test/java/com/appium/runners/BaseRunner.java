@@ -68,7 +68,7 @@ public class BaseRunner {
 
     /**
      * Cucumber puts scenarios in them.
-     * @param pickleWrapper
+     * @param pickleWrapper Scenario this pickle was wrapped from.
      * @param featureWrapper
      * */
     @Test(groups = "cucumber",description = "Runs Cucumber scenarios",dataProvider = "scenarios")
