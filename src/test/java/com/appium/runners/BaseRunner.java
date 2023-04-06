@@ -1,12 +1,15 @@
 package com.appium.runners;
 
 
+import com.appium.manager.DriverManager;
 import com.appium.manager.GlobalParameters;
 import com.appium.manager.ServerManager;
 import io.cucumber.testng.TestNGCucumberRunner;
 import org.apache.logging.log4j.ThreadContext;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+
+import java.sql.Driver;
 
 public class BaseRunner {
     private static final ThreadLocal<TestNGCucumberRunner> testCucumberRunner = new ThreadLocal<>();
@@ -40,6 +43,7 @@ public class BaseRunner {
             }
             default -> throw new IllegalStateException("Unexpected value: " + platformName);
         }
-        new ServerManager().
+        new ServerManager().startServiceLocal();
+        new DriverManager().initDriverThread();
     }
 }

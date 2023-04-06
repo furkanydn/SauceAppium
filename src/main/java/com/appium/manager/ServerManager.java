@@ -3,9 +3,11 @@ package com.appium.manager;
 import com.appium.utils.TestUtilities;
 import com.appium.utils.UUtils;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
 
+import javax.management.RuntimeOperationsException;
 import java.io.File;
 import java.util.HashMap;
 
@@ -17,10 +19,30 @@ public class ServerManager {
         return serviceThreadLocal.get();
     }
 
-    public void StartServiceLocal(){
+    /**
+     * Starts the defined appium server.
+     *
+     * @throws AppiumServerHasNotBeenStartedLocallyException If an error occurs while spawning the child process.
+     * @implNote If you are using macOS use the getAppiumServiceMacOS method or if you are using Windows use the getAppiumServiceWindows method.
+     */
+    public void startServiceLocal(){
         testUtilities.logger().info("Appium REST Http interface listener started");
+
+        AppiumDriverLocalService localService = getAppiumServiceMacOS();
+        try {
+            localService.start();
+        } catch (AppiumServerHasNotBeenStartedLocallyException e) {
+            testUtilities.logger().fatal(new AppiumServerHasNotBeenStartedLocallyException("The local appium server has not been started."));
+        }
+        localService.clearOutPutStreams();
+        serviceThreadLocal.set(localService);
+        testUtilities.logger().info("The local appium server has been started.");
     }
 
+    /**
+     * It collects the environments required in the macOS operating system.
+     * @return AppiumDriverLocalService
+     * */
     public AppiumDriverLocalService getAppiumServiceMacOS() {
         GlobalParameters globalParameters = new GlobalParameters();
         HashMap<String,String> environment = new HashMap<String,String>();
@@ -29,7 +51,6 @@ public class ServerManager {
                 + UUtils.getName() + "/Volumes/Helpintosh/Library/Android/sdk/tools:/Users/"
                 + UUtils.getName() + "/Volumes/Helpintosh/Library/Android/sdk/platform-tools:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin"
                 + System.getenv("PATH"));
-
         environment.put("ANDROID_HOME","/Volumes/Helpintosh/Library/Android/sdk");
 
         return AppiumDriverLocalService.buildService(
@@ -43,6 +64,10 @@ public class ServerManager {
                                 new File(globalParameters.getPlatformName() + "_" + globalParameters.getDeviceName() + File.separator + "Service.log")));
     }
 
+    /**
+     * It collects the environments required in the Windows operating system.
+     * @return AppiumDriverLocalService
+     * */
     public AppiumDriverLocalService getAppiumServiceWindows() {
         GlobalParameters parameters = new GlobalParameters();
         /* Since I don't have a Windows device here, I couldn't advance it, it will work if you give the correct file path of the arguments as in macOS. */
