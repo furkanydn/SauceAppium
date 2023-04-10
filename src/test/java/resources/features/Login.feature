@@ -25,7 +25,7 @@
     When Enter mail as "<mail>"
     And Enter password as "<password>"
     And Click the login button
-    Then  If the given mail and password are correct successful login is possible
+    Then  if the given mail and password are correct successful login is possible
 
     Examples:
       | mail            | password |

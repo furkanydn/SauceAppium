@@ -25,7 +25,7 @@ public class LoginStepDefinition {
     public void theAccountLockedOutNotificationWillAppearAtTheBottom() {
     }
 
-    @Then("If the given mail and password are correct successful login is possible")
-    public void ıfTheGivenMailAndPasswordAreCorrectSuccessfulLoginIsPossible() {
+    @Then("if the given mail and password are correct successful login is possible")
+    public void ifTheGivenMailAndPasswordAreCorrectSuccessfulLoginIsPossible() {
     }
 }
