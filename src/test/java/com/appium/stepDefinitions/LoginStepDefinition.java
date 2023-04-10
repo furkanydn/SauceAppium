@@ -21,4 +21,16 @@ public class LoginStepDefinition {
     @Then("Login should fail with an error {string}")
     public void loginShouldFailWithAnError(String arg0) {
     }
+
+    @Then("If the given username and password are correct successful login is possible")
+    public void ıfTheGivenUsernameAndPasswordAreCorrectSuccessfulLoginIsPossible() {
+    }
+
+    @When("Enter mail as {string}")
+    public void enterMailAs(String arg0) {
+    }
+
+    @Then("If the given mail and password are correct successful login is possible")
+    public void ıfTheGivenMailAndPasswordAreCorrectSuccessfulLoginIsPossible() {
+    }
 }
