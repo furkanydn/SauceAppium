@@ -13,17 +13,21 @@
       | invalidU | failPass | Provided credentials do not match any user in this service |
 
     Scenario Outline: Account locked out with alternative mail address
+      When Enter mail as "<mail>"
+      And Enter password as "<password>"
+      And Click the login button
+      Then The Account locked out notification will appear at the bottom.
       Examples:
-        | username          | password |
+        | mail              | password |
         | alice@example.com | 10203040 |
 
     Scenario Outline: Login with valid mail and password.
-    When Enter mail as "<username>"
+    When Enter mail as "<mail>"
     And Enter password as "<password>"
     And Click the login button
     Then  If the given mail and password are correct successful login is possible
 
     Examples:
-      | username        | password |
+      | mail            | password |
       | bob@example.com | 10203040 |
 
