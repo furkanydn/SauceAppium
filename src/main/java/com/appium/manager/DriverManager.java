@@ -8,15 +8,15 @@ import io.appium.java_client.ios.IOSDriver;
 import java.io.IOException;
 
 public class DriverManager {
-    private static ThreadLocal<AppiumDriver> driverThreadLocal = new ThreadLocal<>();
+    private static ThreadLocal<AppiumDriver> driverThread = new ThreadLocal<>();
     TestUtilities utilities = new TestUtilities();
 
     public AppiumDriver getDriverThreadLocal() {
-        return driverThreadLocal.get();
+        return driverThread.get();
     }
 
     public void setDriverThreadLocal(AppiumDriver appiumDriver) {
-        driverThreadLocal.set(appiumDriver);
+        driverThread.set(appiumDriver);
     }
 
     public void initDriverThread() throws Exception {

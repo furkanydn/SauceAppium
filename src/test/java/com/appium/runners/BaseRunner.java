@@ -8,6 +8,7 @@ import io.cucumber.testng.FeatureWrapper;
 import io.cucumber.testng.PickleWrapper;
 import io.cucumber.testng.TestNGCucumberRunner;
 import org.apache.logging.log4j.ThreadContext;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Optional;
@@ -22,11 +23,6 @@ public class BaseRunner {
 
     public static void setCucumberRunner(TestNGCucumberRunner cucumberRunner){
         testCucumberRunner.set(cucumberRunner);
-    }
-
-    @DataProvider
-    public static Object[][] scenarios() {
-        return getCucumberRunner().provideScenarios();
     }
 
     /**
@@ -76,10 +72,16 @@ public class BaseRunner {
         getCucumberRunner().runScenario(pickleWrapper.getPickle());
     }
 
+    @DataProvider
+    public static Object[][] scenarios() {
+        return getCucumberRunner().provideScenarios();
+    }
+
     /**
      * Stops this service is it is currently running. This method will attempt to block until the
      * server has been fully shutdown.
      */
+    @AfterClass
     public void tearDown(){
         DriverManager driverManager = new DriverManager();
         ServerManager serverManager = new ServerManager();
