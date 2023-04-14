@@ -1,4 +1,6 @@
 package com.appium.pages;
 
-public class Login {
+import com.appium.utils.TestUtilities;
+
+public class Login extends Base {
 }
