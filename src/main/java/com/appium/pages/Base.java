@@ -13,6 +13,7 @@ import java.time.Duration;
 
 public class Base {
     protected static AppiumDriver baseDriver;
+    TestUtilities utilities = new TestUtilities();
 
     public Base(){
         /**
@@ -31,5 +32,12 @@ public class Base {
         WebDriverWait wait = new WebDriverWait(baseDriver,Duration.ofSeconds(TestUtilities.WAITTIME));
         wait.pollingEvery(Duration.ofSeconds(TestUtilities.WAITTIME));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
+    public void click(AppiumBy by){
+        waitForVisible(by);
+        utilities.logger().info("Clicked by " + by);
+        //Temporary
+        baseDriver.findElement(AppiumBy.ByAccessibilityId(by)).click();
     }
 }
