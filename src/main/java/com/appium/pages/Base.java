@@ -18,9 +18,6 @@ public class Base {
     TestUtilities utilities = new TestUtilities();
 
     public Base(){
-        /**
-         * The available {@link AppiumDriver}.
-         * */
         baseDriver = new DriverManager().getDriverThreadLocal();
         PageFactory.initElements(new AppiumFieldDecorator(baseDriver),this);
     }
