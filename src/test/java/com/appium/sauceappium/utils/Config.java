@@ -3,8 +3,10 @@ package com.appium.sauceappium.utils;
 import java.util.Arrays;
 import java.util.Optional;
 
-enum Config {
+public enum Config {
     PlatformName("platformName"),
+    iOS("iOS"),
+    Android("Android"),
     AppiumIpAddress("appiumIpAddress"),
     AppiumPort("appiumPort");
 

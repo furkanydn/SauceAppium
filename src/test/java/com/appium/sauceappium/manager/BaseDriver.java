@@ -1,5 +1,6 @@
 package com.appium.sauceappium.manager;
 
+import com.appium.sauceappium.utils.Config;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -27,8 +28,13 @@ public class BaseDriver {
     }
 
     public AppiumDriver getDriverLocal() {
-        return properties.getProperty("platformName").equals("iOS") ? iosDriver : androidDriver;
-        properties.getProperty(Config)
+        return properties.
+                getProperty(
+                        Config.PlatformName.toString())
+                .equals(
+                        Config.iOS.toString())
+                ? iosDriver
+                : androidDriver;
     }
 
     public void setDriverThreadLocal(AppiumDriver appiumDriver) {
