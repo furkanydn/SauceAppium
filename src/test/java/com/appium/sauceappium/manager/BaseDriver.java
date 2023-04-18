@@ -28,6 +28,7 @@ public class BaseDriver {
 
     public AppiumDriver getDriverLocal() {
         return properties.getProperty("platformName").equals("iOS") ? iosDriver : androidDriver;
+        properties.getProperty(Config)
     }
 
     public void setDriverThreadLocal(AppiumDriver appiumDriver) {
@@ -56,7 +57,7 @@ public class BaseDriver {
         }
     }
 
-    @AfterAll public static void afterAllClass(){
+    @AfterAll public static void afterClass(){
         if (iosDriver != null && androidDriver !=null){
             iosDriver.quit();
             androidDriver.quit();

@@ -82,14 +82,7 @@ public class BaseRunner {
      * server has been fully shutdown.
      */
     @AfterClass public void tearDown(){
-        BaseDriver driverManager = new BaseDriver();
-        ServerManager serverManager = new ServerManager();
-
-        if (driverManager.getDriverLocal() != null){
-            driverManager.getDriverLocal().quit();
-            driverManager.setDriverThreadLocal(null);
-        }
-        if (serverManager.getAppiumService() != null) serverManager.getAppiumService().stop();
+        BaseDriver.afterClass();
         getCucumberRunner().finish();
     }
 }
