@@ -1,6 +1,6 @@
 package com.appium.sauceappium.stepDefinitions;
 
-import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.manager.BaseDriver;
 import com.appium.sauceappium.manager.GlobalParameters;
 import com.appium.sauceappium.manager.VideoManager;
 import com.appium.sauceappium.utils.TestUtilities;
@@ -47,7 +47,7 @@ public class Hooks {
     @After
     public void quitHook(Scenario scenario) throws IOException {
         if (scenario.isFailed()) {
-            byte[] screenshot = new DriverManager().getDriverLocal().getScreenshotAs(OutputType.BYTES);
+            byte[] screenshot = new BaseDriver().getDriverLocal().getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot,"image/png", scenario.getName());
         }
         new VideoManager().stopRecord(scenario.getName());

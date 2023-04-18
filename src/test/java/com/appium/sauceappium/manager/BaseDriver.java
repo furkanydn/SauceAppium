@@ -9,7 +9,7 @@ import io.cucumber.java.BeforeAll;
 
 import java.io.IOException;
 
-public class DriverManager {
+public class BaseDriver {
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;

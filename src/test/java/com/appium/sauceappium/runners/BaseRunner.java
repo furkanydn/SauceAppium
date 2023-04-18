@@ -1,7 +1,7 @@
 package com.appium.sauceappium.runners;
 
 
-import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.manager.BaseDriver;
 import com.appium.sauceappium.manager.GlobalParameters;
 import com.appium.sauceappium.manager.ServerManager;
 import io.cucumber.testng.FeatureWrapper;
@@ -58,7 +58,7 @@ public class BaseRunner {
             default -> throw new IllegalStateException("Unexpected value: " + platformName);
         }
         new ServerManager().startServiceLocal();
-        new DriverManager().initDriverThread();
+        new BaseDriver().initDriverThread();
         setCucumberRunner(new TestNGCucumberRunner(this.getClass()));
     }
 
@@ -83,7 +83,7 @@ public class BaseRunner {
      */
     @AfterClass
     public void tearDown(){
-        DriverManager driverManager = new DriverManager();
+        BaseDriver driverManager = new BaseDriver();
         ServerManager serverManager = new ServerManager();
 
         if (driverManager.getDriverLocal() != null){

@@ -1,6 +1,6 @@
 package com.appium.sauceappium.pages;
 
-import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.manager.BaseDriver;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
@@ -12,11 +12,11 @@ import java.time.Duration;
 import java.util.NoSuchElementException;
 
 public class Base {
-    protected static AppiumDriver baseDriver;
+    protected static AppiumDriver appiumDriver;
     TestUtilities utilities = new TestUtilities();
 
     public Base(){
-        baseDriver = new DriverManager().getDriverLocal();
+        appiumDriver = new BaseDriver().getDriverLocal();
     }
 
     /**
@@ -25,7 +25,7 @@ public class Base {
      */
     public void waitForVisible(AppiumBy by){
         //baseDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtilities.WAITTIME));
-        WebDriverWait wait = new WebDriverWait(baseDriver,Duration.ofSeconds(TestUtilities.WAITTIME));
+        WebDriverWait wait = new WebDriverWait(appiumDriver,Duration.ofSeconds(TestUtilities.WAITTIME));
         wait.pollingEvery(Duration.ofSeconds(TestUtilities.WAITTIME));
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
@@ -44,7 +44,7 @@ public class Base {
         try {
             utilities.logger().info("Clicked by " + by);
             //Temporary
-            baseDriver.findElement(by).click();
+            appiumDriver.findElement(by).click();
         } catch (StaleElementReferenceException exception) {
             exception.printStackTrace();
         }
@@ -61,7 +61,7 @@ public class Base {
         try {
             utilities.logger().info("Element is %s and keys to %s".formatted(by, keysToSend));
             //Temporary
-            baseDriver.findElement(by).sendKeys(keysToSend);
+            appiumDriver.findElement(by).sendKeys(keysToSend);
         } catch (IllegalArgumentException exception) {
             exception.printStackTrace();
         }
@@ -76,7 +76,7 @@ public class Base {
         String text = null;
         try {
             //Temporary
-            text = baseDriver.findElement(by).getText();
+            text = appiumDriver.findElement(by).getText();
             utilities.logger().info("Element is %s and getting keys to %s".formatted(by, text));
         } catch (NoSuchElementException exception) {
             exception.printStackTrace();

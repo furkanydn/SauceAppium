@@ -13,7 +13,6 @@ import java.util.Properties;
 public class CapabilitiesManager {
     TestUtilities testUtilities = new TestUtilities();
 
-
     public DesiredCapabilities getCapabilities() throws IOException {
         GlobalParameters parameters = new GlobalParameters();
         Properties properties = new PropertyManager().getProperties();

@@ -26,7 +26,7 @@ public class VideoManager {
         switch (platformName){
             case "iOS" -> {
                 try {
-                    ((CanRecordScreen) new DriverManager().getDriverLocal())
+                    ((CanRecordScreen) new BaseDriver().getDriverLocal())
                             .startRecordingScreen(
                                     new IOSStartScreenRecordingOptions()
                                             .withTimeLimit(Duration.ofMinutes(TestUtilities.WAITTIME)));
@@ -37,7 +37,7 @@ public class VideoManager {
             }
             case "Android" -> {
                 try {
-                    ((CanRecordScreen) new DriverManager().getDriverLocal())
+                    ((CanRecordScreen) new BaseDriver().getDriverLocal())
                             .startRecordingScreen(
                                     new AndroidStartScreenRecordingOptions()
                                             .withTimeLimit(Duration.ofMinutes(TestUtilities.WAITTIME)));
@@ -58,7 +58,7 @@ public class VideoManager {
      */
     public void stopRecord(String scenario) throws IOException, SecurityException{
         GlobalParameters globalParameters=new GlobalParameters();
-        String media = ((CanRecordScreen) new DriverManager().getDriverLocal()).stopRecordingScreen();
+        String media = ((CanRecordScreen) new BaseDriver().getDriverLocal()).stopRecordingScreen();
         String path = System.getProperty("user.dir") +
                 File.separator + "src" +
                 File.separator + "" +
