@@ -1,6 +1,6 @@
-package com.appium.stepDefinitions;
+package com.appium.sauceappium.stepDefinitions;
 
-import com.appium.pages.Login;
+import com.appium.sauceappium.pages.Login;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;

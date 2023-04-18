@@ -1,13 +1,13 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.utils.TestUtilities;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertyManager {
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
     TestUtilities testUtilities = new TestUtilities();
 
     public Properties getProperties() throws IOException {

@@ -1,4 +1,4 @@
-package com.appium.utils;
+package com.appium.sauceappium.utils;
 
 
 import org.apache.logging.log4j.LogManager;

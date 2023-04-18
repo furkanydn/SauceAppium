@@ -1,7 +1,7 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
-import com.appium.utils.TestUtilities;
-import com.appium.utils.UUtils;
+import com.appium.sauceappium.utils.UUtils;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;

@@ -1,9 +1,9 @@
-package com.appium.runners;
+package com.appium.sauceappium.runners;
 
 
-import com.appium.manager.DriverManager;
-import com.appium.manager.GlobalParameters;
-import com.appium.manager.ServerManager;
+import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.manager.GlobalParameters;
+import com.appium.sauceappium.manager.ServerManager;
 import io.cucumber.testng.FeatureWrapper;
 import io.cucumber.testng.PickleWrapper;
 import io.cucumber.testng.TestNGCucumberRunner;

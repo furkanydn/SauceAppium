@@ -1,4 +1,4 @@
-package com.appium.utils;
+package com.appium.sauceappium.utils;
 
 public class UUtils {
     private UUtils() {

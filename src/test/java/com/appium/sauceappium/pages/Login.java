@@ -1,4 +1,4 @@
-package com.appium.pages;
+package com.appium.sauceappium.pages;
 
 public class Login extends Base {
     Menu menu = new Menu();

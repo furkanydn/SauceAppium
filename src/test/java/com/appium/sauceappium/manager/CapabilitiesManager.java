@@ -1,6 +1,6 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.IOSMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -30,7 +30,7 @@ public class CapabilitiesManager {
                     capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, properties.getProperty("iOSAutomationName"));
                     String iOSAppURL = System.getProperty("user.dir") +
                             File.separator + "src" +
-                            File.separator + "test" +
+                            File.separator + "" +
                             File.separator + "resources" +
                             File.separator + "app" +
                             File.separator + "MyRNDemoApp.app";
@@ -51,7 +51,7 @@ public class CapabilitiesManager {
                     capabilities.setCapability(AndroidMobileCapabilityType.CHROMEDRIVER_PORT, parameters.getDriverPort());
                     String androidAppURL = System.getProperty("user.dir") +
                             File.separator + "src" +
-                            File.separator + "test" +
+                            File.separator + "" +
                             File.separator + "resources" +
                             File.separator + "app" +
                             File.separator + "Android-MyDemoAppRN.1.3.0.build-244.apk";

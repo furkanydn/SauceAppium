@@ -1,4 +1,4 @@
-package com.appium.runners;
+package com.appium.sauceappium.runners;
 
 import io.cucumber.testng.CucumberOptions;
 

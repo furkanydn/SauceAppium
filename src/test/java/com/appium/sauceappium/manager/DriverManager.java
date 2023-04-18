@@ -1,26 +1,33 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.cucumber.java.BeforeAll;
 
 import java.io.IOException;
 
 public class DriverManager {
-    private static ThreadLocal<AppiumDriver> driverThread = new ThreadLocal<>();
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     TestUtilities utilities = new TestUtilities();
 
+    @BeforeAll
     public AppiumDriver getDriverLocal() {
-        return driverThread.get();
+        GlobalParameters p = new GlobalParameters();
+        if (p.getPlatformName().equals("iOS")) {
+            return iosDriver;
+        } else if (p.getPlatformName().equals("Android")) {
+            return androidDriver;
+        }
+        return androidDriver;
     }
 
     public void setDriverThreadLocal(AppiumDriver appiumDriver) {
-        driverThread.set(appiumDriver);
+        //driverThread.set(appiumDriver);
     }
 
     public void initDriverThread() throws Exception {

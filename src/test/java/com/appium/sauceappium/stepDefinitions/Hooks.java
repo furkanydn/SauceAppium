@@ -1,9 +1,9 @@
-package com.appium.stepDefinitions;
+package com.appium.sauceappium.stepDefinitions;
 
-import com.appium.manager.DriverManager;
-import com.appium.manager.GlobalParameters;
-import com.appium.manager.VideoManager;
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.manager.GlobalParameters;
+import com.appium.sauceappium.manager.VideoManager;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;

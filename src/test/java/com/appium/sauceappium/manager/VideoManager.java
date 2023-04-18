@@ -1,6 +1,6 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
 import io.appium.java_client.screenrecording.CanRecordScreen;
@@ -61,7 +61,7 @@ public class VideoManager {
         String media = ((CanRecordScreen) new DriverManager().getDriverLocal()).stopRecordingScreen();
         String path = System.getProperty("user.dir") +
                 File.separator + "src" +
-                File.separator + "test" +
+                File.separator + "" +
                 File.separator + "resources" +
                 File.separator + "videos" +
                 globalParameters.getPlatformName() + "-" + globalParameters.getDeviceName() + LocalDate.now();

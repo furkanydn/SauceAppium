@@ -1,4 +1,4 @@
-package com.appium.manager;
+package com.appium.sauceappium.manager;
 
 public class GlobalParameters {
     private static String platformName = String.valueOf(new ThreadLocal<String>());

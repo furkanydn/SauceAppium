@@ -1,7 +1,7 @@
-package com.appium.pages;
+package com.appium.sauceappium.pages;
 
-import com.appium.manager.DriverManager;
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.manager.DriverManager;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.StaleElementReferenceException;

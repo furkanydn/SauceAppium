@@ -1,6 +1,6 @@
-package com.appium.pages;
+package com.appium.sauceappium.pages;
 
-import com.appium.utils.TestUtilities;
+import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.pagefactory.iOSXCUITFindBy;
