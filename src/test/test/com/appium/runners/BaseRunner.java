@@ -86,8 +86,8 @@ public class BaseRunner {
         DriverManager driverManager = new DriverManager();
         ServerManager serverManager = new ServerManager();
 
-        if (driverManager.getDriverThreadLocal() != null){
-            driverManager.getDriverThreadLocal().quit();
+        if (driverManager.getDriverLocal() != null){
+            driverManager.getDriverLocal().quit();
             driverManager.setDriverThreadLocal(null);
         }
         if (serverManager.getAppiumService() != null) serverManager.getAppiumService().stop();

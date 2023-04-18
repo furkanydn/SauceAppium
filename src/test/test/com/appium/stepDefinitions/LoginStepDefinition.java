@@ -1,5 +1,6 @@
 package com.appium.stepDefinitions;
 
+import com.appium.pages.Login;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -7,6 +8,7 @@ import io.cucumber.java.en.When;
 public class LoginStepDefinition {
     @When("Enter mail as {string}")
     public void enterMailAs(String arg0) {
+        new Login().enterUserName(arg0);
     }
 
     @And("Enter password as {string}")

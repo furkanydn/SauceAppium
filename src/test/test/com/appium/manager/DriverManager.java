@@ -4,14 +4,18 @@ import com.appium.utils.TestUtilities;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
+import io.appium.java_client.service.local.AppiumDriverLocalService;
 
 import java.io.IOException;
 
 public class DriverManager {
     private static ThreadLocal<AppiumDriver> driverThread = new ThreadLocal<>();
+    private static AppiumDriverLocalService service;
+    protected static AndroidDriver androidDriver;
+    protected static IOSDriver iosDriver;
     TestUtilities utilities = new TestUtilities();
 
-    public AppiumDriver getDriverThreadLocal() {
+    public AppiumDriver getDriverLocal() {
         return driverThread.get();
     }
 

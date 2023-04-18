@@ -1,6 +1,7 @@
 package com.appium.stepDefinitions;
 
 import com.appium.manager.DriverManager;
+import com.appium.manager.GlobalParameters;
 import com.appium.manager.VideoManager;
 import com.appium.utils.TestUtilities;
 import io.cucumber.java.After;
@@ -15,14 +16,15 @@ import java.io.IOException;
  * */
 public class Hooks {
     TestUtilities testUtilities = new TestUtilities();
+    GlobalParameters parameters = new GlobalParameters();
 
     @Before
     public void initializeHook(){
-        try {
-            new VideoManager().startRecord();
-        } catch (Exception exception){
-            testUtilities.logger().fatal("Launch initialize VideoManager hook failed" + exception);
-        }
+//        try {
+//            new VideoManager().startRecord(parameters.getPlatformName());
+//        } catch (Exception exception){
+//            testUtilities.logger().fatal("Launch initialize VideoManager hook failed" + exception);
+//        }
     }
 
     /**
@@ -45,7 +47,7 @@ public class Hooks {
     @After
     public void quitHook(Scenario scenario) throws IOException {
         if (scenario.isFailed()) {
-            byte[] screenshot = new DriverManager().getDriverThreadLocal().getScreenshotAs(OutputType.BYTES);
+            byte[] screenshot = new DriverManager().getDriverLocal().getScreenshotAs(OutputType.BYTES);
             scenario.attach(screenshot,"image/png", scenario.getName());
         }
         new VideoManager().stopRecord(scenario.getName());

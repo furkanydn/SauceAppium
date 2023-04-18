@@ -4,9 +4,7 @@ import com.appium.manager.DriverManager;
 import com.appium.utils.TestUtilities;
 import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -18,8 +16,7 @@ public class Base {
     TestUtilities utilities = new TestUtilities();
 
     public Base(){
-        baseDriver = new DriverManager().getDriverThreadLocal();
-        PageFactory.initElements(new AppiumFieldDecorator(baseDriver),this);
+        baseDriver = new DriverManager().getDriverLocal();
     }
 
     /**
