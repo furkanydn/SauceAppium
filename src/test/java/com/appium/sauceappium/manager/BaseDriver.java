@@ -5,25 +5,29 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.cucumber.java.BeforeAll;
+import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.cucumber.java.AfterAll;
 
 import java.io.IOException;
+import java.util.Properties;
 
 public class BaseDriver {
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     TestUtilities utilities = new TestUtilities();
-
-    @BeforeAll
-    public AppiumDriver getDriverLocal() {
-        GlobalParameters p = new GlobalParameters();
-        if (p.getPlatformName().equals("iOS")) {
-            return iosDriver;
-        } else if (p.getPlatformName().equals("Android")) {
-            return androidDriver;
+    GlobalParameters globalParameters = new GlobalParameters();
+    Properties properties;
+    {
+        try {
+            properties = new PropertyManager().getProperties();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return androidDriver;
+    }
+
+    public AppiumDriver getDriverLocal() {
+        return properties.getProperty("platformName").equals("iOS") ? iosDriver : androidDriver;
     }
 
     public void setDriverThreadLocal(AppiumDriver appiumDriver) {
@@ -31,8 +35,11 @@ public class BaseDriver {
     }
 
     public void initDriverThread() throws Exception {
-        AppiumDriver driver = null;
-        GlobalParameters globalParameters = new GlobalParameters();
+        service = new AppiumServiceBuilder()
+                .withIPAddress(properties.getProperty("appiumIpAddress"))
+                .usingPort(Integer.parseInt(properties.getProperty("appiumPort")))
+                .build();
+        service.start();
 
         try {
             utilities.logger().info("Initializing appium driver...");
@@ -47,5 +54,14 @@ public class BaseDriver {
             utilities.logger().info("Driver initialization failed.");
             throw e;
         }
+    }
+
+    @AfterAll public static void afterAllClass(){
+        if (iosDriver != null && androidDriver !=null){
+            iosDriver.quit();
+            androidDriver.quit();
+        } if (service != null)
+            service.stop();
+
     }
 }

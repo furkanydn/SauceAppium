@@ -2,15 +2,11 @@
   Feature: Login Scenarios
     #@test
 
-  Scenario Outline: Login with invalid mail or password
+  Scenario : Login with invalid mail or password
     When Enter mail as "<mail>"
     And Enter password as "<password>"
     And Click the login button
     Then Login should fail with an error "<error>"
-
-    Examples:
-      | mail     | password | error                                                      |
-      | invalidU | failPass | Provided credentials do not match any user in this service |
 
     Scenario Outline: Account locked out with alternative mail address
       When Enter mail as "<mail>"

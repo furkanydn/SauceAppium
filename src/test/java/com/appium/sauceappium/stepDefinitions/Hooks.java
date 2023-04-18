@@ -20,11 +20,11 @@ public class Hooks {
 
     @Before
     public void initializeHook(){
-//        try {
-//            new VideoManager().startRecord(parameters.getPlatformName());
-//        } catch (Exception exception){
-//            testUtilities.logger().fatal("Launch initialize VideoManager hook failed" + exception);
-//        }
+        try {
+            new VideoManager().startRecord(parameters.getPlatformName());
+        } catch (Exception exception){
+            testUtilities.logger().fatal("Launch initialize VideoManager hook failed" + exception);
+        }
     }
 
     /**
@@ -41,7 +41,6 @@ public class Hooks {
      * {@code mediaType} must be provided. For example: {@code text/plain},
      * {@code image/png}, {@code text/html;charset=utf-8}.
      * <p>
-     *
      * @param scenario  The current scenario
      */
     @After

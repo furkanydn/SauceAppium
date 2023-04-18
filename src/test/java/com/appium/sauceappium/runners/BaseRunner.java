@@ -81,8 +81,7 @@ public class BaseRunner {
      * Stops this service is it is currently running. This method will attempt to block until the
      * server has been fully shutdown.
      */
-    @AfterClass
-    public void tearDown(){
+    @AfterClass public void tearDown(){
         BaseDriver driverManager = new BaseDriver();
         ServerManager serverManager = new ServerManager();
 
