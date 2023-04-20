@@ -1,5 +1,6 @@
 package com.appium.sauceappium.manager;
 
+import com.appium.sauceappium.utils.Constant;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
@@ -42,18 +43,17 @@ public class BaseDriver {
 
     @BeforeAll public void initDriverThread() {
         CapsManage capsManage = new CapsManage();
-        AppiumManage appiumManage = new AppiumManage();
         TestUtilities testUtilities = new TestUtilities();
-        utilities.logger().info("Initializing appium driver...");
+        utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
         switch (properties.getProperty(PLATFORM_NAME)) {
-            case "iOS" -> {
+            case Constant.IOS -> {
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(appiumManage.appiumIpAddress())
-                        .usingPort(appiumManage.appiumPort())
+                        .withIPAddress(AppiumManage.appiumIpAddress())
+                        .usingPort(AppiumManage.appiumPort())
                         .build();
                 service.start();
                 try {
-                    testUtilities.logger().info("Getting appium desired capabilities");
+                    testUtilities.logger().info(Constant.GETTING_APPIUM_DESIRED_CAPABILITIES);
                     XCUITestOptions options = new XCUITestOptions()
                             .setDeviceName(capsManage.setDevice())
                             .setApp(capsManage.setApp())
@@ -62,10 +62,10 @@ public class BaseDriver {
                             .eventTimings();
                     iosDriver = new IOSDriver(service.getUrl(), options);
                 } catch (Exception e){
-                    testUtilities.logger().fatal("Failed to load capabilities " + e);
+                    testUtilities.logger().fatal(Constant.FAILED_TO_LOAD_CAPABILITIES + e);
                 }
             }
-            case "Android" -> {
+            case Constant.ANDROID -> {
                 service = new AppiumServiceBuilder()
                         .withIPAddress(properties.getProperty(APPIUM_IP_ADDRESS))
                         .usingPort(Integer.parseInt(properties.getProperty(APPIUM_PORT)))
@@ -80,7 +80,7 @@ public class BaseDriver {
                         .eventTimings();
                 androidDriver = new AndroidDriver(service.getUrl(), options);
             }
-            default -> utilities.logger().info("Driver initialization failed.");
+            default -> utilities.logger().info(Constant.DRIVER_INITIALIZATION_FAILED);
         }
     }
 
