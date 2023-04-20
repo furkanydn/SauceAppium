@@ -1,12 +1,7 @@
 package com.appium.sauceappium.manager;
 
 import com.appium.sauceappium.utils.TestUtilities;
-import io.appium.java_client.remote.AndroidMobileCapabilityType;
-import io.appium.java_client.remote.IOSMobileCapabilityType;
-import io.appium.java_client.remote.MobileCapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Properties;
@@ -38,5 +33,22 @@ public class CapsManage {
 
     protected Duration setWdaTime() {
         return Duration.ofSeconds(Long.parseLong(properties.getProperty(WDA_TIME_OUT)));
+    }
+}
+
+class AppiumManage {
+    Properties properties;
+    {
+        try {
+            properties = new PropertyManager().getProperties();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    protected String appiumIpAddress(){
+        return properties.getProperty(APPIUM_IP_ADDRESS);
+    }
+    protected int appiumPort(){
+        return Integer.parseInt(properties.getProperty(APPIUM_PORT));
     }
 }

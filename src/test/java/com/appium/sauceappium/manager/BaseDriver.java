@@ -12,7 +12,6 @@ import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Properties;
 
 import static com.appium.sauceappium.utils.Config.*;
@@ -43,13 +42,14 @@ public class BaseDriver {
 
     @BeforeAll public void initDriverThread() {
         CapsManage capsManage = new CapsManage();
+        AppiumManage appiumManage = new AppiumManage();
         TestUtilities testUtilities = new TestUtilities();
         utilities.logger().info("Initializing appium driver...");
         switch (properties.getProperty(PLATFORM_NAME)) {
             case "iOS" -> {
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(properties.getProperty(APPIUM_IP_ADDRESS))
-                        .usingPort(Integer.parseInt(properties.getProperty(APPIUM_PORT)))
+                        .withIPAddress(appiumManage.appiumIpAddress())
+                        .usingPort(appiumManage.appiumPort())
                         .build();
                 service.start();
                 try {
