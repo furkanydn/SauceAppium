@@ -7,7 +7,6 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
@@ -42,33 +41,29 @@ public class BaseDriver {
                 : androidDriver;
     }
 
-    @BeforeAll public void initDriverThread() throws Exception {
+    @BeforeAll public void initDriverThread() {
+        CapsManage capsManage = new CapsManage();
+        TestUtilities testUtilities = new TestUtilities();
         utilities.logger().info("Initializing appium driver...");
         switch (properties.getProperty(PLATFORM_NAME)) {
             case "iOS" -> {
-                String DEVICE =
-                        properties.getProperty(IOS_DEVICE) != null
-                                ? properties.getProperty(IOS_DEVICE)
-                                : "iPhone 12";
-                String PLATFORM_VERSION =
-                        properties.getProperty(IOS_VERSION) != null
-                                ? properties.getProperty(IOS_VERSION)
-                                : "15.3";
-                Duration WDA_TIMEOUT = Duration.ofSeconds(Long.parseLong(properties.getProperty(WDA_TIME_OUT)));
-
                 service = new AppiumServiceBuilder()
                         .withIPAddress(properties.getProperty(APPIUM_IP_ADDRESS))
                         .usingPort(Integer.parseInt(properties.getProperty(APPIUM_PORT)))
                         .build();
                 service.start();
-
-                XCUITestOptions options = new XCUITestOptions()
-                        .setDeviceName(DEVICE)
-                        .setApp(TestUtilities.iosApp().toAbsolutePath().toString())
-                        .setWdaLaunchTimeout(WDA_TIMEOUT)
-                        .setPlatformVersion(PLATFORM_VERSION)
-                        .eventTimings();
-                iosDriver = new IOSDriver(service.getUrl(), options);
+                try {
+                    testUtilities.logger().info("Getting appium desired capabilities");
+                    XCUITestOptions options = new XCUITestOptions()
+                            .setDeviceName(capsManage.setDevice())
+                            .setApp(capsManage.setApp())
+                            .setPlatformVersion(capsManage.setPlatformVersion())
+                            .setWdaLaunchTimeout(capsManage.setWdaTime())
+                            .eventTimings();
+                    iosDriver = new IOSDriver(service.getUrl(), options);
+                } catch (Exception e){
+                    testUtilities.logger().fatal("Failed to load capabilities " + e);
+                }
             }
             case "Android" -> {
                 service = new AppiumServiceBuilder()
@@ -78,6 +73,8 @@ public class BaseDriver {
                 service.start();
 
                 UiAutomator2Options options = new UiAutomator2Options()
+                        .setPlatformName(properties.getProperty(ANDROID))
+                        .setPlatformVersion(properties.getProperty(ANDROID_VERSION))
                         .setDeviceName(properties.getProperty(ANDROID_DEVICE))
                         .setApp(TestUtilities.androidApk().toAbsolutePath().toString())
                         .eventTimings();

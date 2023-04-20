@@ -2,7 +2,8 @@ package com.appium.sauceappium.utils;
 
 public interface Config {
     String ANDROID = "Android";
-    String ANDROID_DEVICE = "AndroidDevice";
+    String ANDROID_VERSION = "11";
+    String ANDROID_DEVICE = "Pixel";
     String APPIUM_IP_ADDRESS = "appiumIpAddress";
     String APPIUM_PORT = "appiumPort";
     String IOS_DEVICE = "iOSDevice";
