@@ -7,8 +7,10 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.cucumber.java.AfterAll;
+import io.cucumber.java.BeforeAll;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -21,7 +23,6 @@ public class BaseDriver {
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     TestUtilities utilities = new TestUtilities();
-    GlobalParameters globalParameters = new GlobalParameters();
     Properties properties;
     {
         try {
@@ -41,12 +42,9 @@ public class BaseDriver {
                 : androidDriver;
     }
 
-    public void setDriverThreadLocal(AppiumDriver appiumDriver) {
-        //driverThread.set(appiumDriver);
-    }
-
-    public void initDriverThread() throws Exception {
-        switch (properties.getProperty(PLATFORM_NAME)){
+    @BeforeAll public void initDriverThread() throws Exception {
+        utilities.logger().info("Initializing appium driver...");
+        switch (properties.getProperty(PLATFORM_NAME)) {
             case "iOS" -> {
                 String DEVICE =
                         properties.getProperty(IOS_DEVICE) != null
@@ -70,7 +68,7 @@ public class BaseDriver {
                         .setWdaLaunchTimeout(WDA_TIMEOUT)
                         .setPlatformVersion(PLATFORM_VERSION)
                         .eventTimings();
-                iosDriver = new IOSDriver(service.getUrl(),options);
+                iosDriver = new IOSDriver(service.getUrl(), options);
             }
             case "Android" -> {
                 service = new AppiumServiceBuilder()
@@ -83,22 +81,9 @@ public class BaseDriver {
                         .setDeviceName(properties.getProperty(ANDROID_DEVICE))
                         .setApp(TestUtilities.androidApk().toAbsolutePath().toString())
                         .eventTimings();
-                androidDriver = new AndroidDriver(service.getUrl(),options);
+                androidDriver = new AndroidDriver(service.getUrl(), options);
             }
-        }
-
-        try {
-            utilities.logger().info("Initializing appium driver...");
-            switch (globalParameters.getPlatformName()) {
-                case "iOS" -> iosDriver = new IOSDriver(new ServerManager().getAppiumService().getUrl(), new CapabilitiesManager().getCapabilities());
-                case "Android" -> androidDriver = new AndroidDriver(new ServerManager().getAppiumService().getUrl(), new CapabilitiesManager().getCapabilities());
-            }
-            if (androidDriver == null) throw new Exception("Driver is null");
-            utilities.logger().info("Driver is initialized");
-            setDriverThreadLocal(androidDriver);
-        } catch (IOException e) {
-            utilities.logger().info("Driver initialization failed.");
-            throw e;
+            default -> utilities.logger().info("Driver initialization failed.");
         }
     }
 
