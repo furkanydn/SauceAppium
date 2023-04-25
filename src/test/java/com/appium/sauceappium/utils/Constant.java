@@ -7,4 +7,5 @@ public class Constant {
     public static final String GETTING_APPIUM_DESIRED_CAPABILITIES ="Getting appium desired capabilities";
     public static final String FAILED_TO_LOAD_CAPABILITIES ="Failed to load capabilities ";
     public static final String DRIVER_INITIALIZATION_FAILED ="Driver initialization failed.";
+    public static final String SCREEN_RECORDING_ONLY_WORKS_ON_REAL_DEVICES = "Screen recording only works on real devices";
 }

@@ -1,28 +1,26 @@
 package com.appium.sauceappium.definitions;
 
-import com.appium.sauceappium.manager.BaseDriver;
-import com.appium.sauceappium.manager.GlobalParameters;
+import com.appium.sauceappium.pages.BaseDriver;
 import com.appium.sauceappium.manager.PropertyManager;
-import com.appium.sauceappium.manager.VideoManager;
 import com.appium.sauceappium.utils.Constant;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
-import io.cucumber.java.Before;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Properties;
 
-import static com.appium.sauceappium.utils.Config.*;
+import static com.appium.sauceappium.utils.Config.PLATFORM_NAME;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Hooks run before and after every Cucumber scenario
  * */
-public class Hooks extends BaseDriver {
+public class ScreenRecordDef extends BaseDriver {
     TestUtilities testUtilities = new TestUtilities();
-    GlobalParameters parameters = new GlobalParameters();
     static Properties properties;
     {
         try {
@@ -32,22 +30,8 @@ public class Hooks extends BaseDriver {
         }
     }
 
-    @Before
-    public void initializeHook(){
-        try {
-            new VideoManager().startRecord(parameters.getPlatformName());
-        } catch (Exception exception){
-            testUtilities.logger().fatal("Launch initialize VideoManager hook failed" + exception);
-        }
-    }
-
     /**
-     * Attach data to the report(s) and stop recording
-     *
-     * <p>
-     * To ensure reporting tools can understand what the data is a
-     * {@code mediaType} must be provided. For example: {@code text/plain},
-     * {@code image/png}, {@code text/html;charset=utf-8}.<p>
+     * Start asynchronous screen recording process.
      */
     @Test
     public void basicScreenRecordingWorks() throws InterruptedException {
@@ -59,16 +43,20 @@ public class Hooks extends BaseDriver {
                                     .withTimeLimit(Duration.ofSeconds(10)));
                     Thread.sleep(5000);
                     String result = iosDriver.stopRecordingScreen();
-                    //add assert not empty!
+                    assertThat(result, is(not(emptyString())));
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             }
             case Constant.ANDROID -> {
-                androidDriver.startRecordingScreen(
-                        new AndroidStartScreenRecordingOptions()
-                                .withTimeLimit(Duration.ofSeconds(5)));
-
+                try {
+                    androidDriver.startRecordingScreen(
+                            new AndroidStartScreenRecordingOptions()
+                                    .withTimeLimit(Duration.ofSeconds(10)));
+                } catch (Exception e) {
+                    testUtilities.logger().fatal(Constant.SCREEN_RECORDING_ONLY_WORKS_ON_REAL_DEVICES);
+                    e.printStackTrace();
+                }
             }
         }
     }

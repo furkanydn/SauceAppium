@@ -1,8 +1,10 @@
-package com.appium.sauceappium.manager;
+package com.appium.sauceappium.pages;
 
+import com.appium.sauceappium.manager.AppiumManage;
+import com.appium.sauceappium.manager.CapsManage;
+import com.appium.sauceappium.manager.PropertyManager;
 import com.appium.sauceappium.utils.Constant;
 import com.appium.sauceappium.utils.TestUtilities;
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
@@ -22,7 +24,6 @@ public class BaseDriver {
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
-    protected static AppiumDriver driver;
     static TestUtilities utilities = new TestUtilities();
     static Properties properties;
     {
@@ -31,19 +32,6 @@ public class BaseDriver {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * It is created for the initialization of the mobile driver to be used from the properties.
-     * */
-    public AppiumDriver getDriverLocal() {
-        return properties.
-                getProperty(
-                        PLATFORM_NAME)
-                .equals(
-                        IOS)
-                ? iosDriver
-                : androidDriver;
     }
 
     @BeforeAll public static void beforeClass() {
@@ -68,7 +56,7 @@ public class BaseDriver {
                             .setCommandTimeouts(capsManage.setWdaTime())
                             .eventTimings();
                     try {
-                        driver = new IOSDriver(service.getUrl(), options);
+                        iosDriver = new IOSDriver(service.getUrl(), options);
                     }catch (SessionNotCreatedException e){
                         options.useNewWDA();
                         iosDriver = new IOSDriver(service.getUrl(), options);
@@ -90,17 +78,17 @@ public class BaseDriver {
                         .setDeviceName(properties.getProperty(ANDROID_DEVICE))
                         .setApp(TestUtilities.androidApk().toAbsolutePath().toString())
                         .eventTimings();
-                driver = new AndroidDriver(service.getUrl(), options);
+                androidDriver = new AndroidDriver(service.getUrl(), options);
             }
             default -> utilities.logger().info(Constant.DRIVER_INITIALIZATION_FAILED);
         }
     }
 
     @AfterAll public static void afterClass(){
-        if (driver != null){
-            driver.quit();
+        if (iosDriver != null && androidDriver != null){
+            iosDriver.quit();
+            androidDriver.quit();
         } if (service != null)
             service.stop();
-
     }
 }
