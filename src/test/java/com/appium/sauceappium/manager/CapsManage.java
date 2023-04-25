@@ -37,7 +37,7 @@ public class CapsManage {
 }
 
 class AppiumManage {
-    static Properties properties;
+    Properties properties;
     {
         try {
             properties = new PropertyManager().getProperties();
@@ -45,10 +45,10 @@ class AppiumManage {
             throw new RuntimeException(e);
         }
     }
-    public static String appiumIpAddress(){
+    public String appiumIpAddress(){
         return properties.getProperty(APPIUM_IP_ADDRESS);
     }
-    public static int appiumPort(){
+    public int appiumPort(){
         return Integer.parseInt(properties.getProperty(APPIUM_PORT));
     }
 }

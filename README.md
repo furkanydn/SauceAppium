@@ -29,7 +29,7 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 - [Gherkin Syntax](https://cucumber.io/docs/gherkin/) Easy-To-Read Language
 - [IntelliJ](https://www.jetbrains.com/help/idea/work-with-gradle-projects.html#delegate_build_gradle) Build and Dependency Management
 - [Log4J2](https://logging.apache.org/log4j/2.x/) Logging Framework
-- [TestNG](https://testng.org/doc/) Testing Framework
+- [JUnit 5](https://junit.org/junit5/) Testing Framework
 - [Application](https://github.com/saucelabs/my-demo-app-rn) v1.3.0
 
 ## Framework Features

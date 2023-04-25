@@ -31,6 +31,9 @@ public class BaseDriver {
         }
     }
 
+    /**
+     * It is created for the initialization of the mobile driver to be used from the properties.
+     * */
     public AppiumDriver getDriverLocal() {
         return properties.
                 getProperty(
@@ -43,13 +46,14 @@ public class BaseDriver {
 
     @BeforeAll public void initDriverThread() {
         CapsManage capsManage = new CapsManage();
+        AppiumManage appiumManage = new AppiumManage();
         TestUtilities testUtilities = new TestUtilities();
         utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
         switch (properties.getProperty(PLATFORM_NAME)) {
             case Constant.IOS -> {
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(AppiumManage.appiumIpAddress())
-                        .usingPort(AppiumManage.appiumPort())
+                        .withIPAddress(appiumManage.appiumIpAddress())
+                        .usingPort(appiumManage.appiumPort())
                         .build();
                 service.start();
                 try {
