@@ -1,9 +1,11 @@
 package com.appium.sauceappium.pages;
 
-public class Login extends Base {
-    Menu menu = new Menu();
+import com.appium.sauceappium.manager.BaseDriver;
+
+public class Login extends BaseDriver {
+    MenuTest menuTest = new MenuTest();
     public Login enterUserName(String username) {
-        menu.setOpenMenu();
+        //menuTest.setOpenMenu();
         return this;
     }
 }

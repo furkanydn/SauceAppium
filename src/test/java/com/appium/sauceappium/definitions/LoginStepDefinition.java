@@ -1,4 +1,4 @@
-package com.appium.sauceappium.stepDefinitions;
+package com.appium.sauceappium.definitions;
 
 import com.appium.sauceappium.pages.Login;
 import io.cucumber.java.en.And;
