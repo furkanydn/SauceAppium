@@ -15,13 +15,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.SessionNotCreatedException;
 
+import java.io.File;
+
 public class BaseDriver implements Config {
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     static TestUtilities utilities = new TestUtilities();
 
-    @BeforeAll public static void beforeClass() {
+    @BeforeAll
+    public static void beforeClass() {
         CapsManage capsManage = new CapsManage();
         TestUtilities testUtilities = new TestUtilities();
         utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
@@ -44,11 +47,11 @@ public class BaseDriver implements Config {
                             .eventTimings();
                     try {
                         iosDriver = new IOSDriver(service.getUrl(), options);
-                    }catch (SessionNotCreatedException e){
+                    } catch (SessionNotCreatedException e) {
                         options.useNewWDA();
                         iosDriver = new IOSDriver(service.getUrl(), options);
                     }
-                } catch (Exception e){
+                } catch (Exception e) {
                     testUtilities.logger().fatal(Constant.FAILED_TO_LOAD_CAPABILITIES + e);
                 }
             }
@@ -56,6 +59,7 @@ public class BaseDriver implements Config {
                 service = new AppiumServiceBuilder()
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)
+                        .usingDriverExecutable(new File(capsManage.setDriverNode()))
                         .build();
                 service.start();
 
@@ -71,11 +75,13 @@ public class BaseDriver implements Config {
         }
     }
 
-    @AfterAll public static void afterClass(){
-        if (iosDriver != null && androidDriver != null){
+    @AfterAll
+    public static void afterClass() {
+        if (iosDriver != null && androidDriver != null) {
             iosDriver.quit();
             androidDriver.quit();
-        } if (service != null)
+        }
+        if (service != null)
             service.stop();
     }
 }

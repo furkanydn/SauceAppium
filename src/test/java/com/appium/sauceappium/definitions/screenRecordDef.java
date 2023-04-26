@@ -1,9 +1,8 @@
 package com.appium.sauceappium.definitions;
 
-import com.appium.sauceappium.pages.BaseDriver;
 import com.appium.sauceappium.manager.PropertyManager;
+import com.appium.sauceappium.pages.BaseDriver;
 import com.appium.sauceappium.utils.Constant;
-import com.appium.sauceappium.utils.GlobalConfig;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
@@ -20,22 +19,14 @@ import static org.hamcrest.Matchers.*;
 /**
  * Hooks run before and after every Cucumber scenario
  * */
-public class ScreenRecordDef extends BaseDriver {
+public class screenRecordDef extends BaseDriver {
     TestUtilities testUtilities = new TestUtilities();
-    static Properties properties;
-    {
-        try {
-            properties = new PropertyManager().getProperties();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     /**
      * Start asynchronous screen recording process.
      */
     @Test
-    public void basicScreenRecordingWorks() throws InterruptedException {
+    public void basicScreenRecordingWorks() {
         switch (PLATFORM_NAME) {
             case Constant.IOS -> {
                 try {

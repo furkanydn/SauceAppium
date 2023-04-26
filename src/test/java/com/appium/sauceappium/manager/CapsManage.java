@@ -10,5 +10,9 @@ public class CapsManage {
     public String setAndroidApp(){
         return TestUtilities.androidApk().toAbsolutePath().toString();
     }
+
+    public String setDriverNode(){
+        return TestUtilities.nodePath().toAbsolutePath().toString();
+    }
 }
 

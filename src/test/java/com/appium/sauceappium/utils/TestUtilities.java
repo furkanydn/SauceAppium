@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.Objects;
 
 public class TestUtilities {
-    public static final long WAITTIME = 10;
 
     public Logger logger(){
         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
@@ -38,5 +37,9 @@ public class TestUtilities {
 
     public static Path iosApp(){
         return resourcePathToLocalPath("app/MyRNDemoApp.app");
+    }
+
+    public static Path nodePath(){
+        return resourcePathToLocalPath("/Users/furkanaydin/.nvm/versions/node/v19.8.1/bin/node");
     }
 }
