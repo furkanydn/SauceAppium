@@ -30,10 +30,12 @@ public class BaseDriver implements Config {
         utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
         switch (GlobalConfig.PLATFORM_NAME) {
             case Constant.IOS -> {
-                utilities.logger().info(Constant.IOS + "Platform selected.");
+                utilities.logger().info("Platform is "+Constant.IOS);
                 service = new AppiumServiceBuilder()
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)
+                        // Mac M1 Issue https://github.com/nvm-sh/nvm/issues/2350
+                        //.usingDriverExecutable(new File(capsManage.setDriverNode()))
                         .build();
                 service.start();
                 try {
@@ -57,6 +59,7 @@ public class BaseDriver implements Config {
                 }
             }
             case Constant.ANDROID -> {
+                utilities.logger().info("Platform is "+Constant.ANDROID);
                 service = new AppiumServiceBuilder()
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)

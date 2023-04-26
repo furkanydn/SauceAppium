@@ -34,7 +34,7 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 
 ## Framework Features
 - Designed with POM(Page Object Model)
-- Support parallel exec using TestNG
+- Support parallel exec using JUnit 5
 - Support logging using Log4J2
 - Support plugin(Cucumber HTML Reporter) for detailed report
 

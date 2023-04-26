@@ -11,8 +11,8 @@ public interface Config {
 
     interface iOSConfig {
         String PLATFORM_NAME = "iOS";
-        String PLATFORM_VERSION = "15.3";
-        String DEVICE_NAME = "iPhone 12";
+        String PLATFORM_VERSION = "16.4";
+        String DEVICE_NAME = "iPhone 14 Pro Max";
         Duration WDA_LAUNCH_TIMEOUT = Duration.ofSeconds(240);
         Duration COMMAND_TIMEOUTS = Duration.ofSeconds(180);
     }
