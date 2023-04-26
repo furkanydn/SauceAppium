@@ -3,6 +3,7 @@ package com.appium.sauceappium.definitions;
 import com.appium.sauceappium.pages.BaseDriver;
 import com.appium.sauceappium.manager.PropertyManager;
 import com.appium.sauceappium.utils.Constant;
+import com.appium.sauceappium.utils.GlobalConfig;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Properties;
 
-import static com.appium.sauceappium.utils.Config.PLATFORM_NAME;
+import static com.appium.sauceappium.utils.GlobalConfig.PLATFORM_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -35,7 +36,7 @@ public class ScreenRecordDef extends BaseDriver {
      */
     @Test
     public void basicScreenRecordingWorks() throws InterruptedException {
-        switch (properties.getProperty(PLATFORM_NAME)) {
+        switch (PLATFORM_NAME) {
             case Constant.IOS -> {
                 try {
                     iosDriver.startRecordingScreen(

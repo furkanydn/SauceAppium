@@ -1,9 +1,9 @@
 package com.appium.sauceappium.pages;
 
-import com.appium.sauceappium.manager.AppiumManage;
 import com.appium.sauceappium.manager.CapsManage;
-import com.appium.sauceappium.manager.PropertyManager;
+import com.appium.sauceappium.utils.Config;
 import com.appium.sauceappium.utils.Constant;
+import com.appium.sauceappium.utils.GlobalConfig;
 import com.appium.sauceappium.utils.TestUtilities;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -11,49 +11,36 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.SessionNotCreatedException;
 
-import java.io.IOException;
-import java.util.Properties;
-
-import static com.appium.sauceappium.utils.Config.*;
-
-public class BaseDriver {
+public class BaseDriver implements Config {
     private static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     static TestUtilities utilities = new TestUtilities();
-    static Properties properties;
-    {
-        try {
-            properties = new PropertyManager().getProperties();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @BeforeAll public static void beforeClass() {
         CapsManage capsManage = new CapsManage();
-        AppiumManage appiumManage = new AppiumManage();
         TestUtilities testUtilities = new TestUtilities();
         utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
-        switch (properties.getProperty(PLATFORM_NAME)) {
+        switch (GlobalConfig.PLATFORM_NAME) {
             case Constant.IOS -> {
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(appiumManage.appiumIpAddress())
-                        .usingPort(appiumManage.appiumPort())
+                        .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
+                        .usingPort(GlobalConfig.APPIUM_PORT)
                         .build();
                 service.start();
                 try {
                     testUtilities.logger().info(Constant.GETTING_APPIUM_DESIRED_CAPABILITIES);
                     XCUITestOptions options = new XCUITestOptions()
-                            .setDeviceName(capsManage.setDevice())
-                            .setApp(capsManage.setApp())
-                            .setPlatformVersion(capsManage.setPlatformVersion())
-                            .setWdaLaunchTimeout(capsManage.setWdaTime())
-                            .setCommandTimeouts(capsManage.setWdaTime())
+                            .setPlatformName(iOSConfig.PLATFORM_NAME)
+                            .setPlatformVersion(iOSConfig.PLATFORM_VERSION)
+                            .setDeviceName(iOSConfig.DEVICE_NAME)
+                            .setApp(capsManage.setIOSApp())
+                            .setWdaLaunchTimeout(iOSConfig.WDA_LAUNCH_TIMEOUT)
+                            .setCommandTimeouts(iOSConfig.COMMAND_TIMEOUTS)
                             .eventTimings();
                     try {
                         iosDriver = new IOSDriver(service.getUrl(), options);
@@ -67,16 +54,16 @@ public class BaseDriver {
             }
             case Constant.ANDROID -> {
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(properties.getProperty(APPIUM_IP_ADDRESS))
-                        .usingPort(Integer.parseInt(properties.getProperty(APPIUM_PORT)))
+                        .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
+                        .usingPort(GlobalConfig.APPIUM_PORT)
                         .build();
                 service.start();
 
                 UiAutomator2Options options = new UiAutomator2Options()
-                        .setPlatformName(properties.getProperty(ANDROID))
-                        .setPlatformVersion(properties.getProperty(ANDROID_VERSION))
-                        .setDeviceName(properties.getProperty(ANDROID_DEVICE))
-                        .setApp(TestUtilities.androidApk().toAbsolutePath().toString())
+                        .setPlatformName(AndroidConfig.PLATFORM_NAME)
+                        .setPlatformVersion(AndroidConfig.PLATFORM_VERSION)
+                        .setDeviceName(AndroidConfig.DEVICE_NAME)
+                        .setApp(capsManage.setAndroidApp())
                         .eventTimings();
                 androidDriver = new AndroidDriver(service.getUrl(), options);
             }

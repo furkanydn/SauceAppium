@@ -1,14 +1,20 @@
 package com.appium.sauceappium.utils;
 
+import java.time.Duration;
+
 public interface Config {
-    String ANDROID = "Android";
-    String ANDROID_VERSION = "11";
-    String ANDROID_DEVICE = "Pixel";
-    String APPIUM_IP_ADDRESS = "appiumIpAddress";
-    String APPIUM_PORT = "appiumPort";
-    String IOS_DEVICE = "iOSDevice";
-    String IOS_VERSION = "iOSVersion";
-    String PLATFORM_NAME = "platformName";
-    String WDA_TIME_OUT = "wdaTimeOut";
-    String IOS = "iOS";
+    interface AndroidConfig {
+        String PLATFORM_NAME = "Android";
+        String PLATFORM_VERSION = "11";
+        String DEVICE_NAME = "Pixel";
+    }
+
+    interface iOSConfig {
+        String PLATFORM_NAME = "iOS";
+        String PLATFORM_VERSION = "15.3";
+        String DEVICE_NAME = "iPhone 12";
+        Duration WDA_LAUNCH_TIMEOUT = Duration.ofSeconds(240);
+        Duration COMMAND_TIMEOUTS = Duration.ofSeconds(180);
+    }
 }
+
