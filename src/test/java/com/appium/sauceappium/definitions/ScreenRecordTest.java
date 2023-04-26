@@ -1,6 +1,5 @@
 package com.appium.sauceappium.definitions;
 
-import com.appium.sauceappium.manager.PropertyManager;
 import com.appium.sauceappium.pages.BaseDriver;
 import com.appium.sauceappium.utils.Constant;
 import com.appium.sauceappium.utils.TestUtilities;
@@ -8,9 +7,7 @@ import io.appium.java_client.android.AndroidStartScreenRecordingOptions;
 import io.appium.java_client.ios.IOSStartScreenRecordingOptions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.time.Duration;
-import java.util.Properties;
 
 import static com.appium.sauceappium.utils.GlobalConfig.PLATFORM_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * Hooks run before and after every Cucumber scenario
  * */
-public class screenRecordDef extends BaseDriver {
+public class ScreenRecordTest extends BaseDriver {
     TestUtilities testUtilities = new TestUtilities();
 
     /**

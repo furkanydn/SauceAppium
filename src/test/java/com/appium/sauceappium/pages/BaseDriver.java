@@ -30,6 +30,7 @@ public class BaseDriver implements Config {
         utilities.logger().info(Constant.INITIALIZING_APPIUM_DRIVER);
         switch (GlobalConfig.PLATFORM_NAME) {
             case Constant.IOS -> {
+                utilities.logger().info(Constant.IOS + "Platform selected.");
                 service = new AppiumServiceBuilder()
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)

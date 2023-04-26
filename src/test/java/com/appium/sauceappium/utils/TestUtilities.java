@@ -7,21 +7,12 @@ import org.apache.logging.log4j.Logger;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 public class TestUtilities {
 
     public Logger logger(){
         return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
-    }
-
-    public String dateTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 
     public static Path resourcePathToLocalPath(String rPath){
