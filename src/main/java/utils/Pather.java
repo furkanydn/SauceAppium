@@ -1,23 +1,14 @@
-package com.appium.sauceappium.utils;
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+package utils;
 
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-public class TestUtilities {
-
-    public Logger logger(){
-        return LogManager.getLogger(Thread.currentThread().getStackTrace()[2].getClassName());
-    }
-
-    public static Path resourcePathToLocalPath(String rPath){
-        URL url = ClassLoader.getSystemResource(rPath);
-        Objects.requireNonNull(url, String.format("Cannot find the '%s' resource", rPath));
+public class Pather {
+    public static Path resourcePathToLocalPath(String s){
+        URL url = ClassLoader.getSystemResource(s);
+        Objects.requireNonNull(url, String.format("Cannot find the '%s' resource", s));
         return Paths.get(url.getPath());
     }
 
