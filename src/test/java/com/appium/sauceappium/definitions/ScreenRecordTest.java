@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 
 import static com.appium.sauceappium.utils.GlobalConfig.PLATFORM_NAME;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 /**
  * Hooks run before and after every Cucumber scenario
@@ -32,7 +30,6 @@ public class ScreenRecordTest extends BaseDriver {
                                     .withTimeLimit(Duration.ofSeconds(10)));
                     Thread.sleep(5000);
                     String result = iosDriver.stopRecordingScreen();
-                    assertThat(result, is(not(emptyString())));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

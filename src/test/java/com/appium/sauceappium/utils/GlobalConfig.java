@@ -9,5 +9,5 @@ public interface GlobalConfig {
     /**
      * The name of the platform to automate
      */
-    String PLATFORM_NAME = "iOS";
+    String PLATFORM_NAME = "Android";
 }
