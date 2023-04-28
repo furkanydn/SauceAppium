@@ -3,12 +3,20 @@ package utils;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
 public class Pather {
-    public static Path resourcePathToLocalPath(String s){
-        URL url = ClassLoader.getSystemResource(s);
-        Objects.requireNonNull(url, String.format("Cannot find the '%s' resource", s));
+    /**
+     * Converts the specified resource path to a local file system path.
+     *
+     * @param resourcePath the path of the resource
+     * @return a Path object representing the local file system path of the resource
+     * @throws IllegalArgumentException if the specified resource path cannot be found
+     */
+    public static Path resourcePathToLocalPath(String resourcePath) {
+        URL url = ClassLoader.getSystemResource(resourcePath);
+        if (url == null) {
+            throw new IllegalArgumentException(String.format("Cannot find the '%s' resource", resourcePath));
+        }
         return Paths.get(url.getPath());
     }
 
@@ -20,7 +28,7 @@ public class Pather {
         return resourcePathToLocalPath("app/MyRNDemoApp.app");
     }
 
-    public static Path nodePath(){
-        return resourcePathToLocalPath("/Users/furkanaydin/.nvm/versions/node/v19.8.1/bin/node");
+    public static String nodePath(){
+        return "/Users/furkanaydin/.nvm/versions/node/v19.8.1/bin/node";
     }
 }

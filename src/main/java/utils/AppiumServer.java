@@ -5,6 +5,7 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
+import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,10 +22,17 @@ public class AppiumServer {
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     private static final Logger LOGGER = LogManager.getLogger();
+
+    /**
+     * Starts the defined appium server and Creates a new instance based on Appium server URL and {@code capabilities}.
+     *
+     * @throws AppiumServerHasNotBeenStartedLocallyException If an error occurs while spawning the child process.
+     * @see #stop()
+     */
     public static void start() {
         Properties props = new Properties();
         try {
-            FileInputStream input = new FileInputStream("config.properties");
+            FileInputStream input = new FileInputStream("src/main/resources/config.properties");
             LOGGER.info("config.properties read completed.");
             props.load(input);
         } catch (IOException exception){
@@ -64,7 +72,7 @@ public class AppiumServer {
                 service = new AppiumServiceBuilder()
                         .withIPAddress(props.getProperty("appium.server.ip"))
                         .usingPort(Integer.parseInt(props.getProperty("appium.server.port")))
-                        .usingDriverExecutable(new File(Pather.nodePath().toAbsolutePath().toString()))
+                        .usingDriverExecutable(new File(Pather.nodePath()))
                         .build();
                 service.start();
 
@@ -80,6 +88,12 @@ public class AppiumServer {
         }
     }
 
+    /**
+     * Stops this service is it is currently running. This method will attempt to block until the
+     * server has been fully shutdown.
+     *
+     * @see #start()
+     */
     public static void stop() {
         if (iosDriver != null && androidDriver != null) {
             iosDriver.quit();
