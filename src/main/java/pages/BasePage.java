@@ -13,16 +13,13 @@ import java.util.Objects;
 import java.util.Properties;
 
 public abstract class BasePage extends AppiumServer {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * Returns the value of the specified property key from the configuration file.
-     * If the key is not found, returns null.
-     *
-     * @param key the key of the property
-     * @return the value of the property, or null if the key is not found
+     Returns the value of the specified property key from the configuration file.
+     If the key is not found, returns null.
+     @return the value of the property, or null if the key is not found
      */
-    protected String getProp(String key) throws IOException {
+    protected String getProp() throws IOException {
         Properties props = new Properties();
         InputStream inputStream = null;
         try {
@@ -34,36 +31,42 @@ public abstract class BasePage extends AppiumServer {
                 throw new RuntimeException("Property file '" + fileName + "' not found in the classpath");
         } finally {
             try {
+                assert inputStream != null;
                 inputStream.close();
             } catch (IOException exception){
                 exception.printStackTrace();
             }
         }
-        return props.getProperty(key);
+        return props.getProperty("appium.remote.platform.name");
     }
 
 
     /**
-     * About Android accessibility
-     * <a href="https://developer.android.com/intl/ru/training/accessibility/accessible-app.html">Accessibility</a>
-     * About iOS accessibility
-     * <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAccessibilityIdentification_Protocol/index.html">UIAccessibilityIdentification</a>
-     * @param accessibilityId id is a convenient UI automation accessibility id.
-     * @return an instance of {@link AppiumBy.ByAndroidUIAutomator}
+     About Android accessibility
+     <a href="https://developer.android.com/intl/ru/training/accessibility/accessible-app.html">Accessibility</a>
+     About iOS accessibility
+     <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAccessibilityIdentification_Protocol/index.html">UIAccessibilityIdentification</a>
+     @param accessibilityId id is a convenient UI automation accessibility id.
+     @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
+     @throws IOException if there is an I/O exception during the operation.
      */
     public WebElement findElement(String accessibilityId) throws IOException {
-        LOGGER.info(accessibilityId +" clicked.");
         return
-                (Objects.equals(getProp("appium.remote.platform.name"), "Android"))
+                (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(AppiumBy.accessibilityId(accessibilityId))
                         : iosDriver.findElement(AppiumBy.accessibilityId(accessibilityId));
     }
 
 
-    // Add description
+    /**
+     Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
+     @param xPath the XPath locator of the web element
+     @return the web element found using the given XPath locator
+     @throws IOException if an I/O exception occurs while reading the config file
+     */
     public WebElement findElementX(String xPath) throws IOException {
         return
-                (Objects.equals(getProp("appium.remote.platform.name"), "Android"))
+                (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(By.xpath(xPath))
                         : iosDriver.findElement(By.xpath(xPath));
     }

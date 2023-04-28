@@ -9,6 +9,7 @@ public class App {
 
         MenuItem menuItem = new MenuItem();
         menuItem.Catalog();
+
         AppiumServer.stop();
     }
 }

@@ -5,7 +5,6 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServerHasNotBeenStartedLocallyException;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,9 +23,14 @@ public class AppiumServer {
     private static final Logger LOGGER = LogManager.getLogger();
 
     /**
-     * Starts the defined appium server and Creates a new instance based on Appium server URL and {@code capabilities}.
      *
-     * @throws AppiumServerHasNotBeenStartedLocallyException If an error occurs while spawning the child process.
+     * Starts the Appium server and initializes the Appium drivers based on the properties specified in the
+     * "config.properties" file. The method reads the desired capabilities for iOS and Android platforms from the
+     * configuration file and starts the Appium service accordingly. Once the service is up and running, the method
+     * initializes the iOS and Android drivers and assigns them to the appropriate driver variables.
+     * @throws SessionNotCreatedException if the session creation fails during the initialization of the iOS driver
+     * @throws IllegalArgumentException if the "config.properties" file is not found or cannot be read
+     *
      * @see #stop()
      */
     public static void start() {
