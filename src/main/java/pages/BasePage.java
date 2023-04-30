@@ -1,8 +1,6 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import utils.AppiumServer;
@@ -19,14 +17,18 @@ public abstract class BasePage extends AppiumServer {
      If the key is not found, returns null.
      @return the value of the property, or null if the key is not found
      */
-    protected String getProp() throws IOException {
+    protected String getProp(){
         Properties props = new Properties();
         InputStream inputStream = null;
         try {
             String fileName = "config.properties";
             inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
             if (inputStream!=null) {
-                props.load(inputStream);
+                try {
+                    props.load(inputStream);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             } else
                 throw new RuntimeException("Property file '" + fileName + "' not found in the classpath");
         } finally {
@@ -50,7 +52,7 @@ public abstract class BasePage extends AppiumServer {
      @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
      @throws IOException if there is an I/O exception during the operation.
      */
-    public WebElement findElement(String accessibilityId) throws IOException {
+    public WebElement findElement(String accessibilityId){
         return
                 (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(AppiumBy.accessibilityId(accessibilityId))
