@@ -11,7 +11,8 @@ public class App {
         AppiumServer.start();
 
         var appBar = new AppBar();
-        appBar.horizontalScroll();
+        appBar.openMenu();
+        appBar.closeAndroidMenu();
 
         AppiumServer.stop();
     }

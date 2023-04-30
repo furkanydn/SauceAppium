@@ -1,13 +1,10 @@
 package components;
 
-import io.appium.java_client.AppiumBy;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import pages.BasePage;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,9 +16,12 @@ public class AppBar extends BasePage {
         findElement("open menu").click();
     }
 
+    public void closeAndroidMenu(){
+        horizontalScroll("android:id/content");
+    }
+
     public void sortButton(SortComp sortComp){
         findElement("sort button").click();
-        horizontalScroll();
         //findElement(getSortingName(sortComp)).click();
     }
 
@@ -51,11 +51,10 @@ public class AppBar extends BasePage {
         }
     }
 
-    public void horizontalScroll(){
-        WebElement tempElement = findElementId("android:id/content");
-        int centerY = tempElement.getRect().y + (tempElement.getSize().height/2);
-        double startX = tempElement.getRect().x + (tempElement.getSize().width * 0.8);
-        double endX = tempElement.getRect().x + (tempElement.getSize().width * 0.2);
+    public void horizontalScroll(String contentId){
+        int centerY = findElementId(contentId).getRect().y + (findElementId(contentId).getSize().height/2);
+        double startX = findElementId(contentId).getRect().x + (findElementId(contentId).getSize().width * 0.8);
+        double endX = findElementId(contentId).getRect().x + (findElementId(contentId).getSize().width * 0.2);
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
         Sequence swipe = new Sequence(finger,1);
