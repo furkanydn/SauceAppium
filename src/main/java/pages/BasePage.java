@@ -50,7 +50,6 @@ public abstract class BasePage extends AppiumServer {
      <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAccessibilityIdentification_Protocol/index.html">UIAccessibilityIdentification</a>
      @param accessibilityId id is a convenient UI automation accessibility id.
      @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
-     @throws IOException if there is an I/O exception during the operation.
      */
     public WebElement findElement(String accessibilityId){
         return
@@ -64,12 +63,18 @@ public abstract class BasePage extends AppiumServer {
      Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
      @param xPath the XPath locator of the web element
      @return the web element found using the given XPath locator
-     @throws IOException if an I/O exception occurs while reading the config file
      */
-    public WebElement findElementX(String xPath) throws IOException {
+    public WebElement findElementX(String xPath){
         return
                 (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(By.xpath(xPath))
                         : iosDriver.findElement(By.xpath(xPath));
+    }
+
+    public WebElement findElementId(String id){
+        return
+                (Objects.equals(getProp(), "Android"))
+                        ? androidDriver.findElement(AppiumBy.id(id))
+                        : iosDriver.findElement(AppiumBy.id(id));
     }
 }

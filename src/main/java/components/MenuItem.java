@@ -2,20 +2,19 @@ package components;
 
 import pages.BasePage;
 
+/**
+ * This class represents a menu item in the application.
+ * It provides methods for clicking on various menu items after checking if the menu is open.
+ */
 public class MenuItem extends BasePage {
-    /**
-     * Clicks on the "Open Menu" button to reveal the menu options.
-     */
-    public void OpenMenu() {
-        findElement("open menu").click();
-    }
+    AppBar appBar = new AppBar();
     /**
      * Clicks on the specified menu item after first checking if the menu is open.
      *
      * @param menuItem the name of the menu item to click (e.g. "catalog")
      */
     public void clickMenuItem(String menuItem) {
-        if (findElement("open menu").isDisplayed()) OpenMenu();
+        if (findElement("open menu").isDisplayed()) appBar.openMenu();
         findElement("menu item " + menuItem.toLowerCase()).click();
     }
     /**
@@ -89,5 +88,17 @@ public class MenuItem extends BasePage {
      */
     public void SauceBot(){
         clickMenuItem("sauce bot video");
+    }
+    /**
+     * Clicks on the "Report a Bug" menu item.
+     */
+    public void ReportABug(){
+        clickMenuItem("report a bug");
+    }
+    /**
+     * Clicks on the "Close Menu" menu item.
+     */
+    public void CloseMenu(){
+        findElement("close menu").click();
     }
 }
