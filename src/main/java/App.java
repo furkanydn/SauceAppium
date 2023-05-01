@@ -11,8 +11,6 @@ public class App {
         AppiumServer.start();
 
         var appBar = new AppBar();
-        appBar.openMenu();
-        appBar.closeAndroidMenu();
 
         AppiumServer.stop();
     }
