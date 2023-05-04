@@ -25,8 +25,6 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 ## Tools
 - [Java](https://www.java.com) Programming Language
 - [Appium](https://appium.io/) Test Automation Framework
-- [Cucumber](https://cucumber.io/) BDD Framework and Reporting
-- [Gherkin Syntax](https://cucumber.io/docs/gherkin/) Easy-To-Read Language
 - [IntelliJ](https://www.jetbrains.com/help/idea/work-with-gradle-projects.html#delegate_build_gradle) Build and Dependency Management
 - [Log4J2](https://logging.apache.org/log4j/2.x/) Logging Framework
 - [JUnit 5](https://junit.org/junit5/) Testing Framework
@@ -36,8 +34,6 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 - Designed with POM(Page Object Model)
 - Support parallel exec using JUnit 5
 - Support logging using Log4J2
-- Support plugin(Cucumber HTML Reporter) for detailed report
-
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

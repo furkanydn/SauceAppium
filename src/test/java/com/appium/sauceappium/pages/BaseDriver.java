@@ -11,6 +11,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -34,6 +35,8 @@ public class BaseDriver implements Config {
                 service = new AppiumServiceBuilder()
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)
+                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                        .withArgument(GeneralServerFlag.LOG_LEVEL,"error")
                         // Mac M1 Issue https://github.com/nvm-sh/nvm/issues/2350
                         //.usingDriverExecutable(new File(capsManage.setDriverNode()))
                         .build();
@@ -64,6 +67,8 @@ public class BaseDriver implements Config {
                         .withIPAddress(GlobalConfig.APPIUM_IP_ADDRESS)
                         .usingPort(GlobalConfig.APPIUM_PORT)
                         .usingDriverExecutable(new File(capsManage.setDriverNode()))
+                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                        .withArgument(GeneralServerFlag.LOG_LEVEL,"error")
                         .build();
                 service.start();
 

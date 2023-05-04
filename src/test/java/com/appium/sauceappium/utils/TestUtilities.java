@@ -19,7 +19,6 @@ public class TestUtilities {
         URL url = ClassLoader.getSystemResource(rPath);
         Objects.requireNonNull(url, String.format("Cannot find the '%s' resource", rPath));
         return Paths.get(url.getPath());
-
     }
 
     public static Path androidApk(){
