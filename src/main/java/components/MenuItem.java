@@ -3,15 +3,14 @@ package components;
 import pages.BasePage;
 
 /**
- * This class represents a menu item in the application.
- * It provides methods for clicking on various menu items after checking if the menu is open.
+ This class represents a menu item in the application.
+ It provides methods for clicking on various menu items after checking if the menu is open.
  */
 public class MenuItem extends BasePage {
     AppBar appBar = new AppBar();
     /**
-     * Clicks on the specified menu item after first checking if the menu is open.
-     *
-     * @param menuItem the name of the menu item to click (e.g. "catalog")
+     Clicks on the specified menu item after first checking if the menu is open.
+     @param menuItem the name of the menu item to click (e.g. "catalog")
      */
     public void clickMenuItem(String menuItem) {
         if (findElement("open menu").isDisplayed()) appBar.openMenu();
