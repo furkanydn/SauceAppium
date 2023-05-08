@@ -70,7 +70,13 @@ public abstract class BasePage extends AppiumServer {
                         ? androidDriver.findElement(By.xpath(xPath))
                         : iosDriver.findElement(By.xpath(xPath));
     }
-
+    /**
+     Finds a web element with the specified ID.
+     If the current platform is Android, the method searches for the element using the AppiumBy.id() method with the given ID.
+     If the current platform is iOS, the method searches for the element using the AppiumBy.id() method with the given ID.
+     @param id the ID of the web element to be found.
+     @return the web element with the specified ID.
+     */
     public WebElement findElementId(String id){
         return
                 (Objects.equals(getProp(), "Android"))

@@ -17,7 +17,7 @@ import java.time.Duration;
 import java.util.Properties;
 
 public class AppiumServer {
-    private static AppiumDriverLocalService service;
+    public static AppiumDriverLocalService service;
     protected static AndroidDriver androidDriver;
     protected static IOSDriver iosDriver;
     private static final Logger LOGGER = LogManager.getLogger();
