@@ -83,10 +83,6 @@
                 </exclusion>
                 <exclusion>
                     <groupId>io.netty</groupId>
-                    <artifactId>netty-codec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.netty</groupId>
                     <artifactId>netty5-codec</artifactId>
                 </exclusion>
             </exclusions>
