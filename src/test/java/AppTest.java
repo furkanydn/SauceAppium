@@ -1,5 +1,6 @@
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
+import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
@@ -9,9 +10,12 @@ import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.Platform;
 import utils.AppiumServer;
+import utils.Config;
 import utils.Pather;
 
 import java.net.DatagramSocket;
@@ -28,7 +32,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AppTest {
-
     private AppiumDriverLocalService service;
 
     @AfterEach
@@ -42,12 +45,13 @@ public class AppTest {
         AppiumServer.stop();
     }
 
-    // This test is Service
+    /**Appium Server Builder Tests*/
     @Test
     void checkAbilityToStartDefaultService() {
         service = AppiumDriverLocalService.buildDefaultService();
         service.start();
         assertTrue(service.isRunning());
+        service.stop();
     }
 
     @Test
@@ -55,6 +59,7 @@ public class AppTest {
         service = new AppiumServiceBuilder().usingAnyFreePort().build();
         service.start();
         assertTrue(service.isRunning());
+
     }
 
     @Test
@@ -87,10 +92,10 @@ public class AppTest {
         UiAutomator2Options options = new UiAutomator2Options()
                 .fullReset()
                 .setNewCommandTimeout(Duration.ofSeconds(60))
-                .setPlatformName("Android")
-                .setPlatformVersion("13")
-                .setAppPackage("com.saucelabs.mydemoapp.rn")
-                .setAppActivity(".MainActivity")
+                .setPlatformName(Config.getProperties("android.platform.name"))
+                .setPlatformVersion(Config.getProperties("android.platform.version"))
+                .setAppPackage(Config.getProperties("android.app.package"))
+                .setAppActivity(".%s".formatted(Config.getProperties("android.app.activity")))
                 .setApp(Pather.androidApk().toAbsolutePath().toString());
 
         service = new AppiumServiceBuilder().withCapabilities(options).build();
@@ -103,8 +108,8 @@ public class AppTest {
         XCUITestOptions options = new XCUITestOptions()
                 .fullReset()
                 .setNewCommandTimeout(Duration.ofSeconds(60))
-                .setPlatformName("iOS")
-                .setPlatformVersion("15.6")
+                .setPlatformName(Config.getProperties("ios.platform.name"))
+                .setPlatformVersion(Config.getProperties("ios.platform.version"))
                 .setApp(Pather.iosApp().toAbsolutePath().toString());
 
         service = new AppiumServiceBuilder().withCapabilities(options).build();
@@ -139,7 +144,10 @@ public class AppTest {
 
     @Test
     void checkAbilityToStartServiceWithPortUsingFlag() {
-        String port = "10001";
+        String port =
+                Config.getProperties("appium.server.port") != null
+                ? Config.getProperties("appium.server.port")
+                : "10001";
         String expectedUrl = String.format("http://0.0.0.0:%s/", port);
 
         service = new AppiumServiceBuilder()
@@ -152,7 +160,10 @@ public class AppTest {
 
     @Test
     void checkAbilityToStartServiceWithIpUsingFlag() {
-        String testIP = "127.0.0.1";
+        String testIP =
+                Config.getProperties("appium.server.ip") != null
+                        ? Config.getProperties("appium.server.ip")
+                        : "127.0.0.1";
         String expectedUrl = String.format("http://%s:4723/", testIP);
 
         service = new AppiumServiceBuilder()
@@ -173,10 +184,11 @@ public class AppTest {
         assertThrows(NullPointerException.class, () -> new AppiumServiceBuilder().withArgument(BASEPATH, null));
     }
 
-    @Test
+    /**Android Local Tests*/
+    @Test @Order(2)
     void startingAndroidAppWithCapabilities() {
         AndroidDriver driver = new AndroidDriver(new UiAutomator2Options()
-                .setDeviceName("Android Emulator")
+                .setDeviceName(Config.getProperties("android.device.name"))
                 .autoGrantPermissions()
                 .setApp(Pather.androidApk().toAbsolutePath().toString()));
         try {
@@ -199,7 +211,7 @@ public class AppTest {
                 .withArgument(GeneralServerFlag.STRICT_CAPS);
 
         AndroidDriver driver = new AndroidDriver(builder, new UiAutomator2Options()
-                .setDeviceName("Android Emulator")
+                .setDeviceName(Config.getProperties("android.device.name"))
                 .autoGrantPermissions()
                 .setApp(Pather.androidApk().toAbsolutePath().toString()));
         try {
@@ -216,7 +228,7 @@ public class AppTest {
     @Test
     void startingAndroidAppWithCapabilitiesAndFlagsOnServerSideTest() {
         UiAutomator2Options serverOptions = new UiAutomator2Options()
-                .setDeviceName("Android Emulator")
+                .setDeviceName(Config.getProperties("android.device.name"))
                 .fullReset()
                 .autoGrantPermissions()
                 .setNewCommandTimeout(Duration.ofSeconds(60))
@@ -225,11 +237,12 @@ public class AppTest {
         AppiumServiceBuilder builder = new AppiumServiceBuilder()
                 .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                 .withArgument(GeneralServerFlag.STRICT_CAPS)
+                .withIPAddress("127.0.0.1")
                 .withCapabilities(serverOptions);
 
         UiAutomator2Options clientOptions = new UiAutomator2Options()
-                .setAppPackage("com.saucelabs.mydemoapp.rn")
-                .setAppActivity(".MainActivity");
+                .setAppPackage(Config.getProperties("android.app.package"))
+                .setAppActivity(".%s".formatted(Config.getProperties("android.app.activity")));
 
         AndroidDriver driver = new AndroidDriver(builder, clientOptions);
         try {
@@ -238,6 +251,75 @@ public class AppTest {
                     String.valueOf(caps.getCapability(MobileCapabilityType.PLATFORM_NAME)))
             );
             assertNotNull(caps.getCapability(MobileCapabilityType.DEVICE_NAME));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    /**iOS Local Tests*/
+    @Test
+    void startingIOSAppWithCapabilitiesOnlyTest() {
+        XCUITestOptions options = new XCUITestOptions()
+                .setPlatformVersion(Config.getProperties("ios.platform.version"))
+                .setDeviceName(Config.getProperties("ios.device.name"))
+                .setApp(Pather.iosApp().toAbsolutePath().toString())
+                .setWdaLaunchTimeout(Duration.ofSeconds(5));
+        IOSDriver driver = new IOSDriver(options);
+        try {XCUITestOptions caps = new XCUITestOptions(driver.getCapabilities());
+
+            assertEquals(AutomationName.IOS_XCUI_TEST, caps.getAutomationName().orElse(null));
+            assertEquals(Platform.IOS, caps.getPlatformName());
+            assertNotNull(caps.getDeviceName().orElse(null));
+            assertEquals(Config.getProperties("ios.platform.version"), caps.getPlatformVersion().orElse(null));
+            assertEquals(Pather.iosApp().toAbsolutePath().toString(), caps.getApp().orElse(null));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    void startingIOSAppWithCapabilitiesAndServiceTest() {
+        XCUITestOptions options = new XCUITestOptions()
+                .setPlatformVersion(Config.getProperties("ios.platform.version"))
+                .setDeviceName(Config.getProperties("ios.device.name"))
+                .setApp(Pather.iosApp().toAbsolutePath().toString())
+                .setWdaLaunchTimeout(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.wda.launch.timeout"))));
+
+        AppiumServiceBuilder builder = new AppiumServiceBuilder()
+                .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                .withArgument(GeneralServerFlag.STRICT_CAPS);
+
+        IOSDriver driver = new IOSDriver(builder, options);
+        try {
+            Capabilities caps = driver.getCapabilities();
+            assertTrue(caps.getCapability(MobileCapabilityType.PLATFORM_NAME)
+                    .toString().equalsIgnoreCase(MobilePlatform.IOS));
+            assertNotNull(caps.getCapability(MobileCapabilityType.DEVICE_NAME));
+        } finally {
+            driver.quit();
+        }
+    }
+
+    @Test
+    void startingIOSAppWithCapabilitiesAndFlagsOnServerSideTest() {
+        XCUITestOptions serverOptions = new XCUITestOptions()
+                .setPlatformVersion(Config.getProperties("ios.platform.version"))
+                .setWdaLaunchTimeout(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.wda.launch.timeout"))));
+
+        XCUITestOptions clientOptions = new XCUITestOptions()
+                .setDeviceName(Config.getProperties("ios.device.name"))
+                .setApp(Pather.iosApp().toAbsolutePath().toString());
+
+        AppiumServiceBuilder builder = new AppiumServiceBuilder()
+                .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
+                .withCapabilities(serverOptions);
+
+        IOSDriver driver = new IOSDriver(builder, clientOptions);
+        try {
+            XCUITestOptions caps = new XCUITestOptions(driver.getCapabilities());
+            assertEquals(Platform.IOS, caps.getPlatformName());
+            assertNotNull(caps.getDeviceName().orElse(null));
+            assertFalse(driver.isBrowser());
         } finally {
             driver.quit();
         }
