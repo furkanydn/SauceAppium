@@ -2,7 +2,6 @@ package utils;
 
 import java.util.Objects;
 
-
 public class Linker extends AppiumServer {
     public enum Links {
         Products,
