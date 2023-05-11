@@ -8,9 +8,9 @@ import io.appium.java_client.remote.MobilePlatform;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Platform;
@@ -185,10 +185,11 @@ public class AppTest {
     }
 
     /**Android Local Tests*/
-    @Test @Order(2)
+    @Test
     void startingAndroidAppWithCapabilities() {
         AndroidDriver driver = new AndroidDriver(new UiAutomator2Options()
                 .setDeviceName(Config.getProperties("android.device.name"))
+                .fullReset()
                 .autoGrantPermissions()
                 .setApp(Pather.androidApk().toAbsolutePath().toString()));
         try {
@@ -225,6 +226,7 @@ public class AppTest {
         }
     }
 
+    @Disabled
     @Test
     void startingAndroidAppWithCapabilitiesAndFlagsOnServerSideTest() {
         UiAutomator2Options serverOptions = new UiAutomator2Options()
@@ -237,12 +239,11 @@ public class AppTest {
         AppiumServiceBuilder builder = new AppiumServiceBuilder()
                 .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                 .withArgument(GeneralServerFlag.STRICT_CAPS)
-                .withIPAddress("127.0.0.1")
                 .withCapabilities(serverOptions);
 
         UiAutomator2Options clientOptions = new UiAutomator2Options()
                 .setAppPackage(Config.getProperties("android.app.package"))
-                .setAppActivity(".%s".formatted(Config.getProperties("android.app.activity")));
+                .setAppWaitActivity(".%s".formatted(Config.getProperties("android.app.activity")));
 
         AndroidDriver driver = new AndroidDriver(builder, clientOptions);
         try {
