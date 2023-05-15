@@ -6,6 +6,7 @@ import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.options.XCUITestOptions;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
+import io.appium.java_client.service.local.flags.GeneralServerFlag;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -40,6 +41,7 @@ public class AppiumServer {
                         .usingPort(Integer.parseInt(Config.getProperties("appium.server.port")))
                         // Mac M1 Issue https://github.com/nvm-sh/nvm/issues/2350
                         //.usingDriverExecutable(new File(capsManage.setDriverNode()))
+                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                         .build();
                 service.start();
 
@@ -66,6 +68,7 @@ public class AppiumServer {
                         .withIPAddress(Config.getProperties("appium.server.ip"))
                         .usingPort(Integer.parseInt(Config.getProperties("appium.server.port")))
                         .usingDriverExecutable(new File(Pather.nodePath()))
+                        .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                         .build();
                 service.start();
 

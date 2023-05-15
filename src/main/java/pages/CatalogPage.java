@@ -10,4 +10,8 @@ public class CatalogPage extends BasePage {
     public void goDrawingPageWithDeepLink(){
         Linker.Go(Links.Drawing);
     }
+
+    public String getHeader(){
+        return findElement("container header").getAttribute("label");
+    }
 }
