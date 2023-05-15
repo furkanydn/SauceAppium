@@ -44,16 +44,27 @@ public class Linker extends AppiumServer {
         };
     }
     /**
-     * Navigates to the specified deep link in the app.
+     * Navigates to the specified page by deep linking with the page's URL.
+     * If the platform is Android, it opens the deep link with "mydemoapprn://" prefix.
+     * If the platform is iOS, it opens the deep link with "mydemoapprn://" prefix.
      *
-     * @param page the {@link Links} enum value representing the deep link to navigate to
+     * @param page The page to navigate to.
      */
     public static void Go(Links page){
-        String deepLink = "mydemoapprn://" + getDeepLink(page);
         if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android"))) {
-            androidDriver.get(deepLink);
-        } else {
-            iosDriver.get(deepLink);
-        }
+            androidDriver.get("mydemoapprn://" + getDeepLink(page));
+        } else iosDriver.get("mydemoapprn://" + getDeepLink(page));
+    }
+    /**
+     * Navigates to the specified URL by deep linking with the URL.
+     * If the platform is Android, it opens the deep link with "mydemoapprn://" prefix.
+     * If the platform is iOS, it opens the deep link with "mydemoapprn://" prefix.
+     *
+     * @param optional The URL to navigate to.
+     */
+    public static void Go(String optional){
+        if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android"))) {
+            androidDriver.get("mydemoapprn://" + optional);
+        } else iosDriver.get("mydemoapprn://" + optional);
     }
 }

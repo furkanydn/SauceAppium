@@ -5,7 +5,7 @@ Normally I was leaning towards using cucumber for @Tests, but then I gave up. Fr
 
 ## Test Scenarios
 
-#### addClothesAndShoesToCart
+#### addBackpackAndBikeLightToCartToCart
 
     Feature Add products to cart
         As a user, I should be able to add products to the cart 

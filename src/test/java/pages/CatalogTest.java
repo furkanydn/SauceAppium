@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import utils.AppiumServer;
 
 public class CatalogTest {
-    CatalogPage page = new CatalogPage();
+    CatalogPage Page = new CatalogPage();
     @BeforeAll
     public static void beforeAll(){
         AppiumServer.start();
@@ -17,8 +17,8 @@ public class CatalogTest {
     @Disabled
     @Test
     public void GoDrawingPage(){
-        page.goDrawingPageWithDeepLink();
-        Assertions.assertEquals("Drawing",page.getHeader());
+        Page.goDrawingPageWithDeepLink();
+        Assertions.assertEquals("Drawing", Page.getHeader());
     }
     /**
      * Here, the scenario starts with the assumption that the user is logged in to the app
@@ -29,7 +29,13 @@ public class CatalogTest {
      * and the scenario ends successfully.
      */
     @Test
-    public void addClothesAndShoesToCart(){
+    public void addBackpackAndBikeLightToCart(){
+        Assertions.assertEquals("Products", Page.getHeader());
+        Page.BackpackAndBikeLightToCart();
+    }
 
+    @Test
+    public void isBackpackAndBikeLightAddedToCart(){
+        Page.isBackpackAndBikeLightAddedToCart();
     }
 }

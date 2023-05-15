@@ -71,4 +71,12 @@ public class AppBar extends BasePage {
             default -> throw new IllegalArgumentException("Invalid sorting name " + sortComp);
         }
     }
+
+    public void navigationBack(){
+        findElement("navigation back button").click();
+    }
+
+    public void barOptionCart(){
+        findElement("tab bar option cart").click();
+    }
 }
