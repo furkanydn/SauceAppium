@@ -69,7 +69,7 @@ public abstract class BasePage extends AppiumServer {
     public WebElement findElementX(String value) {
         return
                 (Objects.equals(getProp(), "Android"))
-                        ? androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,"+value+")]"))
+                        ? androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(value)))
                         : iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(value)));
     }
 

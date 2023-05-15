@@ -37,5 +37,6 @@ public class CatalogTest {
     @Test
     public void isBackpackAndBikeLightAddedToCart(){
         Page.isBackpackAndBikeLightAddedToCart();
+        Assertions.assertEquals("My Cart", Page.getHeader());
     }
 }
