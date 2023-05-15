@@ -45,8 +45,8 @@ public class CatalogPage extends BasePage {
      */
     public boolean isBackpackAndBikeLightAddedToCart(){
         Linker.Go("cart/id=1&amount=1&color=black,id=2&amount=1&color=black");
-        boolean isBackpackInCart = findElementX("//*[contains(@text,\"Sauce Labs Backpack\")]").isDisplayed();
-        boolean isBikeLightInCart = findElement("Sauce Labs Bike Light").isDisplayed();
+        boolean isBackpackInCart = findElementX("Sauce Labs Backpack").isDisplayed();
+        boolean isBikeLightInCart = findElementX("Sauce Labs Bike Light").isDisplayed();
         return isBackpackInCart && isBikeLightInCart;
     }
 }
