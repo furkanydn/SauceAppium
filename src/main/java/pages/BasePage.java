@@ -61,14 +61,14 @@ public abstract class BasePage extends AppiumServer {
 
     /**
      Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
-     @param xPath the XPath locator of the web element
+     @param value the XPath locator of the web element
      @return the web element found using the given XPath locator
      */
-    public WebElement findElementX(String xPath){
+    public WebElement findElementX(String value){
         return
                 (Objects.equals(getProp(), "Android"))
-                        ? androidDriver.findElement(By.xpath(xPath))
-                        : iosDriver.findElement(By.xpath(xPath));
+                        ? androidDriver.findElement(AppiumBy.xpath(value))
+                        : iosDriver.findElement(AppiumBy.iOSNsPredicateString(value));
     }
     /**
      Finds a web element with the specified ID.
