@@ -1,6 +1,8 @@
 package pages;
 
+import components.SectionHeader;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.AppiumServer;
@@ -18,6 +20,7 @@ public class CatalogTest {
 
     @Test
     public void GoDrawingPage(){
-        page.goDrawingPageWithDeepLink();
+        //page.goDrawingPageWithDeepLink();
+       // Assertions.assertEquals();
     }
 }

@@ -266,7 +266,6 @@ public class AppTest {
                 .setWdaLaunchTimeout(Duration.ofSeconds(5));
         IOSDriver driver = new IOSDriver(options);
         try {XCUITestOptions caps = new XCUITestOptions(driver.getCapabilities());
-
             assertEquals(AutomationName.IOS_XCUI_TEST, caps.getAutomationName().orElse(null));
             assertEquals(Platform.IOS, caps.getPlatformName());
             assertNotNull(caps.getDeviceName().orElse(null));
