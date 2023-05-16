@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.Properties;
 
 public abstract class BasePage extends AppiumServer {
-    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * Returns the value of the specified property key from the configuration file.
      * If the key is not found, returns null.
@@ -93,7 +92,7 @@ public abstract class BasePage extends AppiumServer {
      * and if not found, then by XPath.
      *
      * @param locator the locator value of the element to be found
-     * @return the WebElement corresponding to the locator value
+     * @return WebElement corresponding to the locator value
      * @throws NoSuchElementException if the element cannot be found
      */
     public WebElement findElementOrX(String locator) throws NoSuchElementException {

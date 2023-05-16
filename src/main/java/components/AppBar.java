@@ -2,6 +2,7 @@ package components;
 
 import pages.BasePage;
 import touch.PointerScroll;
+import utils.Config;
 
 /**
  The AppBar class represents the navigation bar that is present in most mobile applications.
