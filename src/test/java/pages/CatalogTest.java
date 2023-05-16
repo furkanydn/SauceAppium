@@ -31,12 +31,12 @@ public class CatalogTest {
     @Test
     public void addBackpackAndBikeLightToCart(){
         Assertions.assertEquals("Products", Page.getHeader());
-        Page.BackpackAndBikeLightToCart();
+        Page.backpackAndBikeLightToCart();
     }
 
     @Test
     public void isBackpackAndBikeLightAddedToCart(){
-        Page.isBackpackAndBikeLightAddedToCart();
+        Assertions.assertTrue(Page.isBackpackAndBikeLightAddedToCart());
         Assertions.assertEquals("My Cart", Page.getHeader());
     }
 }

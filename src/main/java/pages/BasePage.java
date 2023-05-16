@@ -1,16 +1,19 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebElement;
 import utils.AppiumServer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Properties;
 
 public abstract class BasePage extends AppiumServer {
-
+    private static final Logger LOGGER = LogManager.getLogger();
     /**
      * Returns the value of the specified property key from the configuration file.
      * If the key is not found, returns null.
@@ -48,17 +51,15 @@ public abstract class BasePage extends AppiumServer {
      * <a href="https://developer.android.com/intl/ru/training/accessibility/accessible-app.html">Accessibility</a>
      * About iOS accessibility
      * <a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIAccessibilityIdentification_Protocol/index.html">UIAccessibilityIdentification</a>
-     *
+     * Finds and returns a WebElement using the provided accessibilityId.
      * @param accessibilityId id is a convenient UI automation accessibility id.
      * @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
      */
     public WebElement findElement(String accessibilityId) {
-        return
-                (Objects.equals(getProp(), "Android"))
-                        ? androidDriver.findElement(AppiumBy.accessibilityId(accessibilityId))
-                        : iosDriver.findElement(AppiumBy.accessibilityId(accessibilityId));
+        return (Objects.equals(getProp(), "Android"))
+                ? androidDriver.findElement(AppiumBy.accessibilityId(accessibilityId))
+                : iosDriver.findElement(AppiumBy.accessibilityId(accessibilityId));
     }
-
 
     /**
      * Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
@@ -86,5 +87,28 @@ public abstract class BasePage extends AppiumServer {
                 (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(AppiumBy.id(id))
                         : iosDriver.findElement(AppiumBy.id(id));
+    }
+    /**
+     * Finds and returns a WebElement using the provided locator value. The element is searched by ID first,
+     * and if not found, then by XPath.
+     *
+     * @param locator the locator value of the element to be found
+     * @return the WebElement corresponding to the locator value
+     * @throws NoSuchElementException if the element cannot be found
+     */
+    public WebElement findElementOrX(String locator) throws NoSuchElementException {
+        try {
+            if ((Objects.equals(getProp(), "Android"))) {
+                return androidDriver.findElement(AppiumBy.id(locator));
+            } else {
+                return iosDriver.findElement(AppiumBy.id(locator));
+            }
+        } catch (Exception e) {
+            if ((Objects.equals(getProp(), "Android"))) {
+                return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
+            } else {
+                return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(locator)));
+            }
+        }
     }
 }

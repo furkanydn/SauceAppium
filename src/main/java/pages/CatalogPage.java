@@ -1,10 +1,12 @@
 package pages;
 
 import components.AppBar;
+import utils.Config;
 import utils.Linker;
 import utils.Linker.Links;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class CatalogPage extends BasePage {
     AppBar Bar = new AppBar();
@@ -18,18 +20,23 @@ public class CatalogPage extends BasePage {
      Returns the header text of the current page.
      @return String the header text of the current page.
      */
-    public String getHeader(){
+    public String getHeader() {
         try {
             Thread.sleep(3000);
+            String headerText;
+            if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android")))
+                headerText = findElementX("Products").getText();
+            else
+                headerText = findElement("container header").getAttribute("label");
+            return headerText;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return findElement("container header").getAttribute("label");
     }
 
     /**
      Adds the "Backpack" and "Bike Light" products to the cart by clicking on their respective "Add To Cart" buttons on the "Products" page.*/
-    public void BackpackAndBikeLightToCart(){
+    public void backpackAndBikeLightToCart(){
         Linker.Go(Links.Products);
         for (String productName : Arrays.asList("Backpack", "Bike Light")) {
             findElement("Sauce Labs " + productName).click();
