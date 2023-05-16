@@ -1,5 +1,7 @@
 package components;
 
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import pages.BasePage;
 import touch.PointerScroll;
 import utils.Config;
@@ -74,10 +76,19 @@ public class AppBar extends BasePage {
     }
 
     public void navigationBack(){
-        findElement("navigation back button").click();
+        switch (Config.getProperties("appium.remote.platform.name")) {
+            case "iOS" -> findElement("navigation back button").click();
+            case "Android" -> androidDriver.pressKey(new KeyEvent(AndroidKey.BACK));
+            default -> throw new RuntimeException("Can We Please Go Back");
+        }
+
     }
 
     public void barOptionCart(){
-        findElement("tab bar option cart").click();
+        switch (Config.getProperties("appium.remote.platform.name")) {
+            case "iOS" -> findElement("tab bar option cart").click();
+            case "Android" -> cartBadge();
+            default -> throw new RuntimeException("Sorry, Cart cannot be accessed at the moment.");
+        }
     }
 }

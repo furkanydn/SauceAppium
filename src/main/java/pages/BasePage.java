@@ -1,13 +1,15 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.AppiumServer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Properties;
@@ -44,6 +46,24 @@ public abstract class BasePage extends AppiumServer {
         return props.getProperty("appium.remote.platform.name");
     }
 
+    /**
+     * Checks if the given WebElement is present by waiting for its invisibility based on the current platform.
+     *
+     * @throws NoSuchElementException if the platform condition is not available at the moment
+     */
+    private WebElement isElementPresent(By locator) {
+        switch (getProp()) {
+            case "iOS" -> {
+                WebDriverWait wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            }
+            case "Android" -> {
+                WebDriverWait wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+                return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+            }
+            default -> throw new IllegalArgumentException("Invalid platform: " + getProp());
+        }
+    }
 
     /**
      * About Android accessibility
@@ -53,11 +73,10 @@ public abstract class BasePage extends AppiumServer {
      * Finds and returns a WebElement using the provided accessibilityId.
      * @param accessibilityId id is a convenient UI automation accessibility id.
      * @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
+     * @throws IllegalStateException if the value returned by getProp() is unexpected
      */
     public WebElement findElement(String accessibilityId) {
-        return (Objects.equals(getProp(), "Android"))
-                ? androidDriver.findElement(AppiumBy.accessibilityId(accessibilityId))
-                : iosDriver.findElement(AppiumBy.accessibilityId(accessibilityId));
+        return isElementPresent(AppiumBy.accessibilityId(accessibilityId));
     }
 
     /**
