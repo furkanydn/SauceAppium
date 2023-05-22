@@ -6,6 +6,8 @@ import pages.BasePage;
 import touch.PointerScroll;
 import utils.Config;
 
+import java.util.NoSuchElementException;
+
 /**
  The AppBar class represents the navigation bar that is present in most mobile applications.
  It extends the BasePage class and inherits its methods.
@@ -59,10 +61,22 @@ public class AppBar extends BasePage {
         findElement("nameAsc").click();
     }
     public boolean isSortedByNameAscending() {
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                .getAttribute("label")
-                .matches(
+        String platformName = Config.getProperties("appium.remote.platform.name");
+        switch (platformName) {
+            case "iOS" -> {
+                return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                        .getAttribute("label")
+                        .matches(
+                                ".*" + "Sauce Labs Backpack" + ".*");
+            }
+            case "Android" -> {
+                return findElementOrX("store item text")
+                        .getText()
+                        .matches(
                         ".*" + "Sauce Labs Backpack" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
     }
 
     public void selectSortOptionByNameDescending(){
@@ -70,10 +84,22 @@ public class AppBar extends BasePage {
         findElement("nameDesc").click();
     }
     public boolean isSortedByNameDescending() {
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Test.allTheThings() T-Shirt $15.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                .getAttribute("label")
-                .matches(
-                        ".*" + "Test.allTheThings" + ".*");
+        String platformName = Config.getProperties("appium.remote.platform.name");
+        switch (platformName) {
+            case "iOS" -> {
+                return findElementOrX("**/XCUIElementTypeOther[`label == \"Test.allTheThings() T-Shirt $15.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                        .getAttribute("label")
+                        .matches(
+                                ".*" + "Test.allTheThings" + ".*");
+            }
+            case "Android" -> {
+                return findElementOrX("store item text")
+                        .getText()
+                        .matches(
+                                ".*" + "Test.allTheThings" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
     }
 
     public void selectSortOptionByPriceAscending(){

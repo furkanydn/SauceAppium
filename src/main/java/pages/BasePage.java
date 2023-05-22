@@ -102,15 +102,19 @@ public abstract class BasePage extends AppiumServer {
     public WebElement findElementOrX(String locator) throws NoSuchElementException {
         try {
             return findElementId(locator);
-        } catch (Exception e) {
+        } catch (Exception exception) {
             try {
                 if ((Objects.equals(getProp(), "Android"))) {
                     return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
                 } else {
-                    return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(locator)));
+                    return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == ".formatted(locator)));
                 }
-            } catch (Exception exception){
-                return iosDriver.findElement(AppiumBy.iOSClassChain(locator));
+            } catch (Exception exception1){
+                try {
+                    return iosDriver.findElement(AppiumBy.iOSClassChain(locator));
+                } catch (Exception exception2){
+                    return androidDriver.findElement(AppiumBy.xpath("(//*[@content-desc=\"%s\"])[1]".formatted(locator)));
+                }
             }
         }
     }
