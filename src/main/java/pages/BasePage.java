@@ -23,25 +23,12 @@ public abstract class BasePage extends AppiumServer {
      */
     protected String getProp() {
         Properties props = new Properties();
-        InputStream inputStream = null;
-        try {
-            String fileName = "config.properties";
-            inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
-            if (inputStream != null) {
-                try {
-                    props.load(inputStream);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } else
-                throw new RuntimeException("Property file '" + fileName + "' not found in the classpath");
-        } finally {
-            try {
-                assert inputStream != null;
-                inputStream.close();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
+        try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+            if (inputStream != null) props.load(inputStream);
+            else
+                throw new RuntimeException("Property file 'config.properties' not found in the classpath");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return props.getProperty("appium.remote.platform.name");
     }
@@ -52,13 +39,14 @@ public abstract class BasePage extends AppiumServer {
      * @throws NoSuchElementException if the platform condition is not available at the moment
      */
     private WebElement isElementPresent(By locator) {
+        WebDriverWait wait;
         switch (getProp()) {
             case "iOS" -> {
-                WebDriverWait wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+                wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
                 return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             }
             case "Android" -> {
-                WebDriverWait wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+                wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
                 return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
             }
             default -> throw new IllegalArgumentException("Invalid platform: " + getProp());
@@ -86,10 +74,13 @@ public abstract class BasePage extends AppiumServer {
      * @return the web element found using the given XPath locator
      */
     public WebElement findElementX(String value) {
-        return
-                (Objects.equals(getProp(), "Android"))
-                        ? androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(value)))
-                        : iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(value)));
+        String locator = (Objects.equals(getProp(), "Android"))
+                ? "//*[contains(@text,\"%s\")]".formatted(value)
+                : "label == \"%s\"".formatted(value);
+
+        return isElementPresent((Objects.equals(getProp(), "Android"))
+                ? AppiumBy.xpath(locator)
+                : AppiumBy.iOSNsPredicateString(locator));
     }
 
     /**
@@ -101,8 +92,7 @@ public abstract class BasePage extends AppiumServer {
      * @return the web element with the specified ID.
      */
     public WebElement findElementId(String id) {
-        return
-                (Objects.equals(getProp(), "Android"))
+        return (Objects.equals(getProp(), "Android"))
                         ? androidDriver.findElement(AppiumBy.id(id))
                         : iosDriver.findElement(AppiumBy.id(id));
     }
@@ -116,17 +106,9 @@ public abstract class BasePage extends AppiumServer {
      */
     public WebElement findElementOrX(String locator) throws NoSuchElementException {
         try {
-            if ((Objects.equals(getProp(), "Android"))) {
-                return androidDriver.findElement(AppiumBy.id(locator));
-            } else {
-                return iosDriver.findElement(AppiumBy.id(locator));
-            }
+            return findElementId(locator);
         } catch (Exception e) {
-            if ((Objects.equals(getProp(), "Android"))) {
-                return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
-            } else {
-                return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(locator)));
-            }
+            return findElementX(locator);
         }
     }
 }
