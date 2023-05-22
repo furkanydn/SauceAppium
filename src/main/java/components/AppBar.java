@@ -59,9 +59,10 @@ public class AppBar extends BasePage {
         findElement("nameAsc").click();
     }
     public boolean isSortedByNameAscending() {
-        String locator = "**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]";
-        String pattern = "Sauce Labs (Backpack|Bike Light)";
-        return findElementOrX(locator).getAttribute("label").matches(".*" + pattern + ".*");
+        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                .getAttribute("label")
+                .matches(
+                        ".*" + "Sauce Labs Backpack" + ".*");
     }
 
     public void selectSortOptionByNameDescending(){
@@ -69,25 +70,31 @@ public class AppBar extends BasePage {
         findElement("nameDesc").click();
     }
     public boolean isSortedByNameDescending() {
-        String pattern = "Test.allTheThings() T-Shirt";
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Test.allTheThings() T-Shirt $15.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]").getAttribute("label").matches(".*" + pattern + ".*");
+        return findElementOrX("**/XCUIElementTypeOther[`label == \"Test.allTheThings() T-Shirt $15.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                .getAttribute("label")
+                .matches(
+                        ".*" + "Test.allTheThings" + ".*");
     }
 
     public void selectSortOptionByPriceAscending(){
         sortOptionButton();
         findElement("priceAsc").click();
     }
-    private boolean isSortedByPriceAscending() {
-        String pattern = "Sauce Labs Onesie";
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]").getAttribute("label").matches(".*" + pattern + ".*");
+    public boolean isSortedByPriceAscending() {
+        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                .getAttribute("label")
+                .matches(
+                        ".*" + "Sauce Labs Onesie" + ".*");
     }
 
     public void selectSortOptionByPriceDescending(){
         sortOptionButton();
         findElement("priceDesc").click();
     }
-    private boolean isSortedByPriceDescending() {
-        String pattern = "Sauce Labs Fleece Jacket";
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Fleece Jacket $49.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]").getAttribute("label").matches(".*" + pattern + ".*");
+    public boolean isSortedByPriceDescending() {
+        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Fleece Jacket $49.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                .getAttribute("label")
+                .matches(
+                        ".*" + "Sauce Labs Fleece Jacket" + ".*");
     }
 }

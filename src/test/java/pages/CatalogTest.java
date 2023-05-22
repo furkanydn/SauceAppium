@@ -29,8 +29,13 @@ public class CatalogTest {
         Assertions.assertTrue(appBar.isSortedByNameAscending());
 
         appBar.selectSortOptionByNameDescending();
+        Assertions.assertTrue(appBar.isSortedByNameDescending());
+
         appBar.selectSortOptionByPriceAscending();
+        Assertions.assertTrue(appBar.isSortedByPriceAscending());
+
         appBar.selectSortOptionByPriceDescending();
+        Assertions.assertTrue(appBar.isSortedByPriceDescending());
     }
 
     /**
