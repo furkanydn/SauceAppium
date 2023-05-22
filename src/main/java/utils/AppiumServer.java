@@ -56,6 +56,7 @@ public class AppiumServer {
                         .setWdaStartupRetries(4)
                         .setWdaStartupRetryInterval(Duration.ofMinutes(3))
                         .setCommandTimeouts(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.command.timeout"))))
+                        .clearSystemFiles()
                         .eventTimings();
                 try {
                     iosDriver = new IOSDriver(service.getUrl(),options);
@@ -79,6 +80,7 @@ public class AppiumServer {
                         .setPlatformVersion(Config.getProperties("android.platform.version"))
                         .setDeviceName(Config.getProperties("android.device.name"))
                         .setApp(Pather.androidApk().toAbsolutePath().toString())
+                        .clearSystemFiles()
                         .eventTimings();
                 androidDriver = new AndroidDriver(service.getUrl(), options);
             }

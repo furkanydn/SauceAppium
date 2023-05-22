@@ -41,8 +41,8 @@ public abstract class BasePage extends AppiumServer {
     private WebElement isElementPresent(By locator) {
         WebDriverWait wait;
         switch (getProp()) {
-            case "iOS" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
-            case "Android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+            case "iOS" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
+            case "Android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
             default -> throw new IllegalArgumentException("Invalid platform: " + getProp());
         }
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -103,7 +103,15 @@ public abstract class BasePage extends AppiumServer {
         try {
             return findElementId(locator);
         } catch (Exception e) {
-            return findElementX(locator);
+            try {
+                if ((Objects.equals(getProp(), "Android"))) {
+                    return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
+                } else {
+                    return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(locator)));
+                }
+            } catch (Exception exception){
+                return iosDriver.findElement(AppiumBy.iOSClassChain(locator));
+            }
         }
     }
 }

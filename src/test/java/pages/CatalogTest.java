@@ -1,10 +1,12 @@
 package pages;
 
+import components.AppBar;
 import org.junit.jupiter.api.*;
 import utils.AppiumServer;
 
 public class CatalogTest {
-    CatalogPage Page = new CatalogPage();
+    CatalogPage catalogPage = new CatalogPage();
+    AppBar appBar = new AppBar();
     @BeforeAll
     public static void beforeAll(){
         AppiumServer.start();
@@ -17,9 +19,20 @@ public class CatalogTest {
     @Disabled
     @Test
     public void GoDrawingPage(){
-        Page.goDrawingPageWithDeepLink();
-        Assertions.assertEquals("Drawing", Page.getHeader());
+        catalogPage.goDrawingPageWithDeepLink();
+        Assertions.assertEquals("Drawing", catalogPage.getHeader());
     }
+
+    @Test
+    public void requiredOrderProductsSorted(){
+        appBar.selectSortOptionByNameAscending();
+        Assertions.assertTrue(appBar.isSortedByNameAscending());
+
+        appBar.selectSortOptionByNameDescending();
+        appBar.selectSortOptionByPriceAscending();
+        appBar.selectSortOptionByPriceDescending();
+    }
+
     /**
      * Here, the scenario starts with the assumption that the user is logged in to the app
      * and then the user needs to be on the catalog page. Then,
@@ -30,13 +43,13 @@ public class CatalogTest {
      */
     @Test
     public void addBackpackAndBikeLightToCart(){
-        Assertions.assertEquals("Products", Page.getHeader());
-        Page.backpackAndBikeLightToCart();
+        Assertions.assertEquals("Products", catalogPage.getHeader());
+        catalogPage.backpackAndBikeLightToCart();
     }
 
     @Test
     public void isBackpackAndBikeLightAddedToCart(){
-        Assertions.assertTrue(Page.isBackpackAndBikeLightAddedToCart());
-        Assertions.assertEquals("My Cart", Page.getHeader());
+        Assertions.assertTrue(catalogPage.isBackpackAndBikeLightAddedToCart());
+        Assertions.assertEquals("My Cart", catalogPage.getHeader());
     }
 }
