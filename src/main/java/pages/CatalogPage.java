@@ -21,17 +21,10 @@ public class CatalogPage extends BasePage {
      @return String the header text of the current page.
      */
     public String getHeader() {
-        try {
-            Thread.sleep(3000);
-            String headerText;
-            if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android")))
-                headerText = findElementX("Products").getText();
-            else
-                headerText = findElement("container header").getAttribute("label");
-            return headerText;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        return (Objects.equals(
+                Config.getProperties("appium.remote.platform.name"), "Android"))
+                ? findElementX("Products").getText()
+                : findElement("container header").getAttribute("label");
     }
 
     /**

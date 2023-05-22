@@ -41,16 +41,11 @@ public abstract class BasePage extends AppiumServer {
     private WebElement isElementPresent(By locator) {
         WebDriverWait wait;
         switch (getProp()) {
-            case "iOS" -> {
-                wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
-                return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-            }
-            case "Android" -> {
-                wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
-                return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-            }
+            case "iOS" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
+            case "Android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofSeconds(180));
             default -> throw new IllegalArgumentException("Invalid platform: " + getProp());
         }
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     /**
