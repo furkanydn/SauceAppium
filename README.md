@@ -25,6 +25,7 @@ For prettily-rendered docs [Appium Documentation](https://appium.io/docs/en/abou
 ## Tools
 - [Java](https://www.java.com) Programming Language
 - [Appium](https://appium.io/) Test Automation Framework
+- [Selenium](https://www.selenium.dev/) Test Automation Framework Helper
 - [IntelliJ](https://www.jetbrains.com/help/idea/work-with-gradle-projects.html#delegate_build_gradle) Build and Dependency Management
 - [Log4J2](https://logging.apache.org/log4j/2.x/) Logging Framework
 - [JUnit 5](https://junit.org/junit5/) Testing Framework
