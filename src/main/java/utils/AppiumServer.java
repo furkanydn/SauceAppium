@@ -39,8 +39,6 @@ public class AppiumServer {
                 service = new AppiumServiceBuilder()
                         .withIPAddress(Config.getProperties("appium.server.ip"))
                         .usingPort(Integer.parseInt(Config.getProperties("appium.server.port")))
-                        // Mac M1 Issue https://github.com/nvm-sh/nvm/issues/2350
-                        //.usingDriverExecutable(new File(capsManage.setDriverNode()))
                         .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                         .build();
                 service.start();
