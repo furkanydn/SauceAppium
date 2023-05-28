@@ -15,20 +15,21 @@ import java.util.Objects;
 import java.util.Properties;
 
 public abstract class BasePage extends AppiumServer {
+    private Properties props = null;
     /**
      * Returns the value of the specified property key from the configuration file.
      * If the key is not found, returns null.
-     *
-     * @return the value of the property, or null if the key is not found
      */
-    protected String getProp() {
-        Properties props = new Properties();
-        try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
-            if (inputStream != null) props.load(inputStream);
-            else
-                throw new RuntimeException("Property file 'config.properties' not found in the classpath");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    protected String getPlatform() {
+        if (props == null){
+            props = new Properties();
+            try(InputStream inputStream = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+                if (inputStream != null) props.load(inputStream);
+                else
+                    throw new RuntimeException("Property file 'config.properties' not found in the classpath");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return props.getProperty("appium.remote.platform.name");
     }
@@ -40,12 +41,20 @@ public abstract class BasePage extends AppiumServer {
      */
     private WebElement isElementPresent(By locator) {
         WebDriverWait wait;
-        switch (getProp()) {
-            case "iOS" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
-            case "Android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
-            default -> throw new IllegalArgumentException("Invalid platform: " + getProp());
+        switch (getPlatform().toLowerCase()) {
+            case "ios" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
+            case "android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
+            default -> throw new IllegalArgumentException("Invalid platform: " + getPlatform());
         }
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    private WebElement findElement(By locator){
+        try {
+            return isElementPresent(locator);
+        } catch (NoSuchElementException exception){
+            throw new NoSuchElementException("Element not found: " + locator);
+        }
     }
 
     /**
@@ -58,24 +67,8 @@ public abstract class BasePage extends AppiumServer {
      * @return the web element with the given accessibility ID, instance of {@link AppiumBy.ByAndroidUIAutomator}
      * @throws IllegalStateException if the value returned by getProp() is unexpected
      */
-    public WebElement findElement(String accessibilityId) {
-        return isElementPresent(AppiumBy.accessibilityId(accessibilityId));
-    }
-
-    /**
-     * Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
-     *
-     * @param value the XPath locator of the web element
-     * @return the web element found using the given XPath locator
-     */
-    public WebElement findElementX(String value) {
-        String locator = (Objects.equals(getProp(), "Android"))
-                ? "//*[contains(@text,\"%s\")]".formatted(value)
-                : "label == \"%s\"".formatted(value);
-
-        return isElementPresent((Objects.equals(getProp(), "Android"))
-                ? AppiumBy.xpath(locator)
-                : AppiumBy.iOSNsPredicateString(locator));
+    public WebElement findElementAccessibilityId(String accessibilityId) {
+        return findElement(AppiumBy.accessibilityId(accessibilityId));
     }
 
     /**
@@ -87,10 +80,20 @@ public abstract class BasePage extends AppiumServer {
      * @return the web element with the specified ID.
      */
     public WebElement findElementId(String id) {
-        return (Objects.equals(getProp(), "Android"))
-                        ? androidDriver.findElement(AppiumBy.id(id))
-                        : iosDriver.findElement(AppiumBy.id(id));
+        return findElement(AppiumBy.id(id));
     }
+    /**
+     * Finds the web element by its XPath locator, using the appropriate driver based on the platform property in the config file.
+     *
+     * @param text the XPath locator of the web element
+     * @return the web element found using the given XPath locator
+     */
+    public WebElement findElementByText(String text) {
+        return getPlatform().equals("Android")
+                ? findElementByCont("text",text,0)
+                : findElementByCont("label",text,0);
+    }
+
     /**
      * Finds and returns a WebElement using the provided locator value. The element is searched by ID first,
      * and if not found, then by XPath.
@@ -104,7 +107,7 @@ public abstract class BasePage extends AppiumServer {
             return findElementId(locator);
         } catch (Exception exception) {
             try {
-                if ((Objects.equals(getProp(), "Android"))) {
+                if ((Objects.equals(getPlatform(), "Android"))) {
                     return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
                 } else {
                     return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == ".formatted(locator)));
@@ -116,6 +119,34 @@ public abstract class BasePage extends AppiumServer {
                     return androidDriver.findElement(AppiumBy.xpath("(//*[@content-desc=\"%s\"])[1]".formatted(locator)));
                 }
             }
+        }
+    }
+
+    public WebElement findElementByCont(String type,String contentText,int arrayValue){
+        if (arrayValue >= 0 && arrayValue <= 10){
+            String expression;
+            switch (type){
+                case "content" -> {
+                    expression = "(//*[contains(@content-desc,'%s')])['%d']".formatted(contentText, arrayValue);
+                    return findElement(AppiumBy.xpath(expression));
+                }
+                case "text" -> {
+                    expression = "//*[contains(@text,'%s')]".formatted(contentText);
+                    return findElement(AppiumBy.xpath(expression));
+                }
+                case "label" -> {
+                    expression = "label == \"%s\"".formatted(contentText);
+                    return findElement(AppiumBy.iOSNsPredicateString(expression));
+                }
+                case "chain" -> {
+                    expression = contentText;
+                    return findElement(AppiumBy.iOSClassChain(expression));
+                }
+                default -> throw new IllegalArgumentException("Invalid parameter: type is not valid.");
+            }
+        }
+        else{
+            throw new IllegalArgumentException("Invalid parameters: text or value is not valid.");
         }
     }
 }

@@ -42,7 +42,7 @@ public class PointerScroll extends BasePage {
                         centerY));
         swipe.addAction(finger.createPointerUp(0));
 
-        if (Objects.equals(getProp(), "Android")) androidDriver.perform(List.of(swipe));
+        if (Objects.equals(getPlatform(), "Android")) androidDriver.perform(List.of(swipe));
         else iosDriver.perform(List.of(swipe));
     }
     /**
@@ -78,7 +78,7 @@ public class PointerScroll extends BasePage {
                         ,(int) endY));
         swipe.addAction(finger.createPointerUp(0));
 
-        if (Objects.equals(getProp(), "Android")) androidDriver.perform(List.of(swipe));
+        if (Objects.equals(getPlatform(), "Android")) androidDriver.perform(List.of(swipe));
         else iosDriver.perform(List.of(swipe));
     }
 }

@@ -13,8 +13,8 @@ public class MenuItem extends BasePage {
      @param menuItem the name of the menu item to click (e.g. "catalog")
      */
     public void clickMenuItem(String menuItem) {
-        if (findElement("open menu").isDisplayed()) appBar.openMenu();
-        findElement("menu item " + menuItem.toLowerCase()).click();
+        if (findElementAccessibilityId("open menu").isDisplayed()) appBar.openMenu();
+        findElementAccessibilityId("menu item " + menuItem.toLowerCase()).click();
     }
     /**
      * Clicks on the "Catalog" menu item.
@@ -98,6 +98,6 @@ public class MenuItem extends BasePage {
      * Clicks on the "Close Menu" menu item.
      */
     public void CloseMenu(){
-        findElement("close menu").click();
+        findElementAccessibilityId("close menu").click();
     }
 }

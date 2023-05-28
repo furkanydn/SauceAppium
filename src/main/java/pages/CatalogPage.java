@@ -23,8 +23,8 @@ public class CatalogPage extends BasePage {
     public String getHeader() {
         return (Objects.equals(
                 Config.getProperties("appium.remote.platform.name"), "Android"))
-                ? findElementX("Products").getText()
-                : findElement("container header").getAttribute("label");
+                ? findElementByCont("text","Products",0).getText()
+                : findElementAccessibilityId("container header").getAttribute("label");
     }
 
     /**
@@ -33,7 +33,7 @@ public class CatalogPage extends BasePage {
         Linker.Go(Links.Products);
         for (String productName : Arrays.asList("Backpack", "Bike Light")) {
             findElementOrX("Sauce Labs " + productName).click();
-            findElement("Add To Cart button").click();
+            findElementAccessibilityId("Add To Cart button").click();
             Bar.navigationBack();
         }
         Bar.barOptionCart();
@@ -45,8 +45,8 @@ public class CatalogPage extends BasePage {
      */
     public boolean isBackpackAndBikeLightAddedToCart(){
         Linker.Go("cart/id=1&amount=1&color=black,id=2&amount=1&color=black");
-        boolean isBackpackInCart = findElementX("Sauce Labs Backpack").isDisplayed();
-        boolean isBikeLightInCart = findElementX("Sauce Labs Bike Light").isDisplayed();
+        boolean isBackpackInCart = findElementByText("Sauce Labs Backpack").isDisplayed();
+        boolean isBikeLightInCart = findElementByText("Sauce Labs Bike Light").isDisplayed();
         return isBackpackInCart && isBikeLightInCart;
     }
 }

@@ -52,7 +52,7 @@ public class AppiumServer {
                         .setApp(Pather.iosApp().toAbsolutePath().toString())
                         .setWdaLaunchTimeout(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.wda.launch.timeout"))))
                         .setWdaStartupRetries(4)
-                        .setWdaStartupRetryInterval(Duration.ofMinutes(3))
+                        .setWdaStartupRetryInterval(Duration.ofMinutes(15))
                         .setCommandTimeouts(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.command.timeout"))))
                         .clearSystemFiles()
                         .eventTimings();

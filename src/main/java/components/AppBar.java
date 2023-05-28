@@ -17,7 +17,7 @@ public class AppBar extends BasePage {
      * Clicks on the "Open Menu" button to reveal the menu options.
      */
     public void openMenu() {
-        findElement("open menu").click();
+        findElementAccessibilityId("open menu").click();
     }
     /**
      Scrolls horizontally to hide the Android menu.
@@ -30,13 +30,13 @@ public class AppBar extends BasePage {
      Clicks on the "Sort" button
      */
     public void sortOptionButton(){
-        findElement("sort button").click();
+        findElementAccessibilityId("sort button").click();
     }
     /**
      Clicks on the cart badge icon.
      */
     public void cartBadge(){
-        findElement("cart badge").click();
+        findElementAccessibilityId("cart badge").click();
     }
     /**
      * Navigates back in the application.
@@ -47,7 +47,7 @@ public class AppBar extends BasePage {
     public void navigationBack(){
         String platformName = Config.getProperties("appium.remote.platform.name");
         switch (platformName) {
-            case "iOS" -> findElement("navigation back button").click();
+            case "iOS" -> findElementAccessibilityId("navigation back button").click();
             case "Android" -> androidDriver.pressKey(new KeyEvent(AndroidKey.BACK));
             default -> throw new RuntimeException("Can We Please Go Back");
         }
@@ -61,7 +61,7 @@ public class AppBar extends BasePage {
     public void barOptionCart(){
         String platformName = Config.getProperties("appium.remote.platform.name");
         switch (platformName) {
-            case "iOS" -> findElement("tab bar option cart").click();
+            case "iOS" -> findElementAccessibilityId("tab bar option cart").click();
             case "Android" -> cartBadge();
             default -> throw new RuntimeException("Sorry, Cart cannot be accessed at the moment.");
         }
@@ -73,7 +73,7 @@ public class AppBar extends BasePage {
      */
     public void selectSortOptionByNameAscending() {
         sortOptionButton();
-        findElement("nameAsc").click();
+        findElementAccessibilityId("nameAsc").click();
     }
     /**
      * Checks if the items are sorted by name in ascending order.
@@ -86,7 +86,7 @@ public class AppBar extends BasePage {
         String platformName = Config.getProperties("appium.remote.platform.name");
         switch (platformName) {
             case "iOS" -> {
-                return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                return findElementOrX("Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF")
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Backpack" + ".*");
             }
@@ -105,7 +105,7 @@ public class AppBar extends BasePage {
      */
     public void selectSortOptionByNameDescending(){
         sortOptionButton();
-        findElement("nameDesc").click();
+        findElementAccessibilityId("nameDesc").click();
     }
     /**
      * Checks if the items are sorted by name in descending order.
@@ -137,7 +137,7 @@ public class AppBar extends BasePage {
      */
     public void selectSortOptionByPriceAscending(){
         sortOptionButton();
-        findElement("priceAsc").click();
+        findElementAccessibilityId("priceAsc").click();
     }
     /**
      * Checks if the items are sorted by price in ascending order.
@@ -145,9 +145,20 @@ public class AppBar extends BasePage {
      * Returns true if the items are sorted by price in ascending order.
      */
     public boolean isSortedByPriceAscending() {
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                .getAttribute("label")
-                .matches(".*" + "Sauce Labs Onesie" + ".*");
+        String platformName = Config.getProperties("appium.remote.platform.name");
+        switch (platformName) {
+            case "iOS" -> {
+                return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
+                        .getAttribute("label")
+                        .matches(".*" + "Sauce Labs Onesie" + ".*");
+            }
+            case "Android" -> {
+                return findElementOrX("store item text")
+                        .getText()
+                        .matches(".*" + "Sauce Labs Onesie" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
     }
     /**
      * Selects the sort option by price in descending order.
@@ -156,7 +167,7 @@ public class AppBar extends BasePage {
      */
     public void selectSortOptionByPriceDescending(){
         sortOptionButton();
-        findElement("priceDesc").click();
+        findElementAccessibilityId("priceDesc").click();
     }
     /**
      * Checks if the items are sorted by price in descending order.
@@ -168,4 +179,6 @@ public class AppBar extends BasePage {
                 .getAttribute("label")
                 .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
     }
+
+
 }
