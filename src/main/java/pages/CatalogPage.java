@@ -8,6 +8,8 @@ import utils.Linker.Links;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static utils.Config.*;
+
 public class CatalogPage extends BasePage {
     AppBar Bar = new AppBar();
     /**
@@ -21,8 +23,7 @@ public class CatalogPage extends BasePage {
      @return String the header text of the current page.
      */
     public String getHeader() {
-        return (Objects.equals(
-                Config.getProperties("appium.remote.platform.name"), "Android"))
+        return (platformName == Platform.ANDROID)
                 ? findElementByCont("text","Products",0).getText()
                 : findElementAccessibilityId("container header").getAttribute("label");
     }

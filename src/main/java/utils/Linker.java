@@ -1,8 +1,7 @@
 package utils;
 
-import java.util.Objects;
-
-import static utils.Config.*;
+import static utils.Config.Platform;
+import static utils.Config.platformName;
 
 /**
  * This class provides methods for navigating to deep links in the app using Appium driver.

@@ -37,7 +37,7 @@ public class AppiumServer {
             case IOS -> {
                 LOGGER.info("iOS platform selected.");
                 service = new AppiumServiceBuilder()
-                        .withIPAddress(Config.getProperties("appium.server.ip"))
+                        .withIPAddress(Config.get(Config.ConfigKey.APPIUM_SERVER_IP.getKey()))
                         .usingPort(Integer.parseInt(Config.getProperties("appium.server.port")))
                         .withArgument(GeneralServerFlag.SESSION_OVERRIDE)
                         .build();

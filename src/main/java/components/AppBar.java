@@ -112,14 +112,13 @@ public class AppBar extends BasePage {
      * Throws a NoSuchElementException if the order cannot be accessed at the moment.
      */
     public boolean isSortedByNameDescending() {
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> {
+        switch (Config.platformName) {
+            case IOS -> {
                 return findElementByCont("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Test.allTheThings" + ".*");
             }
-            case "Android" -> {
+            case ANDROID -> {
                 return findElementByCont("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Test.allTheThings" + ".*");
@@ -142,14 +141,13 @@ public class AppBar extends BasePage {
      * Returns true if the items are sorted by price in ascending order.
      */
     public boolean isSortedByPriceAscending() {
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> {
+        switch (Config.platformName) {
+            case IOS -> {
                 return findElementByCont("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Onesie" + ".*");
             }
-            case "Android" -> {
+            case ANDROID -> {
                 return findElementByCont("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Sauce Labs Onesie" + ".*");
@@ -172,14 +170,13 @@ public class AppBar extends BasePage {
      * Returns true if the items are sorted by price in descending order.
      */
     public boolean isSortedByPriceDescending() {
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> {
+        switch (Config.platformName) {
+            case IOS -> {
                 return findElementByCont("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
             }
-            case "Android" -> {
+            case ANDROID -> {
                 return findElementByCont("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
