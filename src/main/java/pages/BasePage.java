@@ -122,31 +122,24 @@ public abstract class BasePage extends AppiumServer {
         }
     }
 
-    public WebElement findElementByCont(String type,String contentText,int arrayValue){
-        if (arrayValue >= 0 && arrayValue <= 10){
-            String expression;
-            switch (type){
-                case "content" -> {
-                    expression = "(//*[contains(@content-desc,'%s')])['%d']".formatted(contentText, arrayValue);
-                    return findElement(AppiumBy.xpath(expression));
-                }
-                case "text" -> {
-                    expression = "//*[contains(@text,'%s')]".formatted(contentText);
-                    return findElement(AppiumBy.xpath(expression));
-                }
-                case "label" -> {
-                    expression = "label == \"%s\"".formatted(contentText);
-                    return findElement(AppiumBy.iOSNsPredicateString(expression));
-                }
-                case "chain" -> {
-                    expression = contentText;
-                    return findElement(AppiumBy.iOSClassChain(expression));
-                }
-                default -> throw new IllegalArgumentException("Invalid parameter: type is not valid.");
-            }
-        }
-        else{
+    public WebElement findElementByCont(String type,String contentText,int arrayValue) {
+        if (arrayValue < 0 || arrayValue > 10 || contentText == null || contentText.isEmpty())
             throw new IllegalArgumentException("Invalid parameters: text or value is not valid.");
+
+        switch (type) {
+            case "content" -> {
+                return findElement(AppiumBy.xpath("(//*[contains(@content-desc,'%s')])['%d']".formatted(contentText, arrayValue)));
+            }
+            case "text" -> {
+                return findElement(AppiumBy.xpath("//*[contains(@text,'%s')]".formatted(contentText)));
+            }
+            case "label" -> {
+                return findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(contentText)));
+            }
+            case "chain" -> {
+                return findElement(AppiumBy.iOSClassChain(contentText));
+            }
+            default -> throw new IllegalArgumentException("Invalid parameter: type is not valid.");
         }
     }
 }
