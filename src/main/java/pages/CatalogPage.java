@@ -32,7 +32,7 @@ public class CatalogPage extends BasePage {
     public void backpackAndBikeLightToCart(){
         Linker.Go(Links.Products);
         for (String productName : Arrays.asList("Backpack", "Bike Light")) {
-            findElementOrX("Sauce Labs " + productName).click();
+            findElementAccessibilityId("Sauce Labs " + productName).click();
             findElementAccessibilityId("Add To Cart button").click();
             Bar.navigationBack();
         }

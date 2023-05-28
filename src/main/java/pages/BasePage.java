@@ -33,7 +33,6 @@ public abstract class BasePage extends AppiumServer {
         }
         return props.getProperty("appium.remote.platform.name");
     }
-
     /**
      * Checks if the given WebElement is present by waiting for its invisibility based on the current platform.
      *
@@ -48,7 +47,6 @@ public abstract class BasePage extends AppiumServer {
         }
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
-
     private WebElement findElement(By locator){
         try {
             return isElementPresent(locator);
@@ -56,7 +54,6 @@ public abstract class BasePage extends AppiumServer {
             throw new NoSuchElementException("Element not found: " + locator);
         }
     }
-
     /**
      * About Android accessibility
      * <a href="https://developer.android.com/intl/ru/training/accessibility/accessible-app.html">Accessibility</a>
@@ -70,7 +67,6 @@ public abstract class BasePage extends AppiumServer {
     public WebElement findElementAccessibilityId(String accessibilityId) {
         return findElement(AppiumBy.accessibilityId(accessibilityId));
     }
-
     /**
      * Finds a web element with the specified ID.
      * If the current platform is Android, the method searches for the element using the AppiumBy.id() method with the given ID.
@@ -92,34 +88,6 @@ public abstract class BasePage extends AppiumServer {
         return getPlatform().equals("Android")
                 ? findElementByCont("text",text,0)
                 : findElementByCont("label",text,0);
-    }
-
-    /**
-     * Finds and returns a WebElement using the provided locator value. The element is searched by ID first,
-     * and if not found, then by XPath.
-     *
-     * @param locator the locator value of the element to be found
-     * @return WebElement corresponding to the locator value
-     * @throws NoSuchElementException if the element cannot be found
-     */
-    public WebElement findElementOrX(String locator) throws NoSuchElementException {
-        try {
-            return findElementId(locator);
-        } catch (Exception exception) {
-            try {
-                if ((Objects.equals(getPlatform(), "Android"))) {
-                    return androidDriver.findElement(AppiumBy.xpath("//*[contains(@text,\"%s\")]".formatted(locator)));
-                } else {
-                    return iosDriver.findElement(AppiumBy.iOSNsPredicateString("label == ".formatted(locator)));
-                }
-            } catch (Exception exception1){
-                try {
-                    return iosDriver.findElement(AppiumBy.iOSClassChain(locator));
-                } catch (Exception exception2){
-                    return androidDriver.findElement(AppiumBy.xpath("(//*[@content-desc=\"%s\"])[1]".formatted(locator)));
-                }
-            }
-        }
     }
 
     public WebElement findElementByCont(String type,String contentText,int arrayValue) {
