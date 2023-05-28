@@ -1,14 +1,13 @@
 package pages;
 
 import components.AppBar;
-import utils.Config;
 import utils.Linker;
 import utils.Linker.Links;
 
 import java.util.Arrays;
-import java.util.Objects;
 
-import static utils.Config.*;
+import static utils.Config.Platform;
+import static utils.Config.platformName;
 
 public class CatalogPage extends BasePage {
     AppBar Bar = new AppBar();

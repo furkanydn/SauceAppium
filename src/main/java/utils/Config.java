@@ -5,8 +5,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -14,7 +12,6 @@ import java.util.Properties;
  */
 public class Config {
     private static final Logger LOGGER = LogManager.getLogger(Config.class.getName());
-    private static Map<String, String> configMap = new HashMap<>();
     /**
      * Enumeration for supported platforms.
      */
