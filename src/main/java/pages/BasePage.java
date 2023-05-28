@@ -123,7 +123,7 @@ public abstract class BasePage extends AppiumServer {
     }
 
     public WebElement findElementByCont(String type,String contentText,int arrayValue) {
-        if (arrayValue < 0 || arrayValue > 10 || contentText == null || contentText.isEmpty())
+        if (!(0 <= arrayValue && arrayValue <= 10) || contentText == null || contentText.isEmpty())
             throw new IllegalArgumentException("Invalid parameters: text or value is not valid.");
 
         switch (type) {
@@ -132,6 +132,9 @@ public abstract class BasePage extends AppiumServer {
             }
             case "text" -> {
                 return findElement(AppiumBy.xpath("//*[contains(@text,'%s')]".formatted(contentText)));
+            }
+            case "name" -> {
+                return findElement(AppiumBy.xpath("(//*[contains(@name,'%s')])['%d']".formatted(contentText, arrayValue)));
             }
             case "label" -> {
                 return findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(contentText)));
