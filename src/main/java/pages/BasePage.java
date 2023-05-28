@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Properties;
 
 public abstract class BasePage extends AppiumServer {
