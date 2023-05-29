@@ -20,7 +20,7 @@ public class PointerScroll extends BasePage {
      * @param endWidthFactor the ending horizontal position as a factor of the content element's width, Must be between 0 and 1
      * @throws IllegalArgumentException if startWidthFactor or endWidthFactor is not between 0 and 1
      */
-    public void HorizontalScroll(String contentId, double startWidthFactor, double endWidthFactor){
+    public void horizontalScroll(String contentId, double startWidthFactor, double endWidthFactor){
         if(startWidthFactor < 0 || startWidthFactor > 1 || endWidthFactor < 0 || endWidthFactor > 1)
             throw new IllegalArgumentException("startWidthFactor or endWidthFactor must be between 0 and 1.");
         int centerY = findElementId(contentId).getRect().y
@@ -50,10 +50,10 @@ public class PointerScroll extends BasePage {
     /**
      * Swipe the specified element in the given direction.
      *
-     * @param direction the direction of the swipe
+     * @param dir the direction of the swipe
      * @param locator   the accessibility id of the element to swipe
      */
-    public void swipeAction(SwipeDirection direction, String locator) {
+    public void swipeAction(Direction dir, String locator) {
         WebElement element = findElementAccessibilityId(locator);
         Sequence swiper = new Sequence(FINGER, 1);
 
@@ -61,12 +61,12 @@ public class PointerScroll extends BasePage {
         int startY = element.getRect().y + (element.getSize().height / 2);
         int endX, endY;
 
-        if (direction == SwipeDirection.SWIPE_DOWN || direction == SwipeDirection.SWIPE_UP) {
-            startY = direction == SwipeDirection.SWIPE_DOWN ? element.getRect().y + (element.getSize().height / 4) : element.getRect().y + (element.getSize().height * 3 / 4);
+        if (dir == Direction.SWIPE_DOWN || dir == Direction.SWIPE_UP) {
+            startY = dir == Direction.SWIPE_DOWN ? element.getRect().y + (element.getSize().height / 4) : element.getRect().y + (element.getSize().height * 3 / 4);
             endX = element.getRect().x + (element.getSize().width / 2);
-            endY = direction == SwipeDirection.SWIPE_DOWN ? element.getRect().y + (element.getSize().height * 3 / 4) : element.getRect().y + (element.getSize().height / 4);
+            endY = dir == Direction.SWIPE_DOWN ? element.getRect().y + (element.getSize().height * 3 / 4) : element.getRect().y + (element.getSize().height / 4);
         } else {
-            endX = direction == SwipeDirection.SWIPE_RIGHT ? element.getRect().x + (element.getSize().width * 3 / 4) : element.getRect().x + (element.getSize().width / 4);
+            endX = dir == Direction.SWIPE_RIGHT ? element.getRect().x + (element.getSize().width * 3 / 4) : element.getRect().x + (element.getSize().width / 4);
             endY = element.getRect().y + (element.getSize().height / 2);
         }
 
@@ -78,7 +78,7 @@ public class PointerScroll extends BasePage {
         (Config.platformName == Config.Platform.ANDROID ? androidDriver : iosDriver).perform(List.of(swiper));
     }
 
-    public enum SwipeDirection {
+    public enum Direction {
         SWIPE_RIGHT,
         SWIPE_LEFT,
         SWIPE_DOWN,

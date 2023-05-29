@@ -59,5 +59,17 @@ public class CatalogTest {
     @Test
     public void addMultipleProductsWithOptions(){
         catalogPage.multipleProductsWithOptions();
+        Assertions.assertEquals("My Cart", catalogPage.getHeader());
+        //
+        String[] productNames = {"Sauce Labs Bike Light", "Sauce Labs Fleece Jacket", "Sauce Labs Onesie"};
+        String[] productColors = {"black", "gray", "red"};
+        double[] productPrices = {9.99, 49.99, 7.99};
+        int[] productQuantities = {3, 3, 3};
+
+        for (int i = 0; i < productNames.length; i++) {
+            Assertions.assertEquals(productNames[i],catalogPage.assertProductName(productNames[i]));
+            Assertions.assertTrue(catalogPage.assertProductColor(productColors[i]));
+            Assertions.assertEquals(productPrices[i],catalogPage.assertProductPrice(productPrices[i]));
+        }
     }
 }

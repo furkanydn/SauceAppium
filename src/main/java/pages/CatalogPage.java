@@ -7,6 +7,7 @@ import utils.Linker;
 import utils.Linker.Links;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static utils.Config.Platform;
@@ -14,6 +15,7 @@ import static utils.Config.platformName;
 
 public class CatalogPage extends BasePage {
     AppBar Bar = new AppBar();
+    PointerScroll Pointer = new PointerScroll();
     /**
      This method navigates to the drawing page in the application using a deep link.
      */
@@ -173,33 +175,60 @@ public class CatalogPage extends BasePage {
         boolean isBikeLightInCart = findElementByText("Sauce Labs Bike Light").isDisplayed();
         return isBackpackInCart && isBikeLightInCart;
     }
-
-    public void multipleProductsWithOptions(){
-        findElementAccessibilityId("Sauce Labs Bike Light").click();
-        findElementAccessibilityId("black circle").click();
-
-        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
-            findElementAccessibilityId("counter plus button").click();
-        }
-
-        findElementAccessibilityId("Add To Cart button").click();
-
-        Bar.navigationBack();
-        //
-        findElementAccessibilityId("Sauce Labs Fleece Jacket").click();
-        findElementAccessibilityId("gray circle").click();
-
-        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
-            findElementAccessibilityId("counter plus button").click();
-        }
-        findElementAccessibilityId("Add To Cart button").click();
-
-        Bar.navigationBack();
-        //
-        PointerScroll pointerScroll = new PointerScroll();
-        pointerScroll.swipeAction(PointerScroll.SwipeDirection.SWIPE_UP,"products screen");
-        //
-
+    /**
+     * Performs the selection and customization of multiple products with options.
+     * This method adds products to the cart with specified options, increments the counter until a limit is reached,
+     * and navigates back to the previous screen after each product selection.
+     * Finally, it performs a swipe action and opens the cart options.
+     */
+    public void multipleProductsWithOptions() {
+        performProductWithOptions("Sauce Labs Bike Light", "black circle");
+        performProductWithOptions("Sauce Labs Fleece Jacket", "gray circle");
+        Pointer.swipeAction(PointerScroll.Direction.SWIPE_UP, "products screen");
+        performProductWithOptions("Sauce Labs Onesie", "red circle");
         Bar.barOptionCart();
     }
+    /**
+     * Performs the selection and customization of a product with options.
+     *
+     * @param productName The name or accessibility ID of the product element.
+     * @param colorOption The name or accessibility ID of the color option element.
+     */
+    private void performProductWithOptions(String productName, String colorOption) {
+        findElementAccessibilityId(productName).click();
+        findElementAccessibilityId(colorOption).click();
+        incrementCounterUntil();
+        findElementAccessibilityId("Add To Cart button").click();
+        Bar.navigationBack();
+    }
+    /**
+     * Increments the counter amount until it reaches the specified limit.
+     */
+    private void incrementCounterUntil() {
+        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3) {
+            findElementAccessibilityId("counter plus button").click();
+        }
+    }
+
+    public String assertProductName(String expectedProductName) {
+        return findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", expectedProductName, 0).getText();
+    }
+
+    public boolean assertProductColor(String expectedProductColor) {
+        return findElementAccessibilityId(expectedProductColor + " circle").isDisplayed();
+    }
+
+    public double assertProductPrice(double expectedProductPrice) {
+        return Double.parseDouble(findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText());
+
+    }
+
+    public int assertProductQuantity(String expectedProductQuantity) {
+        return Integer.parseInt(findElementAccessibilityId("product quantity").getText());
+    }
+
+    public double assertCartTotalPrice(String expectedCartTotalPrice) {
+        return Double.parseDouble(findElementAccessibilityId("asd").getText());
+    }
+
 }

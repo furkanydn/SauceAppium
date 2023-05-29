@@ -22,7 +22,7 @@ public class AppBar extends BasePage {
      */
     public void closeAndroidMenu(){
         PointerScroll pointerScroll = new PointerScroll();
-        pointerScroll.HorizontalScroll("android:id/content",0.8,0.2);
+        pointerScroll.horizontalScroll("android:id/content",0.8,0.2);
     }
     /**
      Clicks on the "Sort" button
