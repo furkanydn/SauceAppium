@@ -175,29 +175,31 @@ public class CatalogPage extends BasePage {
     }
 
     public void multipleProductsWithOptions(){
-//        findElementAccessibilityId("Sauce Labs Bike Light").click();
-//        findElementAccessibilityId("black circle").click();
-//
-//        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
-//            findElementAccessibilityId("counter plus button").click();
-//        }
-//
-//        findElementAccessibilityId("Add To Cart button").click();
-//
-//        Bar.navigationBack();
-//        //
-//        findElementAccessibilityId("Sauce Labs Fleece Jacket").click();
-//        findElementAccessibilityId("gray circle").click();
-//
-//        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
-//            findElementAccessibilityId("counter plus button").click();
-//        }
-//        findElementAccessibilityId("Add To Cart button").click();
-//
-//        Bar.navigationBack();
+        findElementAccessibilityId("Sauce Labs Bike Light").click();
+        findElementAccessibilityId("black circle").click();
+
+        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
+            findElementAccessibilityId("counter plus button").click();
+        }
+
+        findElementAccessibilityId("Add To Cart button").click();
+
+        Bar.navigationBack();
         //
-        PointerScroll scroll = new PointerScroll();
-        scroll.VerticalScroll("products screen",0.7,0.3);
+        findElementAccessibilityId("Sauce Labs Fleece Jacket").click();
+        findElementAccessibilityId("gray circle").click();
+
+        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
+            findElementAccessibilityId("counter plus button").click();
+        }
+        findElementAccessibilityId("Add To Cart button").click();
+
+        Bar.navigationBack();
+        //
+        PointerScroll pointerScroll = new PointerScroll();
+        pointerScroll.swipeAction(PointerScroll.SwipeDirection.SWIPE_UP,"products screen");
+        //
+
         Bar.barOptionCart();
     }
 }

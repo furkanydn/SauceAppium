@@ -1,14 +1,17 @@
 package touch;
 
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import pages.BasePage;
+import utils.Config;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
 public class PointerScroll extends BasePage {
+    private final static PointerInput FINGER = new PointerInput(PointerInput.Kind.TOUCH,"finger");
     /**
      * Scrolls horizontally on the given content element from the start width factor to the end width factor.
      *
@@ -27,58 +30,58 @@ public class PointerScroll extends BasePage {
         double endX = findElementId(contentId).getRect().x
                 + (findElementId(contentId).getSize().width * 0.2);
 
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
-        Sequence swipe = new Sequence(finger,1);
+        Sequence swipe = new Sequence(FINGER,1);
         swipe.addAction(
-                finger.createPointerMove(Duration.ofSeconds(0)
+                FINGER.createPointerMove(Duration.ofSeconds(0)
                         ,PointerInput.Origin.viewport()
                         ,(int) startX
                         ,centerY));
-        swipe.addAction(finger.createPointerDown(0));
+        swipe.addAction(FINGER.createPointerDown(0));
         swipe.addAction(
-                finger.createPointerMove(Duration.ofMillis(700)
+                FINGER.createPointerMove(Duration.ofMillis(700)
                         ,PointerInput.Origin.viewport()
                         ,(int) endX,
                         centerY));
-        swipe.addAction(finger.createPointerUp(0));
+        swipe.addAction(FINGER.createPointerUp(0));
 
         if (Objects.equals(getPlatform(), "Android")) androidDriver.perform(List.of(swipe));
         else iosDriver.perform(List.of(swipe));
     }
     /**
-     * Scrolls vertically on the given content element from the start height factor to the end height factor.
+     * Swipe the specified element in the given direction.
      *
-     * @param contentId The ID of the content element to scroll.
-     * @param startHeightFactor The factor to calculate the start y-coordinate of the scroll gesture. Must be between 0 and 1.
-     * @param endHeightFactor The factor to calculate the end y-coordinate of the scroll gesture. Must be between 0 and 1.
-     * @throws IllegalArgumentException If the startHeightFactor or endHeightFactor is not between 0 and 1.
+     * @param direction the direction of the swipe
+     * @param locator   the accessibility id of the element to swipe
      */
-    public void VerticalScroll(String contentId, double startHeightFactor, double endHeightFactor){
-        if(startHeightFactor < 0 || startHeightFactor > 1 || endHeightFactor < 0 || endHeightFactor > 1)
-            throw new IllegalArgumentException("startHeightFactor or endHeightFactor must be between 0 and 1.");
-        int centerX = findElementAccessibilityId(contentId).getRect().x
-                + (findElementAccessibilityId(contentId).getSize().width / 2);
-        double startY = findElementAccessibilityId(contentId).getRect().y
-                + (findElementAccessibilityId(contentId).getSize().height / startHeightFactor);
-        double endY = findElementAccessibilityId(contentId).getRect().y
-                + (findElementAccessibilityId(contentId).getSize().height / endHeightFactor);
+    public void swipeAction(SwipeDirection direction, String locator) {
+        WebElement element = findElementAccessibilityId(locator);
+        Sequence swiper = new Sequence(FINGER, 1);
 
-        PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
-        Sequence swipe = new Sequence(finger,1);
-        swipe.addAction(
-                finger.createPointerMove(Duration.ofSeconds(0)
-                        ,PointerInput.Origin.viewport(),
-                        centerX,
-                        (int) startY));
-        swipe.addAction(finger.createPointerDown(0));
-        swipe.addAction(
-                finger.createPointerMove(Duration.ofMillis(700)
-                        ,PointerInput.Origin.viewport()
-                        ,centerX
-                        ,(int) endY));
-        swipe.addAction(finger.createPointerUp(0));
+        int startX = element.getRect().x + (element.getSize().width / 4);
+        int startY = element.getRect().y + (element.getSize().height / 2);
+        int endX, endY;
 
-        if (Objects.equals(getPlatform(), "Android")) androidDriver.perform(List.of(swipe));
-        else iosDriver.perform(List.of(swipe));
+        if (direction == SwipeDirection.SWIPE_DOWN || direction == SwipeDirection.SWIPE_UP) {
+            startY = direction == SwipeDirection.SWIPE_DOWN ? element.getRect().y + (element.getSize().height / 4) : element.getRect().y + (element.getSize().height * 3 / 4);
+            endX = element.getRect().x + (element.getSize().width / 2);
+            endY = direction == SwipeDirection.SWIPE_DOWN ? element.getRect().y + (element.getSize().height * 3 / 4) : element.getRect().y + (element.getSize().height / 4);
+        } else {
+            endX = direction == SwipeDirection.SWIPE_RIGHT ? element.getRect().x + (element.getSize().width * 3 / 4) : element.getRect().x + (element.getSize().width / 4);
+            endY = element.getRect().y + (element.getSize().height / 2);
+        }
+
+        swiper.addAction(FINGER.createPointerMove(Duration.ofSeconds(0), PointerInput.Origin.viewport(), startX, startY));
+        swiper.addAction(FINGER.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swiper.addAction(FINGER.createPointerMove(Duration.ofMillis(750), PointerInput.Origin.viewport(), endX, endY));
+        swiper.addAction(FINGER.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        (Config.platformName == Config.Platform.ANDROID ? androidDriver : iosDriver).perform(List.of(swiper));
+    }
+
+    public enum SwipeDirection {
+        SWIPE_RIGHT,
+        SWIPE_LEFT,
+        SWIPE_DOWN,
+        SWIPE_UP
     }
 }
