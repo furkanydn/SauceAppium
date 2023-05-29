@@ -46,6 +46,13 @@ public abstract class BasePage extends AppiumServer {
         }
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
+    /**
+     * Find and return the WebElement using the given locator.
+     *
+     * @param locator the locator used to find the WebElement
+     * @return the WebElement if found
+     * @throws NoSuchElementException if the WebElement is not found
+     */
     private WebElement findElement(By locator){
         try {
             return isElementPresent(locator);
@@ -88,7 +95,15 @@ public abstract class BasePage extends AppiumServer {
                 ? findElementByCont("text",text,0)
                 : findElementByCont("label",text,0);
     }
-
+    /**
+     * Finds and returns a WebElement based on the specified search criteria.
+     *
+     * @param type         the type of search criteria to be used ("content", "text", "name", "label", or "chain")
+     * @param contentText  the content text or label value to search for
+     * @param arrayValue   the array value used for indexing elements when needed (applicable to "content" and "name" types)
+     * @return the found WebElement
+     * @throws IllegalArgumentException if the parameters are invalid or not valid for the specified search type
+     */
     public WebElement findElementByCont(String type,String contentText,int arrayValue) {
         if (!(0 <= arrayValue && arrayValue <= 10) || contentText == null || contentText.isEmpty())
             throw new IllegalArgumentException("Invalid parameters: text or value is not valid.");

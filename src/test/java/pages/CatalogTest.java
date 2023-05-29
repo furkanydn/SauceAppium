@@ -1,12 +1,10 @@
 package pages;
 
-import components.AppBar;
 import org.junit.jupiter.api.*;
 import utils.AppiumServer;
 
 public class CatalogTest {
     CatalogPage catalogPage = new CatalogPage();
-    AppBar appBar = new AppBar();
     @BeforeAll
     public static void beforeAll(){
         AppiumServer.start();
@@ -25,17 +23,17 @@ public class CatalogTest {
 
     @Test
     public void requiredOrderProductsSorted(){
-        appBar.selectSortOptionByNameAscending();
-        Assertions.assertTrue(appBar.isSortedByNameAscending());
+        catalogPage.selectSortOptionByNameAscending();
+        Assertions.assertTrue(catalogPage.isSortedByNameAscending());
 
-        appBar.selectSortOptionByNameDescending();
-        Assertions.assertTrue(appBar.isSortedByNameDescending());
+        catalogPage.selectSortOptionByNameDescending();
+        Assertions.assertTrue(catalogPage.isSortedByNameDescending());
 
-        appBar.selectSortOptionByPriceAscending();
-        Assertions.assertTrue(appBar.isSortedByPriceAscending());
+        catalogPage.selectSortOptionByPriceAscending();
+        Assertions.assertTrue(catalogPage.isSortedByPriceAscending());
 
-        appBar.selectSortOptionByPriceDescending();
-        Assertions.assertTrue(appBar.isSortedByPriceDescending());
+        catalogPage.selectSortOptionByPriceDescending();
+        Assertions.assertTrue(catalogPage.isSortedByPriceDescending());
     }
 
     /**
@@ -56,5 +54,10 @@ public class CatalogTest {
     public void isBackpackAndBikeLightAddedToCart(){
         Assertions.assertTrue(catalogPage.isBackpackAndBikeLightAddedToCart());
         Assertions.assertEquals("My Cart", catalogPage.getHeader());
+    }
+
+    @Test
+    public void addMultipleProductsWithOptions(){
+        catalogPage.multipleProductsWithOptions();
     }
 }

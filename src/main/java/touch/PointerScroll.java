@@ -56,12 +56,12 @@ public class PointerScroll extends BasePage {
     public void VerticalScroll(String contentId, double startHeightFactor, double endHeightFactor){
         if(startHeightFactor < 0 || startHeightFactor > 1 || endHeightFactor < 0 || endHeightFactor > 1)
             throw new IllegalArgumentException("startHeightFactor or endHeightFactor must be between 0 and 1.");
-        int centerX = findElementId(contentId).getRect().x
-                + (findElementId(contentId).getSize().width / 2);
-        double startY = findElementId(contentId).getRect().y
-                + (findElementId(contentId).getSize().height / startHeightFactor);
-        double endY = findElementId(contentId).getRect().y
-                + (findElementId(contentId).getSize().height / endHeightFactor);
+        int centerX = findElementAccessibilityId(contentId).getRect().x
+                + (findElementAccessibilityId(contentId).getSize().width / 2);
+        double startY = findElementAccessibilityId(contentId).getRect().y
+                + (findElementAccessibilityId(contentId).getSize().height / startHeightFactor);
+        double endY = findElementAccessibilityId(contentId).getRect().y
+                + (findElementAccessibilityId(contentId).getSize().height / endHeightFactor);
 
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH,"finger");
         Sequence swipe = new Sequence(finger,1);

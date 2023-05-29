@@ -1,10 +1,13 @@
 package pages;
 
 import components.AppBar;
+import touch.PointerScroll;
+import utils.Config;
 import utils.Linker;
 import utils.Linker.Links;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import static utils.Config.Platform;
 import static utils.Config.platformName;
@@ -28,6 +31,127 @@ public class CatalogPage extends BasePage {
     }
 
     /**
+     * Selects the sort option by name in ascending order.
+     * This method assumes the sort option button is already visible on the screen.
+     * After selecting the sort option, it clicks on the "nameAsc" element.
+     */
+    public void selectSortOptionByNameAscending() {
+        Bar.sortOptionButton();
+        findElementAccessibilityId("nameAsc").click();
+    }
+    /**
+     * Checks if the items are sorted by name in ascending order.
+     * This method identifies the platform name and checks if the expected sorting is applied.
+     * Supports iOS and Android platforms.
+     * Returns true if the items are sorted by name in ascending order.
+     * Throws a NoSuchElementException if the order cannot be accessed at the moment.
+     */
+    public boolean isSortedByNameAscending() {
+        switch (Config.platformName) {
+            case IOS -> {
+                return findElementByCont("name", "store item", 1)
+                        .getAttribute("label")
+                        .matches(".*" + "Sauce Labs Backpack" + ".*");
+            }
+            case ANDROID -> {
+                return findElementByCont("content", "store item text", 1)
+                        .getText()
+                        .matches(".*" + "Sauce Labs Backpack" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
+    }
+    /**
+     * Selects the sort option by name in descending order.
+     * This method assumes the sort option button is already visible on the screen.
+     * After selecting the sort option, it clicks on the "nameDesc" element.
+     */
+    public void selectSortOptionByNameDescending(){
+        Bar.sortOptionButton();
+        findElementAccessibilityId("nameDesc").click();
+    }
+    /**
+     * Checks if the items are sorted by name in descending order.
+     * This method identifies the platform name and checks if the expected sorting is applied.
+     * Supports iOS and Android platforms.
+     * Returns true if the items are sorted by name in descending order.
+     * Throws a NoSuchElementException if the order cannot be accessed at the moment.
+     */
+    public boolean isSortedByNameDescending() {
+        switch (Config.platformName) {
+            case IOS -> {
+                return findElementByCont("name", "store item", 1)
+                        .getAttribute("label")
+                        .matches(".*" + "Test.allTheThings" + ".*");
+            }
+            case ANDROID -> {
+                return findElementByCont("content", "store item text", 1)
+                        .getText()
+                        .matches(".*" + "Test.allTheThings" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
+    }
+    /**
+     * Selects the sort option by price in ascending order.
+     * This method assumes the sort option button is already visible on the screen.
+     * After selecting the sort option, it clicks on the "priceAsc" element.
+     */
+    public void selectSortOptionByPriceAscending(){
+        Bar.sortOptionButton();
+        findElementAccessibilityId("priceAsc").click();
+    }
+    /**
+     * Checks if the items are sorted by price in ascending order.
+     * This method checks if the expected sorting is applied.
+     * Returns true if the items are sorted by price in ascending order.
+     */
+    public boolean isSortedByPriceAscending() {
+        switch (Config.platformName) {
+            case IOS -> {
+                return findElementByCont("name", "store item", 1)
+                        .getAttribute("label")
+                        .matches(".*" + "Sauce Labs Onesie" + ".*");
+            }
+            case ANDROID -> {
+                return findElementByCont("content", "store item text", 1)
+                        .getText()
+                        .matches(".*" + "Sauce Labs Onesie" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
+    }
+    /**
+     * Selects the sort option by price in descending order.
+     * This method assumes the sort option button is already visible on the screen.
+     * After selecting the sort option, it clicks on the "priceDesc" element.
+     */
+    public void selectSortOptionByPriceDescending(){
+        Bar.sortOptionButton();
+        findElementAccessibilityId("priceDesc").click();
+    }
+    /**
+     * Checks if the items are sorted by price in descending order.
+     * This method checks if the expected sorting is applied.
+     * Returns true if the items are sorted by price in descending order.
+     */
+    public boolean isSortedByPriceDescending() {
+        switch (Config.platformName) {
+            case IOS -> {
+                return findElementByCont("name", "store item", 1)
+                        .getAttribute("label")
+                        .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
+            }
+            case ANDROID -> {
+                return findElementByCont("content", "store item text", 1)
+                        .getText()
+                        .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
+            }
+            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
+        }
+    }
+
+    /**
      Adds the "Backpack" and "Bike Light" products to the cart by clicking on their respective "Add To Cart" buttons on the "Products" page.*/
     public void backpackAndBikeLightToCart(){
         Linker.Go(Links.Products);
@@ -48,5 +172,32 @@ public class CatalogPage extends BasePage {
         boolean isBackpackInCart = findElementByText("Sauce Labs Backpack").isDisplayed();
         boolean isBikeLightInCart = findElementByText("Sauce Labs Bike Light").isDisplayed();
         return isBackpackInCart && isBikeLightInCart;
+    }
+
+    public void multipleProductsWithOptions(){
+//        findElementAccessibilityId("Sauce Labs Bike Light").click();
+//        findElementAccessibilityId("black circle").click();
+//
+//        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
+//            findElementAccessibilityId("counter plus button").click();
+//        }
+//
+//        findElementAccessibilityId("Add To Cart button").click();
+//
+//        Bar.navigationBack();
+//        //
+//        findElementAccessibilityId("Sauce Labs Fleece Jacket").click();
+//        findElementAccessibilityId("gray circle").click();
+//
+//        while (Integer.parseInt(findElementAccessibilityId("counter amount").getText()) < 3){
+//            findElementAccessibilityId("counter plus button").click();
+//        }
+//        findElementAccessibilityId("Add To Cart button").click();
+//
+//        Bar.navigationBack();
+        //
+        PointerScroll scroll = new PointerScroll();
+        scroll.VerticalScroll("products screen",0.7,0.3);
+        Bar.barOptionCart();
     }
 }
