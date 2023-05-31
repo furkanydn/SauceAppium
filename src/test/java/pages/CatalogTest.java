@@ -2,6 +2,7 @@ package pages;
 
 import org.junit.jupiter.api.*;
 import utils.AppiumServer;
+import utils.Linker;
 
 public class CatalogTest {
     CatalogPage catalogPage = new CatalogPage();
@@ -58,9 +59,10 @@ public class CatalogTest {
 
     @Test
     public void addMultipleProductsWithOptions(){
-        catalogPage.multipleProductsWithOptions();
+        //catalogPage.multipleProductsWithOptions();
+        Linker.Go("cart/id=2&amount=3&color=black,id=4&amount=3&color=gray,id=5&amount=3&color=red");
         Assertions.assertEquals("My Cart", catalogPage.getHeader());
-        //
+
         String[] productNames = {"Sauce Labs Bike Light", "Sauce Labs Fleece Jacket", "Sauce Labs Onesie"};
         String[] productColors = {"black", "gray", "red"};
         double[] productPrices = {9.99, 49.99, 7.99};
@@ -69,7 +71,9 @@ public class CatalogTest {
         for (int i = 0; i < productNames.length; i++) {
             Assertions.assertEquals(productNames[i],catalogPage.assertProductName(productNames[i]));
             Assertions.assertTrue(catalogPage.assertProductColor(productColors[i]));
-            Assertions.assertEquals(productPrices[i],catalogPage.assertProductPrice(productPrices[i]));
+            Assertions.assertEquals("$%s".formatted(productPrices[i]),catalogPage.assertProductPrice(productPrices[i]));
+            Assertions.assertEquals(productQuantities[i],catalogPage.assertProductQuantity());
+
         }
     }
 }

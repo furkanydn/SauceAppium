@@ -7,7 +7,6 @@ import utils.Linker;
 import utils.Linker.Links;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static utils.Config.Platform;
@@ -218,15 +217,16 @@ public class CatalogPage extends BasePage {
         return findElementAccessibilityId(expectedProductColor + " circle").isDisplayed();
     }
 
-    public double assertProductPrice(double expectedProductPrice) {
-        return Double.parseDouble(findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText());
+    public String assertProductPrice(double expectedProductPrice) {
+        return findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText();
 
     }
 
-    public int assertProductQuantity(String expectedProductQuantity) {
+    public int assertProductQuantity() {
         return Integer.parseInt(findElementAccessibilityId("product quantity").getText());
     }
 
+    @Deprecated
     public double assertCartTotalPrice(String expectedCartTotalPrice) {
         return Double.parseDouble(findElementAccessibilityId("asd").getText());
     }

@@ -1,5 +1,6 @@
 package touch;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -68,6 +69,39 @@ public class PointerScroll extends BasePage {
         } else {
             endX = dir == Direction.SWIPE_RIGHT ? element.getRect().x + (element.getSize().width * 3 / 4) : element.getRect().x + (element.getSize().width / 4);
             endY = element.getRect().y + (element.getSize().height / 2);
+        }
+
+        swiper.addAction(FINGER.createPointerMove(Duration.ofSeconds(0), PointerInput.Origin.viewport(), startX, startY));
+        swiper.addAction(FINGER.createPointerDown(PointerInput.MouseButton.LEFT.asArg()));
+        swiper.addAction(FINGER.createPointerMove(Duration.ofMillis(750), PointerInput.Origin.viewport(), endX, endY));
+        swiper.addAction(FINGER.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
+
+        (Config.platformName == Config.Platform.ANDROID ? androidDriver : iosDriver).perform(List.of(swiper));
+    }
+
+    /**
+     * Swipe the specified element in the given direction.
+     *
+     * @param dir the direction of the swipe
+     */
+    public void swipeAction(Direction dir) {
+        Dimension screenSize = (Config.platformName == Config.Platform.ANDROID ? androidDriver : iosDriver).manage().window().getSize();
+
+        Sequence swiper = new Sequence(FINGER, 1);
+
+        int startX = screenSize.getWidth() / 4;
+        int startY = screenSize.getHeight() / 2;
+        int endX, endY;
+
+        if (dir == Direction.SWIPE_DOWN || dir == Direction.SWIPE_UP) {
+            startY = dir == Direction.SWIPE_DOWN ? screenSize.getWidth() / 4 : screenSize.getHeight() * 3 / 4;
+            endX = screenSize.getWidth() / 2;
+            endY = dir == Direction.SWIPE_DOWN ? screenSize.getHeight() * 3 / 4 : screenSize.getHeight() / 4;
+        } else {
+            endX = dir == Direction.SWIPE_RIGHT
+                    ? screenSize.getWidth() * 3 / 4
+                    : screenSize.getWidth() / 4;
+            endY = screenSize.getHeight() / 4;
         }
 
         swiper.addAction(FINGER.createPointerMove(Duration.ofSeconds(0), PointerInput.Origin.viewport(), startX, startY));

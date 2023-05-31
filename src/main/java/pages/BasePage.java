@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import touch.PointerScroll;
 import utils.AppiumServer;
 
 import java.io.IOException;
@@ -54,11 +55,16 @@ public abstract class BasePage extends AppiumServer {
      * @throws NoSuchElementException if the WebElement is not found
      */
     private WebElement findElement(By locator){
-        try {
-            return isElementPresent(locator);
-        } catch (NoSuchElementException exception){
-            throw new NoSuchElementException("Element not found: " + locator);
+        int maxRetries = 3;
+        for (int retryCount = 0; retryCount < maxRetries; retryCount++) {
+            try {
+                return isElementPresent(locator);
+            } catch (NoSuchElementException e) {
+                new PointerScroll().swipeAction(PointerScroll.Direction.SWIPE_DOWN);
+                findElement(locator);
+            }
         }
+        throw new NoSuchElementException("Element not found: " + locator);
     }
     /**
      * About Android accessibility
