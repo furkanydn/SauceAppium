@@ -27,7 +27,7 @@ public class CatalogPage extends BasePage {
      */
     public String getHeader() {
         return (platformName == Platform.ANDROID)
-                ? findElementByCont("text","Products",0).getText()
+                ? findElementByRelativeXPath("text","Products",0).getText()
                 : findElementAccessibilityId("container header").getAttribute("label");
     }
 
@@ -50,12 +50,12 @@ public class CatalogPage extends BasePage {
     public boolean isSortedByNameAscending() {
         switch (Config.platformName) {
             case IOS -> {
-                return findElementByCont("name", "store item", 1)
+                return findElementByRelativeXPath("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Backpack" + ".*");
             }
             case ANDROID -> {
-                return findElementByCont("content", "store item text", 1)
+                return findElementByRelativeXPath("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Sauce Labs Backpack" + ".*");
             }
@@ -81,12 +81,12 @@ public class CatalogPage extends BasePage {
     public boolean isSortedByNameDescending() {
         switch (Config.platformName) {
             case IOS -> {
-                return findElementByCont("name", "store item", 1)
+                return findElementByRelativeXPath("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Test.allTheThings" + ".*");
             }
             case ANDROID -> {
-                return findElementByCont("content", "store item text", 1)
+                return findElementByRelativeXPath("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Test.allTheThings" + ".*");
             }
@@ -110,12 +110,12 @@ public class CatalogPage extends BasePage {
     public boolean isSortedByPriceAscending() {
         switch (Config.platformName) {
             case IOS -> {
-                return findElementByCont("name", "store item", 1)
+                return findElementByRelativeXPath("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Onesie" + ".*");
             }
             case ANDROID -> {
-                return findElementByCont("content", "store item text", 1)
+                return findElementByRelativeXPath("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Sauce Labs Onesie" + ".*");
             }
@@ -139,12 +139,12 @@ public class CatalogPage extends BasePage {
     public boolean isSortedByPriceDescending() {
         switch (Config.platformName) {
             case IOS -> {
-                return findElementByCont("name", "store item", 1)
+                return findElementByRelativeXPath("name", "store item", 1)
                         .getAttribute("label")
                         .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
             }
             case ANDROID -> {
-                return findElementByCont("content", "store item text", 1)
+                return findElementByRelativeXPath("content", "store item text", 1)
                         .getText()
                         .matches(".*" + "Sauce Labs Fleece Jacket" + ".*");
             }
@@ -210,7 +210,7 @@ public class CatalogPage extends BasePage {
     }
 
     public String assertProductName(String expectedProductName) {
-        return findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", expectedProductName, 0).getText();
+        return findElementByRelativeXPath(Config.platformName == Platform.IOS ? "label" : "text", expectedProductName, 0).getText();
     }
 
     public boolean assertProductColor(String expectedProductColor) {
@@ -218,12 +218,16 @@ public class CatalogPage extends BasePage {
     }
 
     public String assertProductPrice(double expectedProductPrice) {
-        return findElementByCont(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText();
+        return findElementByRelativeXPath(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText();
 
     }
 
-    public int assertProductQuantity() {
-        return Integer.parseInt(findElementAccessibilityId("product quantity").getText());
+    public int assertProductQuantity(int expectedProductQuantity) {
+        for (int i = 0; i < expectedProductQuantity; i++) {
+            int quantity = Integer.parseInt(findElementByRelativeXPath("name", "counter amount", i).getText());
+            if (quantity != 0) return quantity;
+        }
+        return 0;
     }
 
     @Deprecated

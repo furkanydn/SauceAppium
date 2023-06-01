@@ -72,8 +72,7 @@ public class CatalogTest {
             Assertions.assertEquals(productNames[i],catalogPage.assertProductName(productNames[i]));
             Assertions.assertTrue(catalogPage.assertProductColor(productColors[i]));
             Assertions.assertEquals("$%s".formatted(productPrices[i]),catalogPage.assertProductPrice(productPrices[i]));
-            Assertions.assertEquals(productQuantities[i],catalogPage.assertProductQuantity());
-
+            Assertions.assertEquals(productQuantities[i],catalogPage.assertProductQuantity(productQuantities[i]));
         }
     }
 }

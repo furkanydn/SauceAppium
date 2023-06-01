@@ -98,8 +98,8 @@ public abstract class BasePage extends AppiumServer {
      */
     public WebElement findElementByText(String text) {
         return getPlatform().equals("Android")
-                ? findElementByCont("text",text,0)
-                : findElementByCont("label",text,0);
+                ? findElementByRelativeXPath("text",text,0)
+                : findElementByRelativeXPath("label",text,0);
     }
     /**
      * Finds and returns a WebElement based on the specified search criteria.
@@ -110,7 +110,7 @@ public abstract class BasePage extends AppiumServer {
      * @return the found WebElement
      * @throws IllegalArgumentException if the parameters are invalid or not valid for the specified search type
      */
-    public WebElement findElementByCont(String type,String contentText,int arrayValue) {
+    public WebElement findElementByRelativeXPath(String type, String contentText, int arrayValue) {
         if (!(0 <= arrayValue && arrayValue <= 10) || contentText == null || contentText.isEmpty())
             throw new IllegalArgumentException("Invalid parameters: text or value is not valid.");
 
