@@ -222,17 +222,12 @@ public class CatalogPage extends BasePage {
 
     }
 
-    public int assertProductQuantity(int[] expectedProductQuantity) {
-        for (int i = 1; i < expectedProductQuantity.length; i++) {
-            int quantity = Integer.parseInt(findElementByRelativeXPath("name", "counter amount", i).getText());
-            if (quantity != 0) return quantity;
-        }
-        return 0;
+    public int assertProductQuantity(int expectedProductQuantity) {
+        return Integer.parseInt(findElementByRelativeXPath("name", "counter amount", expectedProductQuantity).getText());
     }
 
-    @Deprecated
-    public double assertCartTotalPrice(String expectedCartTotalPrice) {
-        return Double.parseDouble(findElementAccessibilityId("asd").getText());
+    public String assertCartTotalPrice() {
+        return findElementAccessibilityId("total price").getText();
     }
 
 }

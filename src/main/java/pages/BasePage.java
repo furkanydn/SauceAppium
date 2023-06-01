@@ -2,6 +2,7 @@ package pages;
 
 import io.appium.java_client.AppiumBy;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -41,11 +42,17 @@ public abstract class BasePage extends AppiumServer {
     private WebElement isElementPresent(By locator) {
         WebDriverWait wait;
         switch (getPlatform().toLowerCase()) {
-            case "ios" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
+            case "ios" -> wait = new WebDriverWait(iosDriver, Duration.ofSeconds(10), Duration.ofMillis(1000));
             case "android" -> wait = new WebDriverWait(androidDriver, Duration.ofSeconds(30), Duration.ofMillis(1000));
             default -> throw new IllegalArgumentException("Invalid platform: " + getPlatform());
         }
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        } catch (TimeoutException exception) {
+            new PointerScroll().swipeAction(PointerScroll.Direction.SWIPE_UP);
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        }
     }
     /**
      * Find and return the WebElement using the given locator.
@@ -54,17 +61,8 @@ public abstract class BasePage extends AppiumServer {
      * @return the WebElement if found
      * @throws NoSuchElementException if the WebElement is not found
      */
-    private WebElement findElement(By locator){
-        int maxRetries = 3;
-        for (int retryCount = 0; retryCount < maxRetries; retryCount++) {
-            try {
-                return isElementPresent(locator);
-            } catch (NoSuchElementException e) {
-                new PointerScroll().swipeAction(PointerScroll.Direction.SWIPE_DOWN);
-                findElement(locator);
-            }
-        }
-        throw new NoSuchElementException("Element not found: " + locator);
+    private WebElement findElement(By locator) {
+        return isElementPresent(locator);
     }
     /**
      * About Android accessibility
@@ -122,7 +120,7 @@ public abstract class BasePage extends AppiumServer {
                 return findElement(AppiumBy.xpath("//*[contains(@text,'%s')]".formatted(contentText)));
             }
             case "name" -> {
-                return findElement(AppiumBy.xpath("(//*[contains(@name,'%s')])['%d']".formatted(contentText, arrayValue)));
+                return findElement(AppiumBy.xpath("(//*[contains(@name,'%s')])[%d]".formatted(contentText, arrayValue)));
             }
             case "label" -> {
                 return findElement(AppiumBy.iOSNsPredicateString("label == \"%s\"".formatted(contentText)));

@@ -2,7 +2,6 @@ package pages;
 
 import org.junit.jupiter.api.*;
 import utils.AppiumServer;
-import utils.Linker;
 
 public class CatalogTest {
     CatalogPage catalogPage = new CatalogPage();
@@ -61,14 +60,15 @@ public class CatalogTest {
 
     @Test
     public void addMultipleProductsWithOptions() {
-        //catalogPage.multipleProductsWithOptions();
-        Linker.Go("cart/id=2&amount=3&color=black,id=4&amount=3&color=gray,id=5&amount=3&color=red");
+        catalogPage.multipleProductsWithOptions();
+        //Linker.Go("cart/id=2&amount=3&color=black,id=4&amount=3&color=gray,id=5&amount=3&color=red");
         Assertions.assertEquals("My Cart", catalogPage.getHeader());
 
         String[] productNames = {"Sauce Labs Bike Light", "Sauce Labs Fleece Jacket", "Sauce Labs Onesie"};
         String[] productColors = {"black", "gray", "red"};
         double[] productPrices = {9.99, 49.99, 7.99};
         int[] productQuantities = {3, 3, 3};
+        double totalPrice = 203.91;
 
         for (int i = 0; i < productNames.length; i++) {
             final int index = i;
@@ -76,8 +76,9 @@ public class CatalogTest {
                     () -> Assertions.assertEquals(productNames[index], catalogPage.assertProductName(productNames[index])),
                     () -> Assertions.assertTrue(catalogPage.assertProductColor(productColors[index])),
                     () -> Assertions.assertEquals("$%s".formatted(productPrices[index]), catalogPage.assertProductPrice(productPrices[index])),
-                    () -> Assertions.assertEquals(productQuantities[index], catalogPage.assertProductQuantity(productQuantities))
+                    () -> Assertions.assertEquals(productQuantities[index], catalogPage.assertProductQuantity(productQuantities[index]))
             );
         }
+        Assertions.assertEquals("$%s".formatted(totalPrice),catalogPage.assertCartTotalPrice());
     }
 }
