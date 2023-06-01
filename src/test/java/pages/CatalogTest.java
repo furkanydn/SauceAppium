@@ -6,10 +6,12 @@ import utils.Linker;
 
 public class CatalogTest {
     CatalogPage catalogPage = new CatalogPage();
+
     @BeforeAll
-    public static void beforeAll(){
+    public static void beforeAll() {
         AppiumServer.start();
     }
+
     @AfterAll
     public static void afterAll() {
         AppiumServer.stop();
@@ -17,13 +19,13 @@ public class CatalogTest {
 
     @Disabled
     @Test
-    public void GoDrawingPage(){
+    public void GoDrawingPage() {
         catalogPage.goDrawingPageWithDeepLink();
         Assertions.assertEquals("Drawing", catalogPage.getHeader());
     }
 
     @Test
-    public void requiredOrderProductsSorted(){
+    public void requiredOrderProductsSorted() {
         catalogPage.selectSortOptionByNameAscending();
         Assertions.assertTrue(catalogPage.isSortedByNameAscending());
 
@@ -46,19 +48,19 @@ public class CatalogTest {
      * and the scenario ends successfully.
      */
     @Test
-    public void addBackpackAndBikeLightToCart(){
+    public void addBackpackAndBikeLightToCart() {
         Assertions.assertEquals("Products", catalogPage.getHeader());
         catalogPage.backpackAndBikeLightToCart();
     }
 
     @Test
-    public void isBackpackAndBikeLightAddedToCart(){
+    public void isBackpackAndBikeLightAddedToCart() {
         Assertions.assertTrue(catalogPage.isBackpackAndBikeLightAddedToCart());
         Assertions.assertEquals("My Cart", catalogPage.getHeader());
     }
 
     @Test
-    public void addMultipleProductsWithOptions(){
+    public void addMultipleProductsWithOptions() {
         //catalogPage.multipleProductsWithOptions();
         Linker.Go("cart/id=2&amount=3&color=black,id=4&amount=3&color=gray,id=5&amount=3&color=red");
         Assertions.assertEquals("My Cart", catalogPage.getHeader());
@@ -69,10 +71,13 @@ public class CatalogTest {
         int[] productQuantities = {3, 3, 3};
 
         for (int i = 0; i < productNames.length; i++) {
-            Assertions.assertEquals(productNames[i],catalogPage.assertProductName(productNames[i]));
-            Assertions.assertTrue(catalogPage.assertProductColor(productColors[i]));
-            Assertions.assertEquals("$%s".formatted(productPrices[i]),catalogPage.assertProductPrice(productPrices[i]));
-            Assertions.assertEquals(productQuantities[i],catalogPage.assertProductQuantity(productQuantities[i]));
+            final int index = i;
+            Assertions.assertAll(
+                    () -> Assertions.assertEquals(productNames[index], catalogPage.assertProductName(productNames[index])),
+                    () -> Assertions.assertTrue(catalogPage.assertProductColor(productColors[index])),
+                    () -> Assertions.assertEquals("$%s".formatted(productPrices[index]), catalogPage.assertProductPrice(productPrices[index])),
+                    () -> Assertions.assertEquals(productQuantities[index], catalogPage.assertProductQuantity(productQuantities))
+            );
         }
     }
 }

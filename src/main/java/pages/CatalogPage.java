@@ -222,8 +222,8 @@ public class CatalogPage extends BasePage {
 
     }
 
-    public int assertProductQuantity(int expectedProductQuantity) {
-        for (int i = 0; i < expectedProductQuantity; i++) {
+    public int assertProductQuantity(int[] expectedProductQuantity) {
+        for (int i = 1; i < expectedProductQuantity.length; i++) {
             int quantity = Integer.parseInt(findElementByRelativeXPath("name", "counter amount", i).getText());
             if (quantity != 0) return quantity;
         }
