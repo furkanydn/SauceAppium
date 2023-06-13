@@ -208,24 +208,48 @@ public class CatalogPage extends BasePage {
             findElementAccessibilityId("counter plus button").click();
         }
     }
-
+    /**
+     * Verifies if the expected product name is displayed and returns the text.
+     *
+     * @param expectedProductName The expected product name.
+     * @return The displayed product name.
+     */
     public String assertProductName(String expectedProductName) {
         return findElementByRelativeXPath(Config.platformName == Platform.IOS ? "label" : "text", expectedProductName, 0).getText();
     }
-
+    /**
+     * Verifies if the expected product color is displayed.
+     *
+     * @param expectedProductColor The expected product color.
+     * @return True if the product color is displayed, false otherwise.
+     */
     public boolean assertProductColor(String expectedProductColor) {
         return findElementAccessibilityId(expectedProductColor + " circle").isDisplayed();
     }
-
+    /**
+     * Verifies if the expected product price is displayed and returns the text.
+     *
+     * @param expectedProductPrice The expected product price.
+     * @return The displayed product price.
+     */
     public String assertProductPrice(double expectedProductPrice) {
         return findElementByRelativeXPath(Config.platformName == Platform.IOS ? "label" : "text", "$%s".formatted(expectedProductPrice), 0).getText();
 
     }
-
+    /**
+     * Verifies if the expected product quantity is displayed and returns the value.
+     *
+     * @param expectedProductQuantity The expected product quantity.
+     * @return The displayed product quantity.
+     */
     public int assertProductQuantity(int expectedProductQuantity) {
         return Integer.parseInt(findElementByRelativeXPath("name", "counter amount", expectedProductQuantity).getText());
     }
-
+    /**
+     * Returns the text of the total price displayed in the cart.
+     *
+     * @return The total price in the cart.
+     */
     public String assertCartTotalPrice() {
         return findElementAccessibilityId("total price").getText();
     }
