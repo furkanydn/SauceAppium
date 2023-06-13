@@ -13,7 +13,7 @@ public class MenuItem extends BasePage {
      @param menuItem the name of the menu item to click (e.g. "catalog")
      */
     public void clickMenuItem(String menuItem) {
-        if (findElementAccessibilityId("open menu").isDisplayed()) appBar.openMenu();
+        appBar.openMenu();
         findElementAccessibilityId("menu item " + menuItem.toLowerCase()).click();
     }
     /**

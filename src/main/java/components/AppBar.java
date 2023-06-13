@@ -15,7 +15,10 @@ public class AppBar extends BasePage {
      * Clicks on the "Open Menu" button to reveal the menu options.
      */
     public void openMenu() {
-        findElementAccessibilityId("open menu").click();
+        switch (Config.platformName){
+            case ANDROID -> findElementAccessibilityId("open menu").click();
+            case IOS -> findElementAccessibilityId("tab bar option menu").click();
+        }
     }
     /**
      Scrolls horizontally to hide the Android menu.
