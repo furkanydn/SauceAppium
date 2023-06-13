@@ -1,7 +1,6 @@
 package pages;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.AppiumServer;
@@ -26,6 +25,7 @@ public class LoginTest {
     @Test
     void testFailedLoginInvalidCredentials(){
         page.goLoginPageWithClicks();
+        page.LoginInvalidCredentials();
     }
 
     @Test
