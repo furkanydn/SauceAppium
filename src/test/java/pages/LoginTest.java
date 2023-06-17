@@ -25,16 +25,18 @@ public class LoginTest {
     @Test
     void testFailedLoginInvalidCredentials(){
         page.goLoginPageWithClicks();
-        page.LoginInvalidCredentials();
+        page.loginInvalidCredentials();
     }
 
     @Test
     void testLockedValidCredentials(){
-
+        page.goLoginPageWithLink();
+        page.lockValidCredentials();
     }
 
     @Test
     void testSuccessfulLogin(){
-
+        page.goLoginPageWithLink();
+        page.successfulLogin();
     }
 }

@@ -21,8 +21,9 @@ public class AppBar extends BasePage {
         }
     }
     /**
-     Scrolls horizontally to hide the Android menu.
-     */
+     * Scrolls horizontally to hide the Android menu.
+     * */
+    @Deprecated
     public void closeAndroidMenu(){
         PointerScroll pointerScroll = new PointerScroll();
         pointerScroll.horizontalScroll("android:id/content",0.8,0.2);

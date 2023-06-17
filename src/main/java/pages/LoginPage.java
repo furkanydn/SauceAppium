@@ -5,6 +5,7 @@ import components.MenuItem;
 import org.junit.jupiter.api.Assertions;
 import utils.Config;
 import utils.Linker;
+import utils.TestData;
 
 public class LoginPage extends BasePage {
     MenuItem menu = new MenuItem();
@@ -31,12 +32,30 @@ public class LoginPage extends BasePage {
             case IOS -> findElementAccessibilityId("Return").click();
         }
     }
-
-    public void LoginInvalidCredentials(){
-        findElementAccessibilityId("Username input field").sendKeys("logintest@mailaddress.com");
-        findElementAccessibilityId("Password input field").sendKeys("12345678");
+    private void enterCredentials(String username, String password) {
+        findElementAccessibilityId("Username input field").sendKeys(username);
+        findElementAccessibilityId("Password input field").sendKeys(password);
         closeKeyboard();
+    }
+
+    private String getGenericErrorMessage() {
+        return findElementAccessibilityId("generic-error-message").getText();
+    }
+
+    public void loginInvalidCredentials(){
+        enterCredentials(TestData.EMAIL_INVALID, TestData.PASS_INVALID);
         clickLoginButton();
-        Assertions.assertEquals("Provided credentials do not match any user in this service.",findElementAccessibilityId("generic-error-message").getText());
+        Assertions.assertEquals("Provided credentials do not match any user in this service.", getGenericErrorMessage());
+    }
+
+    public void lockValidCredentials(){
+        enterCredentials(TestData.EMAIL_LOCKED, TestData.PASS_VALID);
+        clickLoginButton();
+        Assertions.assertEquals("Sorry, this user has been locked out.", getGenericErrorMessage());
+    }
+
+    public void successfulLogin(){
+        enterCredentials(TestData.EMAIL_VALID, TestData.PASS_VALID);
+        clickLoginButton();
     }
 }
