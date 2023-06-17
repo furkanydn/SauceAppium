@@ -1,6 +1,5 @@
 package pages;
 
-import components.AppBar;
 import components.MenuItem;
 import org.junit.jupiter.api.Assertions;
 import utils.Config;
@@ -28,7 +27,7 @@ public class LoginPage extends BasePage {
 
     private void closeKeyboard(){
         switch (Config.platformName){
-            case ANDROID -> new AppBar().navigationBack();
+            case ANDROID -> androidDriver.hideKeyboard();
             case IOS -> findElementAccessibilityId("Return").click();
         }
     }
@@ -38,20 +37,32 @@ public class LoginPage extends BasePage {
         closeKeyboard();
     }
 
-    private String getGenericErrorMessage() {
-        return findElementAccessibilityId("generic-error-message").getText();
+    private String getGenericErrorMessage(String value) {
+        switch (Config.platformName){
+            case ANDROID -> {
+                return findElementByText(value).getText();
+            }
+            case IOS -> {
+                return findElementAccessibilityId("generic-error-message").getText();
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     public void loginInvalidCredentials(){
         enterCredentials(TestData.EMAIL_INVALID, TestData.PASS_INVALID);
         clickLoginButton();
-        Assertions.assertEquals("Provided credentials do not match any user in this service.", getGenericErrorMessage());
+        String message = "Provided credentials do not match any user in this service.";
+        Assertions.assertEquals(message, getGenericErrorMessage(message));
     }
 
     public void lockValidCredentials(){
         enterCredentials(TestData.EMAIL_LOCKED, TestData.PASS_VALID);
         clickLoginButton();
-        Assertions.assertEquals("Sorry, this user has been locked out.", getGenericErrorMessage());
+        String message = "Sorry, this user has been locked out.";
+        Assertions.assertEquals(message, getGenericErrorMessage(message));
     }
 
     public void successfulLogin(){
