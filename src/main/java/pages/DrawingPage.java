@@ -18,13 +18,13 @@ public class DrawingPage extends BasePage {
 
         switch (Config.platformName){
             case ANDROID -> {
-                new Drawer().drawCircle(androidDriver,head,150,30);
+                new Drawer().drawCircle(androidDriver,head,120,30);
                 new Drawer().drawCircle(androidDriver,leftEye, 20, 20);
                 new Drawer().drawCircle(androidDriver, rightEye, 20, 20);
                 new Drawer().drawCircle(androidDriver, mouth, 40, 20);
             }
             case IOS -> {
-                new Drawer().drawCircle(iosDriver,head,150,30);
+                new Drawer().drawCircle(iosDriver,head,120,30);
                 new Drawer().drawCircle(iosDriver,leftEye, 20, 20);
                 new Drawer().drawCircle(iosDriver, rightEye, 20, 20);
                 new Drawer().drawCircle(iosDriver, mouth, 40, 20);

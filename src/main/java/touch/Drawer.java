@@ -7,7 +7,7 @@ import org.openqa.selenium.interactions.PointerInput.MouseButton;
 import org.openqa.selenium.interactions.Sequence;
 
 import java.time.Duration;
-import java.util.Arrays;
+import java.util.List;
 
 
 public class Drawer {
@@ -32,6 +32,6 @@ public class Drawer {
         }
 
         circle.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-        driver.perform(Arrays.asList(circle));
+        driver.perform(List.of(circle));
     }
 }
