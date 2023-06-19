@@ -16,13 +16,6 @@ public class CatalogTest {
         AppiumServer.stop();
     }
 
-    @Disabled
-    @Test
-    public void GoDrawingPage() {
-        catalogPage.goDrawingPageWithDeepLink();
-        Assertions.assertEquals("Drawing", catalogPage.getHeader());
-    }
-
     @Test
     public void requiredOrderProductsSorted() {
         catalogPage.selectSortOptionByNameAscending();

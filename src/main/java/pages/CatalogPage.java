@@ -16,12 +16,6 @@ public class CatalogPage extends BasePage {
     AppBar Bar = new AppBar();
     PointerScroll Pointer = new PointerScroll();
     /**
-     This method navigates to the drawing page in the application using a deep link.
-     */
-    public void goDrawingPageWithDeepLink(){
-        Linker.Go(Links.Drawing);
-    }
-    /**
      Returns the header text of the current page.
      @return String the header text of the current page.
      */

@@ -21,4 +21,10 @@ public class DrawingTest {
         new DrawingPage().goDrawingPageWithClicks();
         new DrawingPage().drawFace();
     }
+
+    @Test
+    void testTouchOnDrawingArea(){
+        new DrawingPage().goDrawingPageWithDeepLink();
+        new DrawingPage().drawOnCanvas();
+    }
 }
