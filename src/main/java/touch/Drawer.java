@@ -1,8 +1,6 @@
 package touch;
 
-import com.beust.ah.A;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.touch.ActionOptions;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.PointerInput.MouseButton;

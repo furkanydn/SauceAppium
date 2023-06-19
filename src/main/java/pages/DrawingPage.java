@@ -3,7 +3,6 @@ package pages;
 import components.MenuItem;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.interactions.PointerInput;
 import touch.Drawer;
 import utils.Config;
 import utils.Linker;
