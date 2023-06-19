@@ -71,6 +71,11 @@ public class DrawingPage extends BasePage {
      * @throws UnsupportedOperationException if the platform name is not supported.
      */
     public void drawSquare() {
+        switch (Config.platformName) {
+            case ANDROID -> findElementId("signature-pad").isDisplayed();
+            case IOS -> findElementAccessibilityId("Signature Pad demo").isDisplayed();
+        }
+
         Dimension screenSize = Config.platformName.equals(Config.Platform.ANDROID) ? androidDriver.manage().window().getSize() : iosDriver.manage().window().getSize();
         int centerX = screenSize.getWidth() / 2;
         int centerY = screenSize.getHeight() / 2;
@@ -86,5 +91,16 @@ public class DrawingPage extends BasePage {
             case ANDROID -> new Drawer().drawShape(androidDriver,points);
             case IOS -> new Drawer().drawShape(iosDriver,points);
         }
+    }
+    /**
+     * Checks if the signature pad is displayed on the current platform.
+     *
+     * @return true if the signature pad is displayed, false otherwise.
+     */
+    public boolean isSignaturePadDisplayed() {
+        return switch (Config.platformName) {
+            case ANDROID -> findElementId("signature-pad").isDisplayed();
+            case IOS -> findElementByRelativeXPath("label","Signature Pad demo",0).isDisplayed();
+        };
     }
 }
