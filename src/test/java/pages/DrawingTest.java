@@ -23,8 +23,8 @@ public class DrawingTest {
     }
 
     @Test
-    void testTouchOnDrawingArea(){
+    void testDrawSquare(){
         new DrawingPage().goDrawingPageWithDeepLink();
-        new DrawingPage().drawOnCanvas();
+        new DrawingPage().drawSquare();
     }
 }

@@ -50,20 +50,27 @@ public class Drawer {
         circle.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         driver.perform(List.of(circle));
     }
-
-    public void drawPoint(AppiumDriver driver,Point startPoint, int canvasWidth, int canvasHeight){
+    /**
+     * Draws a shape on the screen using the provided list of points.
+     *
+     * @param driver The AppiumDriver instance.
+     * @param points The list of points defining the shape to be drawn.
+     *               The points should be in the order of the desired drawing sequence.
+     *               The first and last points should be the same to close the shape.
+     * @throws IllegalArgumentException if the provided points list is null or empty.
+     */
+    public void drawShape(AppiumDriver driver, List<Point> points) {
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence shape = new Sequence(finger, 0);
 
-        shape.addAction(finger.createPointerMove(Duration.ofMillis(0),PointerInput.Origin.viewport(), startPoint.getX(), startPoint.getY()));
-        shape.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
+        for (int s = 0; s < points.size(); s++) {
+            Point point = points.get(s);
+            Duration duration = Duration.ofMillis(s == 0 ? 0 : 100);
+            PointerInput.Origin origin = s == 0 ? PointerInput.Origin.viewport() : PointerInput.Origin.pointer();
 
-        int offsetX = canvasWidth / 4;
-        int offsetY = canvasHeight / 4;
-        for (int i = 1; i <= 4; i++) {
-            int x = startPoint.getX() + i * offsetX;
-            int y = startPoint.getY() + i * offsetY;
-            shape.addAction(finger.createPointerMove(Duration.ofMillis(20), PointerInput.Origin.viewport(), x, y));
+            shape.addAction(finger.createPointerMove(duration, origin, point.getX(), point.getY()));
+
+            if (s == 0) shape.addAction(finger.createPointerDown(MouseButton.LEFT.asArg()));
         }
         shape.addAction(finger.createPointerUp(MouseButton.LEFT.asArg()));
         driver.perform(List.of(shape));

@@ -7,12 +7,13 @@ import touch.Drawer;
 import utils.Config;
 import utils.Linker;
 
-public class DrawingPage extends BasePage {
+import java.util.ArrayList;
+import java.util.List;
 
+public class DrawingPage extends BasePage {
     public void goDrawingPageWithClicks(){
         new MenuItem().Drawing();
     }
-
     /**
      This method navigates to the drawing page in the application using a deep link.
      */
@@ -62,16 +63,28 @@ public class DrawingPage extends BasePage {
 
         return dimension == Dimensions.WIDTH ? size.getWidth() : size.getHeight();
     }
+    /**
+     * Draws a square shape on the screen.
+     * The square is centered on the screen and covers 50% of the screen's width.
+     * The square is drawn using the appropriate driver based on the platform name specified in the Config.
+     *
+     * @throws UnsupportedOperationException if the platform name is not supported.
+     */
+    public void drawSquare() {
+        Dimension screenSize = Config.platformName.equals(Config.Platform.ANDROID) ? androidDriver.manage().window().getSize() : iosDriver.manage().window().getSize();
+        int centerX = screenSize.getWidth() / 2;
+        int centerY = screenSize.getHeight() / 2;
+        int halfSide = screenSize.getWidth() / 4;
 
-    public void drawOnCanvas(){
-        int canvasWidth = (int) (getDimension(Dimensions.WIDTH) * 0.75);
-        int canvasHeight = (int) (getDimension(Dimensions.HEIGHT) * 0.75);
-
-        Point canvasCenter = new Point(canvasWidth / 2, canvasHeight / 2);
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(centerX - halfSide, centerY - halfSide));
+        points.add(new Point(centerX + halfSide, centerY - halfSide));
+        points.add(new Point(centerX + halfSide, centerY + halfSide));
+        points.add(new Point(centerX - halfSide, centerY + halfSide));
 
         switch (Config.platformName) {
-            case ANDROID -> new Drawer().drawPoint(androidDriver,canvasCenter,canvasWidth,canvasHeight);
-            case IOS -> new Drawer().drawPoint(iosDriver,canvasCenter,canvasWidth,canvasHeight);
+            case ANDROID -> new Drawer().drawShape(androidDriver,points);
+            case IOS -> new Drawer().drawShape(iosDriver,points);
         }
     }
 }
