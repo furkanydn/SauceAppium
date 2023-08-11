@@ -33,8 +33,8 @@ public class AppiumServer {
      */
     public static void start() {
         LOGGER.info("Initializing appium driver...");
-        switch (Config.getProperties("appium.remote.platform.name")){
-            case "iOS" -> {
+        switch (Config.platformName){
+            case IOS -> {
                 LOGGER.info("iOS platform selected.");
                 service = new AppiumServiceBuilder()
                         .withIPAddress(Config.getProperties("appium.server.ip"))
@@ -52,7 +52,7 @@ public class AppiumServer {
                         .setApp(Pather.iosApp().toAbsolutePath().toString())
                         .setWdaLaunchTimeout(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.wda.launch.timeout"))))
                         .setWdaStartupRetries(4)
-                        .setWdaStartupRetryInterval(Duration.ofMinutes(3))
+                        .setWdaStartupRetryInterval(Duration.ofMinutes(15))
                         .setCommandTimeouts(Duration.ofSeconds(Long.parseLong(Config.getProperties("ios.command.timeout"))))
                         .clearSystemFiles()
                         .eventTimings();
@@ -63,7 +63,7 @@ public class AppiumServer {
                     iosDriver = new IOSDriver(service.getUrl(),options);
                 }
             }
-            case "Android" -> {
+            case ANDROID -> {
                 LOGGER.info("Android platform selected.");
                 service = new AppiumServiceBuilder()
                         .withIPAddress(Config.getProperties("appium.server.ip"))

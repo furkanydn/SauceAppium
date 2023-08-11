@@ -1,6 +1,7 @@
 package utils;
 
-import java.util.Objects;
+import static utils.Config.Platform;
+import static utils.Config.platformName;
 
 /**
  * This class provides methods for navigating to deep links in the app using Appium driver.
@@ -51,9 +52,8 @@ public class Linker extends AppiumServer {
      * @param page The page to navigate to.
      */
     public static void Go(Links page){
-        if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android"))) {
-            androidDriver.get("mydemoapprn://" + getDeepLink(page));
-        } else iosDriver.get("mydemoapprn://" + getDeepLink(page));
+        if (platformName == Platform.ANDROID) androidDriver.get("mydemoapprn://" + getDeepLink(page));
+        else iosDriver.get("mydemoapprn://" + getDeepLink(page));
     }
     /**
      * Navigates to the specified URL by deep linking with the URL.
@@ -63,8 +63,7 @@ public class Linker extends AppiumServer {
      * @param optional The URL to navigate to.
      */
     public static void Go(String optional){
-        if ((Objects.equals(Config.getProperties("appium.remote.platform.name"), "Android"))) {
-            androidDriver.get("mydemoapprn://" + optional);
-        } else iosDriver.get("mydemoapprn://" + optional);
+        if (platformName == Platform.ANDROID) androidDriver.get("mydemoapprn://" + optional);
+        else iosDriver.get("mydemoapprn://" + optional);
     }
 }

@@ -6,8 +6,6 @@ import pages.BasePage;
 import touch.PointerScroll;
 import utils.Config;
 
-import java.util.NoSuchElementException;
-
 /**
  The AppBar class represents the navigation bar that is present in most mobile applications.
  It extends the BasePage class and inherits its methods.
@@ -17,110 +15,55 @@ public class AppBar extends BasePage {
      * Clicks on the "Open Menu" button to reveal the menu options.
      */
     public void openMenu() {
-        findElement("open menu").click();
+        switch (Config.platformName){
+            case ANDROID -> findElementAccessibilityId("open menu").click();
+            case IOS -> findElementAccessibilityId("tab bar option menu").click();
+        }
     }
     /**
-     Scrolls horizontally to hide the Android menu.
-     */
+     * Scrolls horizontally to hide the Android menu.
+     * */
+    @Deprecated
     public void closeAndroidMenu(){
         PointerScroll pointerScroll = new PointerScroll();
-        pointerScroll.HorizontalScroll("android:id/content",0.8,0.2);
+        pointerScroll.horizontalScroll("android:id/content",0.8,0.2);
     }
     /**
      Clicks on the "Sort" button
      */
     public void sortOptionButton(){
-        findElement("sort button").click();
+        findElementAccessibilityId("sort button").click();
     }
     /**
      Clicks on the cart badge icon.
      */
     public void cartBadge(){
-        findElement("cart badge").click();
+        findElementAccessibilityId("cart badge").click();
     }
-
+    /**
+     * Navigates back in the application.
+     * This method identifies the platform name and performs the back navigation accordingly.
+     * Supports iOS and Android platforms.
+     * Throws a RuntimeException if the platform name is unknown.
+     */
     public void navigationBack(){
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> findElement("navigation back button").click();
-            case "Android" -> androidDriver.pressKey(new KeyEvent(AndroidKey.BACK));
-            default -> throw new RuntimeException("Can We Please Go Back");
+        switch (Config.platformName) {
+            case IOS -> findElementAccessibilityId("navigation back button").click();
+            case ANDROID -> androidDriver.pressKey(new KeyEvent(AndroidKey.BACK));
+            default -> throw new RuntimeException("Can we please go back");
         }
     }
-
+    /**
+     * Opens the cart option in the tab bar.
+     * This method identifies the platform name and opens the cart accordingly.
+     * Supports iOS and Android platforms.
+     * Throws a RuntimeException if the platform name is unknown.
+     */
     public void barOptionCart(){
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> findElement("tab bar option cart").click();
-            case "Android" -> cartBadge();
+        switch (Config.platformName) {
+            case IOS -> findElementAccessibilityId("tab bar option cart").click();
+            case ANDROID -> cartBadge();
             default -> throw new RuntimeException("Sorry, Cart cannot be accessed at the moment.");
         }
-    }
-    public void selectSortOptionByNameAscending() {
-        sortOptionButton();
-        findElement("nameAsc").click();
-    }
-    public boolean isSortedByNameAscending() {
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> {
-                return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                        .getAttribute("label")
-                        .matches(
-                                ".*" + "Sauce Labs Backpack" + ".*");
-            }
-            case "Android" -> {
-                return findElementOrX("store item text")
-                        .getText()
-                        .matches(
-                        ".*" + "Sauce Labs Backpack" + ".*");
-            }
-            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
-        }
-    }
-
-    public void selectSortOptionByNameDescending(){
-        sortOptionButton();
-        findElement("nameDesc").click();
-    }
-    public boolean isSortedByNameDescending() {
-        String platformName = Config.getProperties("appium.remote.platform.name");
-        switch (platformName) {
-            case "iOS" -> {
-                return findElementOrX("**/XCUIElementTypeOther[`label == \"Test.allTheThings() T-Shirt $15.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                        .getAttribute("label")
-                        .matches(
-                                ".*" + "Test.allTheThings" + ".*");
-            }
-            case "Android" -> {
-                return findElementOrX("store item text")
-                        .getText()
-                        .matches(
-                                ".*" + "Test.allTheThings" + ".*");
-            }
-            default -> throw new NoSuchElementException("Sorry, Order cannot be accessed at the moment.");
-        }
-    }
-
-    public void selectSortOptionByPriceAscending(){
-        sortOptionButton();
-        findElement("priceAsc").click();
-    }
-    public boolean isSortedByPriceAscending() {
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Onesie $7.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Bike Light $9.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                .getAttribute("label")
-                .matches(
-                        ".*" + "Sauce Labs Onesie" + ".*");
-    }
-
-    public void selectSortOptionByPriceDescending(){
-        sortOptionButton();
-        findElement("priceDesc").click();
-    }
-    public boolean isSortedByPriceDescending() {
-        return findElementOrX("**/XCUIElementTypeOther[`label == \"Sauce Labs Fleece Jacket $49.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF Sauce Labs Backpack $29.99 \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF \uDB81\uDCCF\"`][1]")
-                .getAttribute("label")
-                .matches(
-                        ".*" + "Sauce Labs Fleece Jacket" + ".*");
     }
 }
