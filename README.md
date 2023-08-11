@@ -2,6 +2,7 @@
 
 ## Introduction
 This application has been designed and developed as a sample project to understand the Appium, the mobile platforms, the CI&CD mentality.
+> This project has been developed to test the sample React Native application named [my-demo-app-rn](https://github.com/saucelabs/my-demo-app-rn) by Sauce Labs.
 
 ## Getting Started
 ### Requirements
